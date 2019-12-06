@@ -13,6 +13,8 @@ nav ul, footer ul {
 }
 .pichead img{
     margin: auto;
+    width:132px;
+    height:165px;
 }
 nav ul li, footer ul li {
     display: inline;
