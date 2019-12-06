@@ -14,6 +14,9 @@ nav ul, footer ul {
 .pichead img{
     margin: auto;
 }
+.pichead h1{
+   margin-left: 20px;
+}
 nav ul li, footer ul li {
     display: inline;
     margin-right: 20px;
@@ -26,7 +29,6 @@ a:hover {
     text-decoration: underline;
 }
 h1 {
-    margin-left: 20px;
     font-size: 3em;
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
 }
