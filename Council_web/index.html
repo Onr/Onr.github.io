@@ -1,342 +1,389 @@
+<!DOCTYPE html>
+<!--
+	App by FreeHTML5.co
+	Twitter: http://twitter.com/fh5co
+	URL: http://freehtml5.co
+-->
+<html lang="en">
 
-
-<html>
 <head>
+	<meta charset="UTF-8">
+	<title>App &mdash; Free Website Template, Free HTML5 Template by FreeHTML5.co</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Free HTML5 Website Template by FreeHTML5.co" />
+	<meta name="keywords"
+		content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="FreeHTML5.co" />
 
-  <script type="text/javascript" id="MathJax-script" async
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
+	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content="" />
+	<meta property="og:image" content="" />
+	<meta property="og:url" content="" />
+	<meta property="og:site_name" content="" />
+	<meta property="og:description" content="" />
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
 
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<!-- Owl Carousel  -->
+	<link rel="stylesheet" href="css/owl.carousel.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+		integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 
-  <!--
-  <script src="./resources/jsapi" type="text/javascript"></script>
-  <script type="text/javascript" async>google.load("jquery", "1.3.2");</script>
- -->
-<style type="text/css">
-  body {
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-weight:300;
-    font-size:18px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 1100px;
-  }
-  h1 {
-    font-weight:300;
-  }
-  h2 {
-    font-weight:300;
-  }
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+</head>
 
-  .disclaimerbox {
-    background-color: #eee;
-    border: 1px solid #eeeeee;
-    border-radius: 10px ;
-    -moz-border-radius: 10px ;
-    -webkit-border-radius: 10px ;
-    padding: 20px;
-  }
-
-  video.header-vid {
-    height: 140px;
-    border: 1px solid black;
-    border-radius: 10px ;
-    -moz-border-radius: 10px ;
-    -webkit-border-radius: 10px ;
-  }
-
-  img.header-img {
-    height: 140px;
-    border: 1px solid black;
-    border-radius: 10px ;
-    -moz-border-radius: 10px ;
-    -webkit-border-radius: 10px ;
-  }
-
-  img.rounded {
-    border: 0px solid #eeeeee;
-    border-radius: 10px ;
-    -moz-border-radius: 10px ;
-    -webkit-border-radius: 10px ;
-
-  }
-
-  a:link,a:visited
-  {
-    color: #1367a7;
-    text-decoration: none;
-  }
-  a:hover {
-    color: #208799;
-  }
-
-  td.dl-link {
-    height: 160px;
-    text-align: center;
-    font-size: 22px;
-  }
-
-  .layered-paper-big { /* modified from: https://css-tricks.com/snippets/css/layered-paper/ */
-    box-shadow:
-            0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
-            5px 5px 0 0px #fff, /* The second layer */
-            5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
-            10px 10px 0 0px #fff, /* The third layer */
-            10px 10px 1px 1px rgba(0,0,0,0.35), /* The third layer shadow */
-            15px 15px 0 0px #fff, /* The fourth layer */
-            15px 15px 1px 1px rgba(0,0,0,0.35), /* The fourth layer shadow */
-            20px 20px 0 0px #fff, /* The fifth layer */
-            20px 20px 1px 1px rgba(0,0,0,0.35), /* The fifth layer shadow */
-            25px 25px 0 0px #fff, /* The fifth layer */
-            25px 25px 1px 1px rgba(0,0,0,0.35); /* The fifth layer shadow */
-    margin-left: 10px;
-    margin-right: 45px;
-  }
-
-
-  .layered-paper { /* modified from: https://css-tricks.com/snippets/css/layered-paper/ */
-    box-shadow:
-            0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
-            5px 5px 0 0px #fff, /* The second layer */
-            5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
-            10px 10px 0 0px #fff, /* The third layer */
-            10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
-    margin-top: 5px;
-    margin-left: 10px;
-    margin-right: 30px;
-    margin-bottom: 5px;
-  }
-
-  .vert-cent {
-    position: relative;
-      top: 50%;
-      transform: translateY(-50%);
-  }
-
-  hr
-  {
-    border: 0;
-    height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-  }
-</style>
-
-
-
-    <title>Breaking the Cycle - Colleagues are all you need</title>
-  </head>
 <body>
-<div id="container"><!-- Start container -->
-	<div id="contentContainer"><!-- Start main content wrapper -->
-		<div id="content"><!-- Start content -->
-			<p style="text-align:center;"><span style="font-size:36px; color:#3d82f4 ;font-weight:bold;">Breaking the cycle—Colleagues are all you need</span>
-						<p style="text-align:center;">
-
-			<p style="text-align:center;"><span style="font-size:21px; color:#3d82f4 ;font-weight:bold; "> <br /></span>
-			<span style="font-size:22; ">
-			<a href="https://onr.github.io/" rel="external">Ori Nizan</a>&nbsp;&nbsp;&nbsp;&nbsp;
-              		<a href="https://webee.technion.ac.il/~ayellet/" rel="external">Ayellet Tal</a>
-			 </span>
 
 
-			 <span style="font-size:22;"><p style="text-align:center;">Technion – Israel Institute of Technology<br></span>
-			  <span style="font-size:22px; ">
-			  			 <br>
-			 <br>
-			 <p style="text-align:center;">
-
-			 <span style="font-size:20px">arXiv 2020 [<a href="https://arxiv.org/pdf/1911.10538" rel="self"><b>paper</b></a>]</span>
-       <br>
-       [<a href="resources/supplementary/supplementary_architecture_Council.pdf" rel="self">Supplementary-Architecture</a>]
-       [<a href="resources/supplementary/supplementary_m2f_Council.pdf" rel="self">Supplementary-Male2Female</a>]
-       [<a href="resources/supplementary/supplementary_selfie2anime_Council.pdf" rel="self">Supplementary-Anime</a>]
-       [<a href="resources/supplementary/supplementary_glasses_Council.pdf" rel="self">Supplementary-Glasses</a>]
-			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<!-- 			 <span style="font-size:20px">[<a href="resources/AFL_supplementary.pdf" rel="self"><b>Supplementary</b></a>] </span> -->
-
-			 <br>
-			 <br>
-			<span style="font-size:20px">Code [<a href="https://github.com/Onr/Council-GAN" rel="self"><b>GitHub</b></a>]		</span>
-
-            <p></p>
-            <p align="center">
+	<div id="page-wrap">
 
 
-            <img width="1000" src="resources/paper_teaser.png">
-			</p>
+		<!-- ==========================================================================================================
+													   HERO
+		 ========================================================================================================== -->
 
-			<span style="width:10px;font-size:15px;">
-					<b>Council-GAN:</b>
-          We present here a novel approach for unpaired image to image translation.
-          Our approach does not use cyclic constraint which mitigating these constraint artifacts.
-          We use multiple unrelated generator with constraint that they need to coordinate there output, based only on their input.
-          This result in an image that has attributes from the input but belong to the output domain.
+		<div id="fh5co-hero-wrapper">
+			<nav class="container navbar navbar-expand-lg main-navbar-nav navbar-light">
+				<!-- <button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button> -->
+<!-- 
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav nav-items-center ml-auto mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#"
+								onclick="$('#fh5co-features').goTo();return false;">Features</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" onclick="$('#fh5co-reviews').goTo();return false;">Reviews</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#"
+								onclick="$('#fh5co-download').goTo();return false;">Download</a>
+						</li>
+					</ul>
+				</div> -->
+			</nav>
 
-			<p>&nbsp;</p>
-			<hr>
-			<br>
+			<div class="container fh5co-hero-inner">
+				<h1 style="font-weight: bold;" class="animated fadeIn wow" data-wow-delay="0.4s">Breaking the cycle—Colleagues are all you need
 
-			            <center><h1>Abstract</h1></center>
-            <p></p>
-            <span style="font-size:18px; ">
-This paper proposes a novel approach to performing image-to-image translation between unpaired domains.
-Rather than relying on a cycle constraint, our method takes advantage of collaboration between various GANs.
-This results in a multi-modal method, in which multiple optional and diverse images are produced for a given image.
-Our model addresses some of the shortcomings of classical GANs:
-(1) It is able to remove large objects, such as glasses.
-(2) Since it does not need to  support the cycle constraint, no irrelevant traces of the input are left on the generated image.
-(3) It manages to  translate between domains that require large shape modifications.
-Our results are shown to outperform those generated by state-of-the-art methods for several challenging applications.
-            <p>&nbsp;</p>
+				</h1>
+				<h2 class="animated fadeIn wow" data-wow-delay="0.67s">Ori Nizan &ensp;&ensp; Ayellet Tal
+					</br>
+					Technion – Israel Institute of Technology </h2>
+					<button class="btn btn-md features-btn-first animated fadeInLeft wow" data-wow-delay="0.95s"
+					onclick="$('#fh5co-features').goTo();return false;">Council GAN</button>
+				<button class="btn btn-md download-btn-first wow fadeInLeft animated" data-wow-delay="0.85s"
+					><a href="https://github.com/Onr/Council-GAN">GIthub</a></button>
+				<button class="btn btn-md download-btn-first wow fadeInLeft animated" data-wow-delay="0.85s"
+					><a href="https://arxiv.org/pdf/1911.10538">PDF</a> </button>
 
-			<p></p>
-            <p align="center">
-            <img width="750"  src="resources/gan_council_overview.png">
-			</p>
-			<p align="center">
-			<span style="font-size:15px; ">
-			<b>General approach:</b> The council consists of triplets,
-      each of which contains a generator and two discriminators:
-      \(D_i\) distinguishes between the generator’s output and real examples,
-      whereas \(\hat D_i\) distinguishes between images produced by \(G_i\) and images produced by other generators in the council.
-      \(D_i\) is the reason that the each of the generators converges to a result that is agreed-upon by all other members of the council.
-            <p>&nbsp;</p>
-			<hr>
-			<br>
-			            <center><h1>Applications</h1></center>
-						<br>
-					<span style="font-size:22px; ">
-					<center>
-					 Male to Female translation
-					<br>
-					<span style="font-size:18px; ">
-					<center>
-					<p align="center">
-					<img width="1058" src="resources/m2f_gif.gif">
-					<br>
-					<span style="font-size:15px; ">
-					<!-- Faces generated with AFL show significantly fewer artifacts, making clear the advantage of using AFL. -->
-					<!-- <br><br>
-					<img width="1100" src="resources/ref.png">
-					<br><br>
-					<span style="font-size:15px; ">
-					<b>Generation with reference:</b> Results of using feedback-switching-pipeline. The feedback modules make the generated image similar to the reference one, and with fewer artifacts.First column is DCGAN baseline.
-					<br><br><br> -->
-					</p>
-          <center>
-					Selfie to Anime
-					<br>
-          <p align="center">
-					<img width="1058" src="resources/anime_gif.gif">
-					<br>
-					<span style="font-size:15px; ">
-          </p>
-
-          </p>
-          <center>
-          Galsses Removal
-          <br>
-          <p align="center">
-          <img width="1058" src="resources/glasses_gif.gif">
-          <br>
-          <span style="font-size:15px; ">
-          </p>
-
-					<!-- Faces generated with AFL sho
-
-					<!-- <span style="font-size:22px; ">
-					<center> Selfie to Anime
-					<br>
-			<p align="center">
-			<table style="width:800">
-				<tr>
-					<th><img width="496" src="resources/1Guppy_2_loop_0_box.png"></th>
-					<th><img width="496" src="resources/1Guppy_2_loop_3_box.png"></th>
-				</tr>
-				<tr>
-					<th> SOTA Baseline</th>
-					<th> Ours </th>
-				</tr>
-			</table> -->
-			<!-- <table style="width:800">
-				<tr>
-					<th><img width="100" src="resources/1_Guppy_2_HR_croped_crop.png"></th>
-					<th><img width="100" src="resources/1_Guppy_2_loop_0_crop.png"></th>
-					<th><img width="100" src="resources/1_Guppy_2_loop_1_crop.png"></th>
-					<th><img width="100" src="resources/1_Guppy_2_loop_2_crop.png"></th>
-					<th><img width="100" src="resources/1_Guppy_2_loop_3_crop.png"></th>
-				</tr>
-				<tr>
-					<th>GT</th>
-					<th>Baseline</th>
-					<th>1st iter</th>
-					<th>2nd iter</th>
-					<th>3rd iter</th>
-				</tr>
-			</table>
-			</p>
-			 </center>
-				<center>
-				<span style="font-size:15px; ">
-					Our feedback loop removes artifacts and sharpen the image
-
-					</p>
+			</div>
 
 
-            <p>&nbsp;</p>
-			<hr> -->
-			<br>
+		</div> <!-- first section wrapper -->
 
-            <center><h1>Breaking the cycle — Colleagues are all you need</h1></center>
-            <p></p>
-			<center>
-            <span style="font-size:20px; "> Paper</span>
-			[<a href="https://arxiv.org/pdf/1911.10538" rel="self">pdf</a>]
-      <br>
-      [<a href="resources/supplementary/supplementary_architecture_Council.pdf" rel="self">Supplementary-Architecture</a>]
-      [<a href="resources/supplementary/supplementary_m2f_Council.pdf" rel="self">Supplementary-Male2Female</a>]
-      [<a href="resources/supplementary/supplementary_selfie2anime_Council.pdf" rel="self">Supplementary-Anime</a>]
-      [<a href="resources/supplementary/supplementary_glasses_Council.pdf" rel="self">Supplementary-Glasses</a>]
 
-			</p>
-            <p align="center">
-			<a href="https://arxiv.org/pdf/1911.10538">
-            <img width="250" height="300" src="resources/pdf.png">
+		<!-- ==========================================================================================================
+													 ADVANTAGES
+		 ========================================================================================================== -->
+
+
+
+
+		<!-- ==========================================================================================================
+													  SLIDER
+		 ========================================================================================================== -->
+
+		<div id="carouselExampleCaptions" style="margin-top: 10px;" class="carousel slide" data-ride="carousel">
+			<ol class="carousel-indicators">
+				<li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+				<li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+				<li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+			</ol>
+			<div class="carousel-inner" style="display: flex; align-items: center; justify-content: center;">
+				<div style="width: 60%;" class="carousel-item active">
+					<img src="/images/m2f_gif.gif" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-none d-md-block">
+						<h5>
+							Male to Female translation
+						</h5>
+					</div>
+
+				</div>
+				<div style="width: 60%;" class="carousel-item">
+					<img src="/images/glasses_gif.gif" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-none d-md-block">
+						<h5>Glasses Removal
+						</h5>
+					</div>
+				</div>
+				<div style="width: 60%;" class="carousel-item">
+					<img src="/images/anime_gif.gif" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-none d-md-block">
+						<h5>
+							Selfie to Anime
+						</h5>
+					</div>
+				</div>
+			</div>
+			<a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+				<span style="background-color: rgba(0, 0, 0, 0.425) !important;" class="carousel-control-prev-icon"
+					aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
 			</a>
-			</p>
-            <p>&nbsp;</p>
-			            <p></p>
-			<center>
+			<a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+				<span style="background-color:  rgba(0, 0, 0, 0.425) !important;" class="carousel-control-next-icon"
+					aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
 			</a>
-			</p>
-            <p>&nbsp;</p>
+		</div>
+		<div class="fh5co-advantages-outer">
+			<div class="container">
+				<div style="display: flex; align-items: center; justify-content: center;"
+					class="row fh5co-advantages-grid-columns wow animated fadeIn" data-wow-delay="0.36s">
+
+					<div style="display: flex; justify-content: center;flex-direction: column; align-items: center; margin-top: -100px; margin-bottom: 100px;"
+						class="col-sm-12">
+						<h1 class="grid-title">arXiv 2020</h1>
+						<p class="grid-desc"><a href="https://arxiv.org/pdf/1911.10538" rel="self"><b>paper</b></a>
+						</p>
+					</div>
+
+					<div style="display: flex; justify-content: center;flex-direction: column;" class="col-lg-3">
+						<h4 class="grid-title">Supplementary-Architecture</h4>
+						<p class="grid-desc"><a href="/supplementary/supplementary_architecture_Council.pdf"
+								rel="self"><b>Supplementary-Architecture</b></a>
+						</p>
+					</div>
+					<div style="display: flex; justify-content: center;flex-direction: column;" class="col-lg-3">
+						<h4 class="grid-title">Supplementary-Male2Female</h4>
+						<p class="grid-desc"><a href="/supplementary/supplementary_m2f_Council.pdf"
+								rel="self"><b>Supplementary-Male2Female</b></a>
+						</p>
+					</div>
+
+					<div style="display: flex; justify-content: center;flex-direction: column;" class="col-lg-3">
+						<h4 class="grid-title">Supplementary-Anime</h4>
+						<p class="grid-desc"><a href="/supplementary/supplementary_selfie2anime_Council.pdf"
+								rel="self"><b>Supplementary-Anime</b></a>
+						</p>
+					</div>
+					<div style="display: flex; justify-content: center;flex-direction: column;" class="col-lg-3">
+						<h4 class="grid-title">Supplementary-Anime</h4>
+						<p class="grid-desc"><a href="/supplementary/supplementary_glasses_Council.pdf"
+								rel="self"><b>Supplementary-Glasses</b></a>
+						</p>
+					</div>
+					<div style="display: flex; justify-content: center;flex-direction: column; align-items: center; margin:100px 0;"
+						class="col-sm-12">
+						<h1 class="grid-title">GitHub</h1>
+						<p class="grid-desc"><a href="https://github.com/Onr/Council-GAN" rel="self"><b>GitHub</b></a>
+						</p>
+					</div>
 
 
-			<hr>
-			<br>
-          <center><h1>Try Our Code</h1>
-          <p></p>
-          <span style="font-size:20px; "></span>
-          <span style="font-size:20px; "> Code of the experiments described in our paper is available in
-              [<a href="https://github.com/Onr/Council-GAN" rel="self">GitHub</a>]</span>
-			  </center>
-          <p>&nbsp;</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- ==========================================================================================================
+													  FEATURES
+		 ========================================================================================================== -->
+
+		<div class="curved-bg-div wow animated fadeIn" data-wow-delay="0.15s"></div>
+		<div id="fh5co-features" class="fh5co-features-outer">
+			<div class="container">
+
+				<div class="row fh5co-features-grid-columns">
+				
+					<div class="col-sm-12 in-order-1 wow animated fadeInLeft" data-wow-delay="0.22s">
+						<div  style="margin-left: 10% !important;" class="col-sm-image-container">
+							<img style="width: 80%; margin-top: 50px;  margin-bottom: 50px;" class="img-float-left" src="/images/paper_teaser.png"
+								alt="smartphone-1">
+						</div>
+					</div>
+
+					<div class="col-sm-12 in-order-2 sm-12-content wow animated fadeInRight" data-wow-delay="0.22s">
+						<h1>Council-GAN</h1>
+						<p style="margin-bottom: 200px;"> We present here a novel approach for unpaired image to image translation.
+							Our approach does not use cyclic constraint which mitigating these constraint artifacts.
+							We use multiple unrelated generator with constraint that they need to coordinate there
+							output, based only
+							on their input.
+							This result in an image that has attributes from the input but belong to the output domain.
+						</p>
+					</div>
+					<div style="margin-right: 200px !important;" class="col-sm-12 in-order-3  wow animated fadeInRight" data-wow-delay="0.22s">
+						<img style="width: 70%; margin-bottom: 100px; margin-right: 20%;" class="img-float-right" src="/images/gan_council_overview.png" alt="smartphone-2">
+					</div>
+					<div style="margin-bottom: 100px;" class="col-sm-12 in-order-4 sm-12-content wow animated fadeInLeft" data-wow-delay="0.22s">
+						<h1>Abstract</h1>
+						<p>This paper proposes a novel approach to performing image-to-image translation between
+							unpaired domains. Rather than relying on a cycle constraint, our method takes advantage of
+							collaboration between various GANs. This results in a multi-modal method, in which multiple
+							optional and diverse images are produced for a given image. Our model addresses some of the
+							shortcomings of classical GANs: (1) It is able to remove large objects, such as glasses. (2)
+							Since it does not need to support the cycle constraint, no irrelevant traces of the input
+							are left on the generated image. (3) It manages to translate between domains that require
+							large shape modifications. Our results are shown to outperform those generated by
+							state-of-the-art methods for several challenging applications.
+						</p>
+					</div>
+
+
+
+					<!-- <div class="col-sm-6 in-order-5 wow animated fadeInLeft" data-wow-delay="0.22s">
+						<div class="col-sm-image-container">
+							<img class="img-float-left" src="img/smartphone-2.png" alt="smartphone-3">
+							<span class="span-data">DATA</span>
+							<span class="span-percent">100%</span>
+						</div>
+					</div>
+					<div class="col-sm-6 in-order-6 sm-6-content wow animated fadeInRight" data-wow-delay="0.22s">
+						<h1>POWERFUL BACKEND</h1>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam dolor iste beatae ad
+							adipisci, fugiat dignissimos pariatur, dolore nemo suscipit cum nisi earum voluptates nulla!
+						</p>
+						<span class="circle circle-first">95%</span>
+						<span class="circle circle-middle"><i class="fas fa-forward"></i></span>
+						<span class="circle circle-last"><i class="fab fa-github"></i></span>
+
+					</div> -->
 
 
 
 
+				</div> <!-- row -->
 
-			<div class="clearer"></div>
-		</div><!-- End content -->
 
-		<div id="footer"><!-- Start Footer -->
-			<p></p>
-			<div id="breadcrumbcontainer"><!-- Start the breadcrumb wrapper -->
+			</div>
+		</div>
 
-			</div><!-- End breadcrumb -->
-		</div><!-- End Footer -->
-	</div><!-- End main content wrapper -->
-</div><!-- End container -->
+
+		<!-- ==========================================================================================================
+													  REVIEWS
+		 ========================================================================================================== -->
+
+		<!-- <div id="fh5co-reviews" class="fh5co-reviews-outer">
+			<h1>What people are saying</h1>
+			<small>Reviews</small>
+			<div class="container fh5co-reviews-inner">
+				<div class="row justify-content-center">
+					<div class="col-sm-5 wow fadeIn animated" data-wow-delay="0.25s">
+						<img class="float-left" src="img/quotes-1.jpg" alt="Quote 1">
+						<p class="testimonial-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis
+							similique quasi.</p>
+						<small class="testimonial-author">John Doe</small>
+						<img class="float-right" src="img/quotes-2.jpg" alt="Quote 2">
+					</div>
+					<div class="col-sm-5 testimonial-2 wow fadeIn animated" data-wow-delay="0.67s">
+						<img class="float-left" src="img/quotes-1.jpg" alt="Quote 1">
+						<p class="testimonial-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis
+							similique quasi.</p>
+						<small class="testimonial-author">Someone</small>
+						<img class="float-right" src="img/quotes-2.jpg" alt="Quote 2">
+					</div>
+				</div>
+
+			</div>
+		</div> -->
+
+
+		<!-- ==========================================================================================================
+                                                 BOTTOM
+    ========================================================================================================== -->
+
+		<!-- <div id="fh5co-download" class="fh5co-bottom-outer">
+			<div class="overlay">
+				<div class="container fh5co-bottom-inner">
+					<div class="row">
+						<div class="col-sm-6">
+							<h1>How to download the app?</h1>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque suscipit, similique animi
+								saepe, ipsam itaque, tempore minus maxime pariatur error unde fugit tenetur.</p>
+							<a class="wow fadeIn animated" data-wow-delay="0.25s" href="#"><img class="app-store-btn"
+									src="img/app-store-icon.png" alt="App Store Icon"></a>
+							<a class="wow fadeIn animated" data-wow-delay="0.67s" href="#"><img class="google-play-btn"
+									src="img/google-play-icon.png" alt="Google Play Icon"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+
+		<!-- ==========================================================================================================
+                                               SECTION 7 - SUB FOOTER
+    ========================================================================================================== -->
+
+		<footer class="footer-outer">
+			<div class="container footer-inner">
+
+				<!-- <div class="footer-three-grid wow fadeIn animated" data-wow-delay="0.66s">
+					<div class="column-1-3">
+						<h1>App</h1>
+					</div>
+					<div class="column-2-3">
+						<nav class="footer-nav">
+							<ul>
+								<a href="#" onclick="$('#fh5co-hero-wrapper').goTo();return false;">
+									<li>Home</li>
+								</a>
+								<a href="#" onclick="$('#fh5co-features').goTo();return false;">
+									<li>Features</li>
+								</a>
+								<a href="#" onclick="$('#fh5co-reviews').goTo();return false;">
+									<li>Reviews</li>
+								</a>
+								<a href="#" onclick="$('#fh5co-download').goTo();return false;">
+									<li class="active">Download</li>
+								</a>
+							</ul>
+						</nav>
+					</div>
+					<div class="column-3-3">
+						<div class="social-icons-footer">
+							<a href="https://www.facebook.com/fh5co"><i class="fab fa-facebook-f"></i></a>
+							<a href="https://freehtml5.co"><i class="fab fa-instagram"></i></a>
+							<a href="https://www.twitter.com/fh5co"><i class="fab fa-twitter"></i></a>
+						</div>
+					</div>
+				</div> -->
+
+				<span class="border-bottom-footer"></span>
+
+				<p class="copyright">&copy; 2018 App. All rights reserved. Design by <a href="https://freehtml5.co"
+						target="_blank">FreeHTML5</a>.</p>
+
+			</div>
+		</footer>
+
+
+
+
+	</div> <!-- main page wrapper -->
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/owl.carousel.js"></script>
+	<script src="js/wow.min.js"></script>
+	<script src="js/main.js"></script>
 </body>
+
 </html>
