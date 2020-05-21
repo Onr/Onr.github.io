@@ -223,9 +223,13 @@
 					<div class="col-sm-12 in-order-2 sm-12-content wow animated fadeInRight" data-wow-delay="0.22s">
 						<h1>Council-GAN</h1>
 						<p style="margin-bottom: 200px;"> 
-							We introduces a collaborative-based approach for performing image-to-image translation between unpaired domains,
+							We introduces a collaborative-based approach for performing Image-to-Image Translation between unpaired domains,
 							avoiding cycle constraints.
-							
+							We train a council of multiple council members.
+							Each council members consists of one generator and two discriminators.
+							The first discriminator, should enforce the output image to be part of the output domain, as in traditional methods for domain transfer with GANs.
+							The second discriminator, should enforce an agreement between council members. 
+							An image that is both part of the output domain, and is agreed upon by multiple members, can only be achieved by fining common feature in the input to translate.
 <!-- 							We present here a novel approach for unpaired image to image translation.
 <!-- 							Our approach does not use cyclic constraint which mitigating these constraint artifacts. -->
 <!-- 							We use multiple unrelated generator with constraint that they need to coordinate there -->
