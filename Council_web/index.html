@@ -1,689 +1,309 @@
-
-
-
-
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-
-
-
-  <script type="text/javascript" id="MathJax-script" async
-
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-
-  </script>
-
-
-
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-
-
-  <!--
-
-  <script src="./resources/jsapi" type="text/javascript"></script>
-
-  <script type="text/javascript" async>google.load("jquery", "1.3.2");</script>
-
- -->
-
-<style type="text/css">
-
-  body {
-
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-
-    font-weight:300;
-
-    font-size:18px;
-
-    margin-left: auto;
-
-    margin-right: auto;
-
-    width: 1100px;
-
-  }
-
-  h1 {
-
-    font-weight:300;
-
-  }
-
-  h2 {
-
-    font-weight:300;
-
-  }
-
-
-
-  .disclaimerbox {
-
-    background-color: #eee;
-
-    border: 1px solid #eeeeee;
-
-    border-radius: 10px ;
-
-    -moz-border-radius: 10px ;
-
-    -webkit-border-radius: 10px ;
-
-    padding: 20px;
-
-  }
-
-
-
-  video.header-vid {
-
-    height: 140px;
-
-    border: 1px solid black;
-
-    border-radius: 10px ;
-
-    -moz-border-radius: 10px ;
-
-    -webkit-border-radius: 10px ;
-
-  }
-
-
-
-  img.header-img {
-
-    height: 140px;
-
-    border: 1px solid black;
-
-    border-radius: 10px ;
-
-    -moz-border-radius: 10px ;
-
-    -webkit-border-radius: 10px ;
-
-  }
-
-
-
-  img.rounded {
-
-    border: 0px solid #eeeeee;
-
-    border-radius: 10px ;
-
-    -moz-border-radius: 10px ;
-
-    -webkit-border-radius: 10px ;
-
-
-
-  }
-
-
-
-  a:link,a:visited
-
-  {
-
-    color: #1367a7;
-
-    text-decoration: none;
-
-  }
-
-  a:hover {
-
-    color: #208799;
-
-  }
-
-
-
-  td.dl-link {
-
-    height: 160px;
-
-    text-align: center;
-
-    font-size: 22px;
-
-  }
-
-
-
-  .layered-paper-big { /* modified from: https://css-tricks.com/snippets/css/layered-paper/ */
-
-    box-shadow:
-
-            0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
-
-            5px 5px 0 0px #fff, /* The second layer */
-
-            5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
-
-            10px 10px 0 0px #fff, /* The third layer */
-
-            10px 10px 1px 1px rgba(0,0,0,0.35), /* The third layer shadow */
-
-            15px 15px 0 0px #fff, /* The fourth layer */
-
-            15px 15px 1px 1px rgba(0,0,0,0.35), /* The fourth layer shadow */
-
-            20px 20px 0 0px #fff, /* The fifth layer */
-
-            20px 20px 1px 1px rgba(0,0,0,0.35), /* The fifth layer shadow */
-
-            25px 25px 0 0px #fff, /* The fifth layer */
-
-            25px 25px 1px 1px rgba(0,0,0,0.35); /* The fifth layer shadow */
-
-    margin-left: 10px;
-
-    margin-right: 45px;
-
-  }
-
-
-
-
-
-  .layered-paper { /* modified from: https://css-tricks.com/snippets/css/layered-paper/ */
-
-    box-shadow:
-
-            0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
-
-            5px 5px 0 0px #fff, /* The second layer */
-
-            5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
-
-            10px 10px 0 0px #fff, /* The third layer */
-
-            10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
-
-    margin-top: 5px;
-
-    margin-left: 10px;
-
-    margin-right: 30px;
-
-    margin-bottom: 5px;
-
-  }
-
-
-
-  .vert-cent {
-
-    position: relative;
-
-      top: 50%;
-
-      transform: translateY(-50%);
-
-  }
-
-
-
-  hr
-
-  {
-
-    border: 0;
-
-    height: 1px;
-
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-
-  }
-
-</style>
-
-
-
-
-
-
-
-    <title>Breaking the Cycle - Colleagues are all you need</title>
-
-  </head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Breaking the cycle - Colleagues are all you need</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Lato:400,300,700,900"
+    rel="stylesheet">
+  <script src="https://kit.fontawesome.com/fbe38ef292.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <!-- Template Main CSS File -->
+  <link href="./style.css" rel="stylesheet">
+
+</head>
 
 <body>
 
-<div id="container"><!-- Start container -->
-
-	<div id="contentContainer"><!-- Start main content wrapper -->
-
-		<div id="content"><!-- Start content -->
-			<br>
-			<p style="text-align:center;"><span style="font-size:40px; color:#8B0000 ;font-weight:bold;">Breaking the cycle—Colleagues are all you need</span>
-
-						<p style="text-align:center;">
-
-			<span style="font-size:35px"> <a href="http://openaccess.thecvf.com/content_CVPR_2020/html/Nizan_Breaking_the_Cycle_-_Colleagues_Are_All_You_Need_CVPR_2020_paper.html" rel="self" target="_blank"><b>CVPR 2020</b></a></span>
-
-			<p style="text-align:center;"><span style="font-size:21px; color:#3d82f4 ;font-weight:bold; "> <br /></span>
-
-			<span style="font-size:22; ">
-
-			<a href="https://onr.github.io/" rel="external"  target="_blank">Ori Nizan</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-              		<a href="https://webee.technion.ac.il/~ayellet/" rel="external"  target="_blank">Ayellet Tal</a>
-
-			 </span>
-
-
-
-
-
-			 <span style="font-size:22;"><p style="text-align:center;">Technion – Israel Institute of Technology<br></span>
-
-			  <span style="font-size:22px; ">
-
-			  			 <br>
-
-			 <br>
-
-			 <p style="text-align:center;">
-
-
-			 
-
-			 <span style="font-size:20px">arXiv 2020 [<a href="https://arxiv.org/pdf/1911.10538" rel="self" target="_blank"><b>paper</b></a>]</span>
-
-       <br>
-
-       [<a href="resources/supplementary/supplementary_architecture_Council.pdf" rel="self" target="_blank">Supplementary-Architecture</a>]
-
-       [<a href="resources/supplementary/supplementary_m2f_Council.pdf" rel="self" target="_blank">Supplementary-Male2Female</a>]
-
-       [<a href="resources/supplementary/supplementary_selfie2anime_Council.pdf" rel="self" target="_blank">Supplementary-Anime</a>]
-
-       [<a href="resources/supplementary/supplementary_glasses_Council.pdf" rel="self" target="_blank">Supplementary-Glasses</a>]
-
-			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-<!-- 			 <span style="font-size:20px">[<a href="resources/AFL_supplementary.pdf" rel="self"><b>Supplementary</b></a>] </span> -->
-
-
-
-			 <br>
-
-			 <br>
-
-			<span style="font-size:20px">Code [<a href="https://github.com/Onr/Council-GAN" rel="self" target="_blank"><b>GitHub</b></a>]		</span>
-
-
-
-            <p></p>
-
-            <p align="center">
-
-
-
-
-
-            <img width="1000" src="resources/paper_teaser_small.png">
-
-			</p>
-
-
-
-			<span style="width:10px;font-size:15px;">
-
-					<b>Council-GAN:</b>
-
-<!--           We present here a novel approach for unpaired image to image translation.
-
-          Our approach does not use cyclic constraint which mitigating these constraint artifacts.
-
-          We use multiple unrelated generator with constraint that they need to coordinate there output, based only on their input.
-
-          This result in an image that has attributes from the input but belong to the output domain. -->
-
-          We introduces a collaborative-based approach for performing image-to-image translation between unpaired domains, avoiding cycle constraints.
-
-
-
-			<p>&nbsp;</p>
-
-			<hr>
-
-			<br>
-
-
-
-			            <center><h1>Abstract</h1></center>
-
-            <p></p>
-
-            <span style="font-size:18px; ">
-
-This paper proposes a novel approach to performing image-to-image translation between unpaired domains.
-
-Rather than relying on a cycle constraint, our method takes advantage of collaboration between various GANs.
-
-This results in a multi-modal method, in which multiple optional and diverse images are produced for a given image.
-
-Our model addresses some of the shortcomings of classical GANs:
-
-(1) It is able to remove large objects, such as glasses.
-
-(2) Since it does not need to  support the cycle constraint, no irrelevant traces of the input are left on the generated image.
-
-(3) It manages to  translate between domains that require large shape modifications.
-
-Our results are shown to outperform those generated by state-of-the-art methods for several challenging applications.
-
-            <p>&nbsp;</p>
-
-
-
-			<p></p>
-
-            <p align="center">
-
-            <img width="750"  src="resources/gan_council_overview.png">
-
-			</p>
-
-			<p align="center">
-
-			<span style="font-size:15px; ">
-
-			<b>General approach:</b> 
-			The council consists of triplets,
-
-      		each of which contains a generator and two discriminators:
-
-      		\(D_i\) distinguishes between the generator’s output and real examples,
-
-      		whereas \(\hat D_i\) distinguishes between images produced by \(G_i\) and images produced by other generators in the council.
-
-      		\(\hat D_i\) is the reason that the each of the generators converges to a result that is agreed-upon by all other members of the council.
-
-            <p>&nbsp;</p>
-
-			<hr>
-
-			<br>
-
-			            <center><h1>Applications</h1></center>
-
-						<br>
-
-					<span style="font-size:22px; ">
-
-					<center>
-
-					 Male to Female translation
-
-					<br>
-
-					<span style="font-size:18px; ">
-
-					<center>
-
-					<p align="center">
-
-					<img width="1058" src="resources/m2f_gif.gif">
-
-					<br>
-
-					<span style="font-size:15px; ">
-
-					<!-- Faces generated with AFL show significantly fewer artifacts, making clear the advantage of using AFL. -->
-
-					<!-- <br><br>
-
-					<img width="1100" src="resources/ref.png">
-
-					<br><br>
-
-					<span style="font-size:15px; ">
-
-					<b>Generation with reference:</b> Results of using feedback-switching-pipeline. The feedback modules make the generated image similar to the reference one, and with fewer artifacts.First column is DCGAN baseline.
-
-					<br><br><br> -->
-
-					</p>
-
-          <center>
-
-					Selfie to Anime
-
-					<br>
-
-          <p align="center">
-
-					<img width="1058" src="resources/anime_gif.gif">
-
-					<br>
-
-					<span style="font-size:15px; ">
-
-          </p>
-
-
-
-          </p>
-
-          <center>
-
-          Galsses Removal
-
-          <br>
-
-          <p align="center">
-
-          <img width="1058" src="resources/glasses_gif.gif">
-
-          <br>
-
-          <span style="font-size:15px; ">
-
-          </p>
-
-
-
-					<!-- Faces generated with AFL sho
-
-
-
-					<!-- <span style="font-size:22px; ">
-
-					<center> Selfie to Anime
-
-					<br>
-
-			<p align="center">
-
-			<table style="width:800">
-
-				<tr>
-
-					<th><img width="496" src="resources/1Guppy_2_loop_0_box.png"></th>
-
-					<th><img width="496" src="resources/1Guppy_2_loop_3_box.png"></th>
-
-				</tr>
-
-				<tr>
-
-					<th> SOTA Baseline</th>
-
-					<th> Ours </th>
-
-				</tr>
-
-			</table> -->
-
-			<!-- <table style="width:800">
-
-				<tr>
-
-					<th><img width="100" src="resources/1_Guppy_2_HR_croped_crop.png"></th>
-
-					<th><img width="100" src="resources/1_Guppy_2_loop_0_crop.png"></th>
-
-					<th><img width="100" src="resources/1_Guppy_2_loop_1_crop.png"></th>
-
-					<th><img width="100" src="resources/1_Guppy_2_loop_2_crop.png"></th>
-
-					<th><img width="100" src="resources/1_Guppy_2_loop_3_crop.png"></th>
-
-				</tr>
-
-				<tr>
-
-					<th>GT</th>
-
-					<th>Baseline</th>
-
-					<th>1st iter</th>
-
-					<th>2nd iter</th>
-
-					<th>3rd iter</th>
-
-				</tr>
-
-			</table>
-
-			</p>
-
-			 </center>
-
-				<center>
-
-				<span style="font-size:15px; ">
-
-					Our feedback loop removes artifacts and sharpen the image
-
-
-
-					</p>
-
-
-
-
-
-            <p>&nbsp;</p>
-
-			<hr> -->
-
-			<br>
-
-
-
-            <center><h1>Breaking the cycle — Colleagues are all you need</h1></center>
-
-            <p></p>
-
-			<center>
-
-            <span style="font-size:20px; "> Paper</span>
-
-			[<a href="https://arxiv.org/pdf/1911.10538" rel="self">pdf</a>]
-
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container">
+      <h5 class="text-light">Breaking the
+        cycle - Colleagues are all you need</h5>
+    </div>
+  </header><!-- End #header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero">
+    <div class="hero-container">
+      <h1>Breaking the cycle - Colleagues are all you need</h1>
+      <a href="http://openaccess.thecvf.com/content_CVPR_2020/html/Nizan_Breaking_the_Cycle_-_Colleagues_Are_All_You_Need_CVPR_2020_paper.html"
+        rel="self" target="_blank">
+        <h3>CVPR 2020</h3>
+      </a>
       <br>
+      <div style="display: flex;">
+        <a href="https://onr.github.io/" rel="external" target="_blank">
+          <h3>Ori Nizan &nbsp;&nbsp;</h3>
+        </a>
+        <a href="https://webee.technion.ac.il/~ayellet/" rel="external" target="_blank">
+          <h3>Ayellet Tal</h3>
+        </a>
+      </div>
+    </div>
+  </section><!-- #hero -->
 
-      [<a href="resources/supplementary/supplementary_architecture_Council.pdf" rel="self" target="_blank">Supplementary-Architecture</a>]
+  <main id="main">
 
-      [<a href="resources/supplementary/supplementary_m2f_Council.pdf" rel="self" target="_blank">Supplementary-Male2Female</a>]
+    <!-- ======= About Us Section ======= -->
+    <!-- <section id="about" class="about">
+      <div class="container">
 
-      [<a href="resources/supplementary/supplementary_selfie2anime_Council.pdf" rel="self" target="_blank">Supplementary-Anime</a>]
+        <div class="section-title">
+          <h2>About Us</h2>
+        </div>
 
-      [<a href="resources/supplementary/supplementary_glasses_Council.pdf" rel="self" target="_blank">Supplementary-Glasses</a>]
+        <div class="row">
+          <div style="text-align: center;" class="col-lg-12 pt-4 pt-lg-0 order-2 order-lg-1">
+            <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assumenda.</h3>
+            <p class="font-italic">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore
+              magna aliqua.
+            </p>
+            <ul>
+              <li><i class="icofont-check-circled"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+              <li><i class="icofont-check-circled"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
+              <li><i class="icofont-check-circled"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla
+                pariatur.</li>
+            </ul>
+            <p>
+              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+              voluptate
+              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+              culpa qui officia deserunt mollit anim id est laborum
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section> -->
+    <!-- End About Us Section -->
+
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>arXiv 2020 [<a href="https://arxiv.org/pdf/1911.10538" rel="self" target="_blank"><b>paper</b></a>]</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint
+            consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit
+            in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-6 icon-box">
+            
+            <h4 class="title"> [<a href="./assets/resources/supplementary/supplementary_architecture_Council.pdf" rel="self"
+                target="_blank">Supplementary-Architecture</a>]</h4>
+          </div>
+          <div class="col-lg-3 col-md-6 icon-box">
+            <h4 class="title"> [<a href="./assets/resources/supplementary/supplementary_m2f_Council.pdf" rel="self"
+                target="_blank">Supplementary-Male2Female</a>]</h4>
+          </div>
+          <div class="col-lg-3 col-md-6 icon-box">
+            <h4 class="title"> [<a href="./assets/resources/supplementary/supplementary_selfie2anime_Council.pdf" rel="self"
+                target="_blank">Supplementary-Anime</a>]</h4>
+          </div>
+          <div class="col-lg-3 col-md-6 icon-box">
+            <h4 class="title"> [<a href="./assets/resources/supplementary/supplementary_glasses_Council.pdf" rel="self"
+                target="_blank">Supplementary-Glasses</a>]</h4>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End Services Section -->
+
+    <!-- ======= Call To Action Section ======= -->
+    <section class="call-to-action">
+      <div class="container">
+
+        <div class="text-center">
+          <h3>GitHub</h3>
+          <p> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum.</p>
+          <a class="cta-btn" href="https://github.com/Onr/Council-GAN" rel="self" target="_blank">GitHub</a>
+        </div>
+
+      </div>
+    </section><!-- End Call To Action Section -->
+
+    <!-- ======= Our Team Section ======= -->
+    <section id="team" class="team">
+      <div class="container">
+
+        <div class="section-title">
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 d-flex align-items-stretch">
+              <div class="member">
+                <img src="./assets/resources/paper_teaser_small.png" alt="">
+                <p>
+                  <strong>Council-GAN:</strong> We introduces a collaborative-based approach for performing
+                  image-to-image translation between unpaired
+                  domains, avoiding cycle constraints.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 d-flex align-items-stretch">
+              <div class="member">
+                <img src="./assets/resources/gan_council_overview.png" alt="">
+                <p>
+
+                  <strong>Abstract</strong> This paper proposes a novel approach to performing image-to-image
+                  translation between unpaired domains.
+
+                  Rather than relying on a cycle constraint, our method takes advantage of collaboration between various
+                  GANs.
+
+                  This results in a multi-modal method, in which multiple optional and diverse images are produced for a
+                  given image.
+
+                  Our model addresses some of the shortcomings of classical GANs:
+
+                  (1) It is able to remove large objects, such as glasses.
+
+                  (2) Since it does not need to support the cycle constraint, no irrelevant traces of the input are left
+                  on the generated image.
+
+                  (3) It manages to translate between domains that require large shape modifications.
+
+                  Our results are shown to outperform those generated by state-of-the-art methods for several
+                  challenging
+                  applications.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section-title">
+          <h2>Applications</h2>
+          <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+              <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+              <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="./assets/resources/m2f_gif.gif" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Male to Female translation</h5>
+
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img src="./assets/resources/anime_gif.gif" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Selfie to Anime</h5>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <img src="./assets/resources/glasses_gif.gif" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Galsses Removal</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Our Team Section -->
+
+
+    <section style="background-color: white;" class="services section-bg">
+      <div class="container">
+
+        <div style="background-color: white;" class="section-title services section-bg">
+          <h2>Breaking the cycle — Colleagues are all you need</h2>
+        </div>
+
+        <div class="row" style="text-align: center;">
+          <div class="col-lg-3 col-md-6 icon-box">
+            <h4 class="title"> [<a href="./assets/resources/supplementary/supplementary_architecture_Council.pdf" rel="self"
+                target="_blank">Supplementary-Architecture</a>]</h4>
+          </div>
+          <div class="col-lg-3 col-md-6 icon-box">
+            <h4 class="title"> [<a href="./assets/resources/supplementary/supplementary_m2f_Council.pdf" rel="self"
+                target="_blank">Supplementary-Male2Female</a>]</h4>
+          </div>
+          <div class="col-lg-3 col-md-6 icon-box">
+            <h4 class="title"> [<a href="./assets/resources/supplementary/supplementary_selfie2anime_Council.pdf" rel="self"
+                target="_blank">Supplementary-Anime</a>]</h4>
+          </div>
+          <div class="col-lg-3 col-md-6 icon-box">
+            <h4 class="title"> [<a href="./assets/resources/supplementary/supplementary_glasses_Council.pdf" rel="self"
+                target="_blank">Supplementary-Glasses</a>]</h4>
+          </div>
+        </div>
+        <div class="down-pdf">
+          <a href="https://arxiv.org/pdf/1911.10538" target="_blank">
+
+            <img class="down-image"  src="./assets/resources/pdf.png">
+
+          </a>
+        </div>
+      </div>
+    </section>
 
 
 
-			</p>
+  </main>
 
-            <p align="center">
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="container">
+      <div class="copyright">
+        Contact Me: &nbsp <strong>
+          <a target="_blank" href="https://github.com/Onr">
+            <span><i class="fa fa-github" aria-hidden="true"></i>
+              |
+            </span>
+          </a>
+          <a arget="_blank" href="mailto:snizori@campus.technion.ac.il">
+            <span><i class="fa fa-envelope" aria-hidden="true"></i>
+              |</span>
+          </a>
+          <a arget="_blank" href="">
+            <span><i class="fa fa-linkedin" aria-hidden="true"></i>
+            </span>
+          </a>
+        </strong>
+      </div>
+      <div class="copyright">
+        &copy; Copyright <strong><span>Amoeba</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer>
 
-			<a href="https://arxiv.org/pdf/1911.10538" target="_blank">
-
-            <img width="250" height="300" src="resources/pdf.png">
-
-			</a>
-
-			</p>
-
-            <p>&nbsp;</p>
-
-			            <p></p>
-
-			<center>
-
-			</a>
-
-			</p>
-
-            <p>&nbsp;</p>
-
-
-
-
-
-			<hr>
-
-			<br>
-
-          <center><h1>Try Our Code</h1>
-
-          <p></p>
-
-          <span style="font-size:20px; "></span>
-
-          <span style="font-size:20px; "> Code of the experiments described in our paper is available in
-
-              [<a href="https://github.com/Onr/Council-GAN" rel="self" target="_blank">GitHub</a>]</span>
-
-			  </center>
-
-          <p>&nbsp;</p>
-
-
-
-
-
-
-
-
-
-
-
-			<div class="clearer"></div>
-
-		</div><!-- End content -->
-
-
-
-		<div id="footer"><!-- Start Footer -->
-
-			<p></p>
-
-			<div id="breadcrumbcontainer"><!-- Start the breadcrumb wrapper -->
-
-
-
-			</div><!-- End breadcrumb -->
-
-		</div><!-- End Footer -->
-
-	</div><!-- End main content wrapper -->
-
-</div><!-- End container -->
+  <!-- Template Main JS File -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+  <script src="./main.js"></script>
 
 </body>
 
 </html>
-
