@@ -20,6 +20,8 @@
       --muted:        #666666;
       --image-height: 160px;
       --icon-size:    20px;
+      --card-radius:  6px;
+      --card-shadow:  0 2px 4px rgba(0,0,0,0.1);
     }
 
     /* ===== Reset & basics ===== */
@@ -48,14 +50,27 @@
     main { padding: 2rem 1rem 3rem; }
     section + section { margin-top: 3rem; }
 
-    /* Publications */
+    /* ===== Publications (cards) ===== */
     .pub-list { display: flex; flex-direction: column; gap: 2.5rem; }
-    .publication { display: flex; flex-direction: column; gap: 0.75rem; }
+    .publication {
+      background: var(--bg);
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+      padding: 1rem 1.25rem;
+    }
     .pub-meta { font-size: 0.9rem; color: var(--muted); }
 
-    /* Left-align figures */
+    /* ===== Figures & thumbnails ===== */
     figure { margin: 0; text-align: left; }
-    figure img { height: var(--image-height); width: auto; max-width: 100%; border: 1px solid #ddd; border-radius: 6px; }
+    figure img {
+      height: var(--image-height);
+      width: auto;
+      max-width: 100%;
+      object-fit: cover;
+      border: 1px solid #ddd;
+      border-radius: var(--card-radius);
+      loading: lazy;
+    }
     figcaption { margin-top: 0.35rem; font-weight: 600; font-size: 0.85rem; }
     .thumbs { display: flex; gap: 1rem; flex-wrap: wrap; }
 
@@ -70,7 +85,7 @@
 <body>
   <header>
     <div class="container hero">
-      <img src="Ori.PNG" alt="Portrait of Ori Nizan">
+      <img src="Ori.PNG" alt="Portrait of Ori Nizan" loading="lazy">
       <div>
         <h1>Ori Nizan</h1>
         <p style="font-weight:600;">Computer Vision &amp; Machine Learning Researcher</p>
@@ -88,13 +103,13 @@
             </li>
             <li>
               <a href="https://github.com/Onr" target="_blank" rel="noopener">
-                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/github.svg" alt="GitHub">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/github.svg" alt="GitHub" loading="lazy">
                 GitHub
               </a>
             </li>
             <li>
               <a href="https://www.linkedin.com/in/ori-nizan-3b8140158/" target="_blank" rel="noopener">
-                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/linkedin.svg" alt="LinkedIn">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/linkedin.svg" alt="LinkedIn" loading="lazy">
                 LinkedIn
               </a>
             </li>
@@ -117,22 +132,22 @@
         <article class="publication">
           <h3><a href="https://arxiv.org/pdf/1911.10538.pdf" target="_blank" rel="noopener">Breaking the Cycle — Colleagues Are All You Need</a></h3>
           <p class="pub-meta">O.&nbsp;Nizan&nbsp;&amp;&nbsp;A.&nbsp;Tal · CVPR 2020 · <a href="https://onr.github.io/Council_web/" target="_blank" rel="noopener">Project Page</a></p>
-          <figure><img src="m2f_gif.gif" alt="Male-to-female face translation using Council-GAN"></figure>
+          <figure><img src="m2f_gif.gif" alt="Male-to-female face translation using Council-GAN" loading="lazy"></figure>
         </article>
 
         <article class="publication">
           <h3><a href="https://openaccess.thecvf.com/content/WACV2024/html/Nizan_K-NNN_Nearest_Neighbors_of_Neighbors_for_Anomaly_Detection_WACV_2024_paper.html" target="_blank" rel="noopener">K-NNN: Nearest Neighbors of Neighbors for Anomaly Detection</a></h3>
           <p class="pub-meta">O.&nbsp;Nizan&nbsp;&amp;&nbsp;A.&nbsp;Tal · WACV Workshops 2024 · <a href="https://github.com/Onr/knnn" target="_blank" rel="noopener">Code</a></p>
           <div class="thumbs">
-            <figure><img src="knn_teaser.png" alt="k-NN baseline visual"><figcaption>k-NN</figcaption></figure>
-            <figure><img src="knnn_teaser.png" alt="k-NNN method visual"><figcaption>k-NNN</figcaption></figure>
+            <figure><img src="knn_teaser.png" alt="k-NN baseline visual" loading="lazy"><figcaption>k-NN</figcaption></figure>
+            <figure><img src="knnn_teaser.png" alt="k-NNN method visual" loading="lazy"><figcaption>k-NNN</figcaption></figure>
           </div>
         </article>
 
         <article class="publication">
           <h3><a href="https://openaccess.thecvf.com/content/WACV2024/html/Shoshan_FPGAN-Control_A_Controllable_Fingerprint_Generator_for_Training_With_Synthetic_Data_WACV_2024_paper.html" target="_blank" rel="noopener">FPGAN-Control: A Controllable Fingerprint Generator for Training With Synthetic Data</a></h3>
           <p class="pub-meta">A.&nbsp;Shoshan, N.&nbsp;Bhonker, E.&nbsp;Ben Baruch, <strong>O.&nbsp;Nizan</strong>, I.&nbsp;Kviatkovsky, J.&nbsp;Engelsma, M.&nbsp;Aggarwal &amp; G.&nbsp;Medioni · WACV 2024 · <a href="https://github.com/Onr/fpgan-control" target="_blank" rel="noopener">Code</a></p>
-          <figure><img src="animation_fpgan_resized.gif" alt="FPGAN-Control synthetic fingerprint animation"></figure>
+          <figure><img src="animation_fpgan_resized.gif" alt="FPGAN-Control synthetic fingerprint animation" loading="lazy"></figure>
         </article>
 
       </div>
