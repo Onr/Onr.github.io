@@ -4,154 +4,140 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Ori Nizan | Computer Vision &amp; Machine Learning</title>
-  <meta name="description" content="Personal website of Ori Nizan, PhD student in Computer Vision &amp; Machine Learning at Technion—Israel Institute of Technology.">
+  <meta name="description" content="Personal website of Ori Nizan; Computer Vision &amp; Machine Learning at Technion—Israel Institute of Technology.">
 
-  <!-- Google Fonts → Inter (light‑weight, legible, variable widths) -->
+  <!-- Google Fonts → Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== Design tokens ===== */
+    /* ===== Design tokens ===== */
     :root {
-      --accent: #007acc;
-      --text:   #1a1a1a;
-      --bg:     #ffffff;
-      --muted:  #666666;
+      --accent:       #007acc;
+      --text:         #1a1a1a;
+      --bg:           #ffffff;
+      --muted:        #666666;
+      --image-height: 160px;
+      --icon-size:    20px;
     }
 
-    /* ===== Reset & basics ===== */
+    /* ===== Reset & basics ===== */
     *,*::before,*::after { box-sizing: border-box; }
     html,body { margin: 0; padding: 0; height: 100%; }
-    body      { font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-                line-height: 1.6; color: var(--text); background: var(--bg); }
+    body { font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.6; color: var(--text); background: var(--bg); }
+    a { color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; }
+    a:hover { text-decoration: underline; }
+    h1,h2,h3 { line-height: 1.25; margin: 0 0 0.5em; }
+    h1 { font-size: 1.75rem; font-weight: 700; }
+    h2 { font-size: 1.35rem; font-weight: 600; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.25em; }
+    h3 { font-size: 1.1rem; }
 
-    a         { color: var(--accent); text-decoration: none; }
-    a:hover   { text-decoration: underline; }
-
-    h1,h2,h3  { line-height: 1.25; margin: 0 0 0.5em 0; }
-    h1        { font-size: 1.75rem; font-weight: 700; }
-    h2        { font-size: 1.35rem; font-weight: 600; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.25em; }
-    h3        { font-size: 1.1rem; }
-
-    /* ===== Layout helpers ===== */
+    /* ===== Layout helpers ===== */
     .container { max-width: 900px; margin: 0 auto; padding: 1rem; }
 
-    /* ===== Header ===== */
-    header        { border-bottom: 1px solid #e5e5e5; }
-    .hero         { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; padding: 2rem 1rem; }
-    .hero img     { width: 160px; height: 160px; object-fit: cover; border-radius: 50%; }
-    nav ul        { list-style: none; display: flex; gap: 1rem; margin: 0; padding: 0.5rem 0 0 0; }
+    /* ===== Header ===== */
+    header { border-bottom: 1px solid #e5e5e5; }
+    .hero { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; padding: 2rem 1rem; }
+    .hero img { height: var(--image-height); width: auto; object-fit: cover; border-radius: 50%; }
+    nav ul { list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0.5rem 0 0 0; }
+    nav ul li a svg,
+    nav ul li a img { width: var(--icon-size) !important; height: var(--icon-size) !important; }
 
-    /* ===== Main content ===== */
-    main          { padding: 2rem 1rem 3rem; }
+    /* ===== Main content ===== */
+    main { padding: 2rem 1rem 3rem; }
     section + section { margin-top: 3rem; }
 
-    /* Publication cards */
-    .pub-list     { display: flex; flex-direction: column; gap: 2.5rem; }
-    .publication  { display: flex; flex-direction: column; gap: 0.75rem; }
-    .pub-meta     { font-size: 0.9rem; color: var(--muted); }
+    /* Publications */
+    .pub-list { display: flex; flex-direction: column; gap: 2.5rem; }
+    .publication { display: flex; flex-direction: column; gap: 0.75rem; }
+    .pub-meta { font-size: 0.9rem; color: var(--muted); }
 
-    figure        { margin: 0; text-align: center; }
-    figure img    { width: 200px; max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 6px; }
-    figcaption    { margin-top: 0.35rem; font-weight: 600; font-size: 0.85rem; }
+    /* Left-align figures */
+    figure { margin: 0; text-align: left; }
+    figure img { height: var(--image-height); width: auto; max-width: 100%; border: 1px solid #ddd; border-radius: 6px; }
+    figcaption { margin-top: 0.35rem; font-weight: 600; font-size: 0.85rem; }
+    .thumbs { display: flex; gap: 1rem; flex-wrap: wrap; }
 
-    .thumbs       { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-    /* ===== Footer ===== */
-    footer        { border-top: 1px solid #e5e5e5; padding: 2rem 0; text-align: center; font-size: 0.9rem; }
-    footer ul     { list-style: none; display: inline-flex; gap: 1.5rem; margin: 0; padding: 0; }
-
-    /* Responsive tweaks */
+    /* ===== Responsive ===== */
     @media (max-width: 600px) {
-      .hero            { flex-direction: column; text-align: center; }
-      nav ul           { justify-content: center; }
-      figure img       { width: 100%; }
+      .hero { flex-direction: column; text-align: center; }
+      nav ul { justify-content: center; }
     }
   </style>
 </head>
 
 <body>
-  <!-- ===== Hero / Header ===== -->
   <header>
     <div class="container hero">
       <img src="Ori.PNG" alt="Portrait of Ori Nizan">
       <div>
-        <h1>Ori Nizan</h1>
-        <p style="font-weight:600;">Computer Vision &amp; Machine Learning Researcher</p>
-        <p class="pub-meta">PhD Student · Department of Electrical Engineering, Technion<br>
-          Supervised by <a href="http://webee.technion.ac.il/~ayellet/" target="_blank" rel="noopener">Prof.&nbsp;Ayellet Tal</a> · <a href="https://cgm.technion.ac.il/" target="_blank" rel="noopener">CGM Lab</a>
+        <h1>Ori Nizan</h1>
+        <p style="font-weight:600;">Computer Vision &amp; Machine Learning Researcher</p>
+        <p class="pub-meta">
+          PhD Student · Department of Electrical Engineering, Technion<br>
+          Supervised by <a href="http://webee.technion.ac.il/~ayellet/" target="_blank" rel="noopener">Prof. Ayelet Tal</a> · <a href="https://cgm.technion.ac.il/" target="_blank" rel="noopener">CGM Lab</a>
         </p>
-        <nav aria-label="Primary">
+        <nav aria-label="Contacts">
           <ul>
-            <li><a href="#publications">Publications</a></li>
-            <li><a href="Ori_Nizan_CV.pdf" target="_blank">CV</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li>
+              <a href="mailto:snizori@campus.technion.ac.il">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H2a2 2 0 01-2-2V4zm2-.5a.5.5 0 00-.5.5v.217l6 4.182 6-4.182V4a.5.5 0 00-.5-.5H2z"/></svg>
+                Email
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Onr" target="_blank" rel="noopener">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/github.svg" alt="GitHub">
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/ori-nizan-3b8140158/" target="_blank" rel="noopener">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/linkedin.svg" alt="LinkedIn">
+                LinkedIn
+              </a>
+            </li>
           </ul>
         </nav>
       </div>
     </div>
   </header>
 
-  <!-- ===== Main content ===== -->
   <main class="container">
-    <!-- About / interests -->
     <section id="about">
-      <h2>Research Interests</h2>
+      <h2>Research Interests</h2>
       <p>My work focuses on <strong>image domain transfer</strong>, anomaly detection, and generative modeling for visual understanding.</p>
     </section>
 
-    <!-- Publications -->
     <section id="publications">
-      <h2>Selected Publications</h2>
+      <h2>Publications</h2>
       <div class="pub-list">
-        <!-- Publication 1 -->
+
         <article class="publication">
-          <h3><a href="https://arxiv.org/pdf/1911.10538.pdf" target="_blank" rel="noopener">Breaking the Cycle — Colleagues Are All You Need</a></h3>
-          <p class="pub-meta">O.&nbsp;Nizan&nbsp;&amp;&nbsp;A.&nbsp;Tal · CVPR 2020 · <a href="https://github.com/Onr/Council-GAN" target="_blank" rel="noopener">Code</a> · <a href="https://onr.github.io/Council_web/" target="_blank" rel="noopener">Project&nbsp;Page</a></p>
-          <figure>
-            <img src="m2f_gif.gif" alt="Male‑to‑female face translation using Council‑GAN">
-          </figure>
+          <h3><a href="https://arxiv.org/pdf/1911.10538.pdf" target="_blank" rel="noopener">Breaking the Cycle — Colleagues Are All You Need</a></h3>
+          <p class="pub-meta">O.&nbsp;Nizan&nbsp;&amp;&nbsp;A.&nbsp;Tal · CVPR 2020 · <a href="https://onr.github.io/Council_web/" target="_blank" rel="noopener">Project Page</a></p>
+          <figure><img src="m2f_gif.gif" alt="Male-to-female face translation using Council-GAN"></figure>
         </article>
 
-        <!-- Publication 2 -->
         <article class="publication">
-          <h3><a href="https://openaccess.thecvf.com/content/WACV2024W/ASTAD/papers/Nizan_K-NNN_Nearest_Neighbors_of_Neighbors_for_Anomaly_Detection_WACVW_2024_paper.pdf" target="_blank" rel="noopener">K‑NNN: Nearest Neighbors of Neighbors for Anomaly Detection</a></h3>
-          <p class="pub-meta">O.&nbsp;Nizan&nbsp;&amp;&nbsp;A.&nbsp;Tal · WACV Workshops 2024 · <a href="https://github.com/Onr/knnn" target="_blank" rel="noopener">Code</a></p>
+          <h3><a href="https://openaccess.thecvf.com/content/WACV2024/html/Nizan_K-NNN_Nearest_Neighbors_of_Neighbors_for_Anomaly_Detection_WACV_2024_paper.html" target="_blank" rel="noopener">K-NNN: Nearest Neighbors of Neighbors for Anomaly Detection</a></h3>
+          <p class="pub-meta">O.&nbsp;Nizan&nbsp;&amp;&nbsp;A.&nbsp;Tal · WACV Workshops 2024 · <a href="https://github.com/Onr/knnn" target="_blank" rel="noopener">Code</a></p>
           <div class="thumbs">
-            <figure>
-              <img src="knn_teaser.png" alt="k‑NN baseline visual">
-              <figcaption>k‑NN</figcaption>
-            </figure>
-            <figure>
-              <img src="knnn_teaser.png" alt="k‑NNN method visual">
-              <figcaption>k‑NNN</figcaption>
-            </figure>
+            <figure><img src="knn_teaser.png" alt="k-NN baseline visual"><figcaption>k-NN</figcaption></figure>
+            <figure><img src="knnn_teaser.png" alt="k-NNN method visual"><figcaption>k-NNN</figcaption></figure>
           </div>
         </article>
 
-        <!-- Publication 3 -->
         <article class="publication">
-          <h3><a href="https://openaccess.thecvf.com/content/WACV2024/papers/Shoshan_FPGAN-Control_A_Controllable_Fingerprint_Generator_for_Training_With_Synthetic_Data_WACV_2024_paper.pdf" target="_blank" rel="noopener">FPGAN‑Control: A Controllable Fingerprint Generator for Training With Synthetic Data</a></h3>
-          <p class="pub-meta">A.&nbsp;Shoshan, N.&nbsp;Bhonker, E.&nbsp;Ben Baruch, <strong>O.&nbsp;Nizan</strong>, I.&nbsp;Kviatkovsky, J.&nbsp;Engelsma, M.&nbsp;Aggarwal&nbsp;&amp;&nbsp;G.&nbsp;Medioni · WACV 2024 · <a href="https://github.com/amazon-science/fpgan-control" target="_blank" rel="noopener">Code</a></p>
-          <figure>
-            <img src="animation_fpgan_resized.gif" alt="FPGAN‑Control synthetic fingerprint animation">
-          </figure>
+          <h3><a href="https://openaccess.thecvf.com/content/WACV2024/html/Shoshan_FPGAN-Control_A_Controllable_Fingerprint_Generator_for_Training_With_Synthetic_Data_WACV_2024_paper.html" target="_blank" rel="noopener">FPGAN-Control: A Controllable Fingerprint Generator for Training With Synthetic Data</a></h3>
+          <p class="pub-meta">A.&nbsp;Shoshan, N.&nbsp;Bhonker, E.&nbsp;Ben Baruch, <strong>O.&nbsp;Nizan</strong>, I.&nbsp;Kviatkovsky, J.&nbsp;Engelsma, M.&nbsp;Aggarwal &amp; G.&nbsp;Medioni · WACV 2024 · <a href="https://github.com/Onr/fpgan-control" target="_blank" rel="noopener">Code</a></p>
+          <figure><img src="animation_fpgan_resized.gif" alt="FPGAN-Control synthetic fingerprint animation"></figure>
         </article>
+
       </div>
     </section>
-  </main>
 
-  <!-- ===== Footer / Contact ===== -->
-  <footer id="contact">
-    <div class="container">
-      <ul>
-        <li><a href="mailto:snizori@campus.technion.ac.il">Email</a></li>
-        <li><a href="https://github.com/Onr" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="https://www.linkedin.com/in/ori-nizan-3b8140158/" target="_blank" rel="noopener">LinkedIn</a></li>
-      </ul>
-      <p style="margin-top:1rem;">© 2025 Ori Nizan</p>
-    </div>
-  </footer>
+  </main>
 </body>
 </html>
