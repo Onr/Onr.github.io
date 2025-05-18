@@ -1,6 +1,8 @@
 body {
     margin: 60px auto;
     width: 70%;
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text color */
 }
 img {
   max-width: 100%;
@@ -11,6 +13,7 @@ nav ul, footer ul {
     padding: 0px;
     list-style: none;
     font-weight: bold;
+    background-color: #1e1e1e; /* Darker background for nav and footer */
 }
 .pichead{
     display: flex;
@@ -29,7 +32,7 @@ nav ul li, footer ul li {
 }
 a {
     text-decoration: none;
-    color: #999;
+    color: #bb86fc; /* Light purple for links */
 }
 a:hover {
     text-decoration: underline;
@@ -37,15 +40,17 @@ a:hover {
 h1 {
     font-size: 3em;
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
+    color: #ffffff; /* White color for headings */
 }
 p {
     font-size: 1.5em;
     line-height: 1.4em;
-    color: #333;
+    color: #e0e0e0; /* Light text color for paragraphs */
 }
 footer {
-    border-top: 1px solid #d5d5d5;
+    border-top: 1px solid #333333; /* Darker border for footer */
     font-size: .8em;
+    color: #e0e0e0; /* Light text color for footer */
 }
 
 ul.posts { 
