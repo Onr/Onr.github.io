@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Ori Nizan | Computer Vision &amp; Machine Learning</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <meta name="description" content="Personal website of Ori Nizan; Computer Vision &amp; Machine Learning at Technion—Israel Institute of Technology.">
 
   <!-- Google Fonts → Inter -->
@@ -14,14 +15,14 @@
   <style>
     /* ===== Design tokens ===== */
     :root {
-      --accent:       #007acc;
+      --accent:       #007bff;
       --text:         #1a1a1a;
       --bg:           #ffffff;
       --muted:        #666666;
       --image-height: 160px;
       --icon-size:    20px;
       --card-radius:  6px;
-      --card-shadow:  0 2px 4px rgba(0,0,0,0.1);
+      --card-shadow:  0 4px 6px rgba(0,0,0,0.1);
     }
     /* Dark mode design tokens */
     :root[data-theme="dark"] {
@@ -58,12 +59,17 @@
     nav ul li a svg,
     nav ul li a img { width: var(--icon-size) !important; height: var(--icon-size) !important; }
 
+    nav ul li a:hover {
+      transform: translateY(-2px);
+      transition: transform 0.2s ease-in-out;
+    }
+
     /* ===== Main content ===== */
     main { padding: 2rem 1rem 3rem; }
     section + section { margin-top: 3rem; }
 
     /* ===== Publications (cards) ===== */
-    .pub-list { display: flex; flex-direction: column; gap: 2.5rem; }
+    .pub-list { display: flex; flex-direction: column; gap: 3rem; }
     .publication {
       background: var(--bg);
       border-radius: var(--card-radius);
@@ -309,6 +315,29 @@
           <h3><a href="https://arxiv.org/pdf/2308.06985" target="_blank" rel="noopener">Patchcontrast: Self-supervised pre-training for 3D object detection</a></h3>
           <p class="pub-meta">O.&nbsp;Shrout, <strong>O.&nbsp;Nitzan</strong>, Y.&nbsp;Ben-Shabat, A.&nbsp;Tal · arXiv 2023</p>
             <figure><img src="patch_contrast_teaser.png" alt="Patchcontrast teaser image" loading="lazy"></figure>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="pypi-packages">
+      <h2>PyPI Packages</h2>
+      <div class="pub-list">
+
+        <article class="publication">
+          <h3><a href="https://pypi.org/project/coret/" target="_blank" rel="noopener">coret</a></h3>
+          <p class="pub-meta">Surrogate based Concept Retrieval for Large Datasets.</p>
+          <a href="https://pypi.org/project/coret/" target="_blank" rel="noopener">
+            <img src="https://static.pepy.tech/badge/coret" alt="PyPI Downloads">
+          </a>
+        </article>
+
+        <article class="publication">
+          <h3><a href="https://pypi.org/project/knnn/" target="_blank" rel="noopener">knnn</a></h3>
+          <p class="pub-meta">A simple implementation of the K-Nearest Neighbors of Neighbors (k-NNN) algorithm for anomaly detection.</p>
+          <a href="https://pypi.org/project/knnn/" target="_blank" rel="noopener">
+            <img src="https://static.pepy.tech/badge/knnn" alt="PyPI Downloads">
+          </a>
         </article>
 
       </div>
