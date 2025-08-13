@@ -54,7 +54,7 @@
     /* ===== Header ===== */
     header { border-bottom: 1px solid #e5e5e5; }
     .hero { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; padding: 2rem 1rem; }
-    .hero img { height: var(--image-height); width: auto; object-fit: cover; border-radius: 50%; }
+    .hero img { height: var(--image-height); width: auto; object-fit: cover; border-radius: var(--card-radius); } /* Adjusted for the new GIF */
     nav ul { list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0.5rem 0 0 0; }
     nav ul li a svg,
     nav ul li a img { width: var(--icon-size) !important; height: var(--icon-size) !important; }
@@ -127,7 +127,7 @@
 <body>
   <header>
     <div class="container hero">
-      <img src="Ori.PNG" alt="Portrait of Ori Nizan" loading="lazy">
+      <img src="wmap_third_year.gif" alt="WMAP Third Year GIF" loading="lazy">
       <div>
         <h1>Ori Nizan</h1>
         <p style="font-weight:600;">Computer Vision &amp; Machine Learning Researcher</p>
