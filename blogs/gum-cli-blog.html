@@ -317,6 +317,19 @@
       .tip { flex-direction: column; }
       .tip-number { align-self: flex-start; }
     }
+
+    .content-grid {
+      display: grid;
+      gap: 1.75rem;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 820px) {
+      .content-grid {
+        grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+        align-items: start;
+      }
+    }
   </style>
 </head>
 <body>
@@ -368,7 +381,7 @@
       <h2>Why Gum for LLM-Generated Projects?</h2>
       <p><strong>Gum</strong> is a command-line tool that lets you build beautiful, interactive CLIs in bash. For LLM-generated projects, a well-structured Gum CLI becomes your <strong>single source of truth</strong> — a self-documenting front door to your entire codebase.</p>
       <div style="display:grid;gap:1.5rem;margin:2rem 0;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
-        <div style="border:1px solid rgba(16,185,129,0.35);background:rgba(6,78,59,0.4);border-radius:16px;padding:1.5rem;">
+        <div style="border:1px solid rgba(16, 185, 129,0.35);background:rgba(6,78,59,0.4);border-radius:16px;padding:1.5rem;">
           <h4 style="margin:0 0 0.75rem;color:var(--emerald-300);">✅ With Gum CLI</h4>
           <ul>
             <li>Run <code style="color:var(--emerald-200);">./main-cli.sh</code></li>
@@ -443,67 +456,7 @@
       </div>
     </section>
 
-    <section class="card">
-      <h2>LLM Instructions to Copy-Paste</h2>
-      <p>Save this as <code style="color:var(--emerald-300);">LLM_INSTRUCTIONS.md</code> in your project root. Reference it in every prompt session with your AI assistant.</p>
-      <div class="code-block" data-copy>
-        <header>LLM_INSTRUCTIONS.md</header>
-        <pre>## Gum CLI Development Rules
-
-### CORE PRINCIPLE: SINGLE ENTRYPOINT
-- ONE main script at repo root: ./main-cli.sh using gum
-- ALL features integrate into this menu - NO orphan scripts
-- Menu provides orientation with clear descriptions for each action
-- Optional symlink: ./dev -&gt; ./main-cli.sh for convenience
-
-### IMPLEMENTATION STRATEGY
-1. Start with 2-3 essential commands
-2. Test thoroughly before adding more
-3. Ensure menu order makes logical sense
-4. Group related actions together
-
-### FOR EVERY MENU ITEM
-- Show: action name + one-line description
-- Include default values where applicable
-- Add examples for complex inputs
-- Use gum style for visual hierarchy
-
-### PARAMETER CONTROL
-- Use `gum input` for text with default values
-- Use `gum choose` for option selection
-- Use `gum confirm` for yes/no decisions
-- Validate inputs and provide clear error messages
-
-### PREVIEW + CONFIRM (MANDATORY)
-- ALWAYS show the exact command before execution
-- Use `gum confirm` for ANY impactful operation
-- Display command with syntax highlighting
-- Allow abort at confirmation
-
-### CRITICAL REMINDER FOR EVERY TASK
-After completing ANY development task, you MUST:
-1. Add/update corresponding action in ./main-cli.sh
-2. Include descriptive label + help text
-3. Add command preview + confirmation
-4. Test the new menu option end-to-end
-5. Ensure new scripts are in scripts/ and referenced properly
-
-### EXAMPLE MENU ITEM PATTERN
-"📦 Build Docker image :: Creates optimized production image"
-# When selected:
-# 1. Show what will happen
-# 2. Display exact command
-# 3. Confirm before execution
-# 4. Provide feedback on completion
-
-### ERROR HANDLING
-- Check prerequisites before running
-- Provide helpful error messages
-- Suggest fixes for common issues
-- Never fail silently</pre>
-        <button class="copy-button" type="button">Copy</button>
-      </div>
-    </section>
+    
 
     <section class="card accent">
       <h2>Example: Interactive Workflow</h2>
@@ -573,7 +526,7 @@ After completing ANY development task, you MUST:
 
     <section class="card">
       <h2>Getting Started</h2>
-      <div style="display:grid;gap:1.75rem;">
+      <div class="content-grid">
         <div>
           <h3 style="margin:0 0 0.75rem;color:var(--zinc-200);">1. Install Gum</h3>
           <div class="code-block" data-copy>
@@ -661,9 +614,6 @@ Requirements:
 Make it simple and we'll expand it incrementally.</pre>
             <button class="copy-button" type="button">Copy</button>
           </div>
-          <div class="warning" style="margin-top:1.25rem;">
-            <strong>⚠️ Important:</strong> When running the CLI, always use <code style="color:var(--amber-400);">bash main-cli.sh</code> instead of <code style="text-decoration:line-through;color:var(--zinc-500);">sh main-cli.sh</code>. The <code style="color:var(--amber-400);">bash</code> command ensures proper shell feature support that Gum relies on.
-          </div>
         </div>
         <div>
           <h3 style="margin:0 0 0.75rem;color:var(--zinc-200);">4. Start Using It</h3>
@@ -677,6 +627,9 @@ bash main-cli.sh
 # Or if executable:
 ./main-cli.sh</pre>
             <button class="copy-button" type="button">Copy</button>
+          </div>
+          <div class="warning" style="margin-top:1.25rem;">
+            <strong>⚠️ Important:</strong> When running the CLI, always use <code style="color:green; font-weight:bold;">bash</code> main-cli.sh instead of <code style="color:red; font-weight:bold;">sh</code> main-cli.sh. The <code style="color:green; font-weight:bold;">bash</code> command ensures proper shell feature support that Gum relies on.
           </div>
           <p style="margin-top:0.85rem;color:var(--zinc-300);">From now on, every time you ask your AI to create a new feature, remind it to check the AGENTS.md file and update the main-cli.sh menu accordingly.</p>
         </div>
