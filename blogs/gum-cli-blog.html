@@ -296,6 +296,7 @@
     .terminal .dot.yellow { background: #fbbf24; }
     .terminal .dot.green { background: #34d399; }
 
+    .terminal .line { white-space: pre; }
     .terminal .line strong { color: var(--emerald-300); }
     .terminal .line.dim { color: var(--zinc-500); font-size: 0.75rem; }
     .terminal .line.muted { color: var(--zinc-500); }
@@ -338,9 +339,15 @@
       <div class="pill"><span style="display:inline-block;width:6px;height:6px;border-radius:999px;background:var(--emerald-300);"></span>Developer Workflow</div>
       <h1>Taming LLM Codebases with <span>Gum</span></h1>
       <p class="lede">Stop drowning in AI-generated scripts. Build a single CLI that remembers everything.</p>
+      <p class="meta"><a href="https://onr.github.io/">Ori Nizan</a></p>
       <p class="meta">Updated: Oct 2025 · 6 min read</p>
       <a class="link-out" href="https://github.com/charmbracelet/gum" target="_blank" rel="noopener">🎀 charmbracelet/gum: A tool for glamorous shell scripts →</a>
     </header>
+
+    <section class="card">
+      <h2>Meet Your New Command Center</h2>
+      <p>Stop drowning in script chaos. When building with LLMs, your project accumulates dozens of scattered scripts that become impossible to manage. The solution isn't better documentation—it's one beautiful, interactive CLI that serves as your project's front door.</p>
+    </section>
 
     <section class="card">
       <div class="terminal" aria-label="Terminal teaser">
@@ -495,9 +502,9 @@
           <h3 style="margin:0 0 0.5rem;color:var(--zinc-300);font-size:0.95rem;text-transform:uppercase;letter-spacing:0.08em;">Step 3: Command Preview &amp; Confirm</h3>
           <div class="terminal">
             <div class="line dim">📋 Command Preview:</div>
-            <div class="line">┌─────────────────────────────────────────────┐</div>
+            <div class="line">┌──────────────────────────────────────────────┐</div>
             <div class="line" style="color:var(--emerald-300);">│ docker compose exec api alembic upgrade head │</div>
-            <div class="line">└─────────────────────────────────────────────┘</div>
+            <div class="line">└──────────────────────────────────────────────┘</div>
             <div class="line muted"> </div>
             <div class="line">This will apply all pending migrations to the database.</div>
             <div class="line muted"> </div>
@@ -629,15 +636,20 @@ bash main-cli.sh
             <button class="copy-button" type="button">Copy</button>
           </div>
           <div class="warning" style="margin-top:1.25rem;">
-            <strong>⚠️ Important:</strong> When running the CLI, always use <code style="color:green; font-weight:bold;">bash</code> main-cli.sh instead of <code style="color:red; font-weight:bold;">sh</code> main-cli.sh. The <code style="color:green; font-weight:bold;">bash</code> command ensures proper shell feature support that Gum relies on.
+            <strong>⚠️ Important:</strong> When running the CLI, use "<code style="color:green; font-weight:bold;">bash</code> main-cli.sh" instead of "<code style="color:red; font-weight:bold;">sh</code> main-cli.sh".
           </div>
-          <p style="margin-top:0.85rem;color:var(--zinc-300);">From now on, every time you ask your AI to create a new feature, remind it to check the AGENTS.md file and update the main-cli.sh menu accordingly.</p>
         </div>
       </div>
     </section>
 
+    <section class="card accent">
+      <h2>Let’s Keep Building</h2>
+      <p>Hope this guide helps you wrangle your own AI-fueled codebase into a single, joyful CLI. I’m constantly iterating on this workflow and would love to hear how you’re applying it.</p>
+      <p>If you spot something that could be better, or have a Gum trick I should try, contact me at <a href="mailto:restin3@gmail.com">restin3@gmail.com</a>. Your feedback keeps these experiments sharp.</p>
+    </section>
+
     <footer>
-      <p>Built for solo developers using LLMs to build projects.</p>
+      <p>Built for developers using LLMs to build projects.</p>
       <p><a href="https://github.com/charmbracelet/gum" target="_blank" rel="noopener">Get Gum →</a></p>
     </footer>
   </main>
