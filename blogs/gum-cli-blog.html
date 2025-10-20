@@ -83,6 +83,33 @@
       font-weight: 700;
     }
 
+    header.hero .title-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    header.hero .title-row .title-copy {
+      flex: 1 1 320px;
+      min-width: 280px;
+    }
+
+    @media (min-width: 760px) {
+      header.hero .title-row { flex-wrap: nowrap; }
+      header.hero .title-row .title-copy {
+        max-width: calc(100% - 280px);
+      }
+    }
+
+    header.hero .hero-image {
+      width: clamp(205px, 30vw, 300px);
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+      margin-top: 0.75rem;
+    }
+
     header.hero h1 span {
       background: linear-gradient(90deg, var(--emerald-300), var(--cyan-400));
       -webkit-background-clip: text;
@@ -94,6 +121,7 @@
       margin: 0;
       color: var(--zinc-400);
       font-size: 1.1rem;
+      max-width: 36ch;
     }
 
     header.hero .meta {
@@ -337,11 +365,16 @@
   <main>
     <header class="hero">
       <div class="pill"><span style="display:inline-block;width:6px;height:6px;border-radius:999px;background:var(--emerald-300);"></span>Developer Workflow</div>
-      <h1>Taming LLM Codebases with <span>Gum</span></h1>
-      <p class="lede">Stop drowning in AI-generated scripts. Build a single CLI that remembers everything.</p>
-      <p class="meta"><a href="https://onr.github.io/">Ori Nizan</a></p>
-      <p class="meta">Updated: Oct 2025 · 6 min read</p>
-      <a class="link-out" href="https://github.com/charmbracelet/gum" target="_blank" rel="noopener">🎀 charmbracelet/gum: A tool for glamorous shell scripts →</a>
+      <div class="title-row">
+        <div class="title-copy">
+          <h1>Taming LLM Codebases with <span>Gum</span></h1>
+          <p class="lede">Stop drowning in AI-generated scripts. Build a single CLI that remembers everything.</p>
+          <p class="meta"><a href="https://onr.github.io/">Ori Nizan</a></p>
+          <p class="meta">Updated: Oct 2025 · 6 min read</p>
+          <a class="link-out" href="https://github.com/charmbracelet/gum" target="_blank" rel="noopener">🎀 charmbracelet/gum: A tool for glamorous shell scripts →</a>
+        </div>
+        <img class="hero-image" src="./gum-cli-hero.jpg" alt="Handing gum to a futuristic enforcer" width="240" height="240" loading="lazy" decoding="async">
+      </div>
     </header>
 
     <section class="card">
