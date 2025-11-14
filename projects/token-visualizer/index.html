@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLM Token Visualizer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>LLM Token & Character Visualizer</h1>
+    <p class="subtitle">Pick a model, choose tokens or characters, see pages and book comparisons.</p>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="row">
+        <label for="modelSelect">Model</label>
+        <select id="modelSelect"></select>
+      </div>
+      <div class="row input-row">
+        <div class="input-group">
+          <label for="amountInput">Amount</label>
+          <input id="amountInput" type="number" min="0" step="1" value="1000" />
+        </div>
+        <div class="input-group">
+          <label>Unit</label>
+          <div class="radio-group">
+            <label><input type="radio" name="unit" value="tokens" /> Tokens</label>
+            <label><input type="radio" name="unit" value="chars" checked /> Characters</label>
+          </div>
+        </div>
+        <div class="input-group">
+          <button id="calcBtn" class="primary">Calculate</button>
+        </div>
+      </div>
+      <div class="input-group" style="margin-top:10px; width:100%">
+        <label for="pastedText">Paste Text (optional)</label>
+        <textarea id="pastedText" rows="4" placeholder="Paste text here for direct calculation..."></textarea>
+        <div class="row" style="justify-content:space-between; align-items:center;">
+          <label><input type="checkbox" id="usePasted" /> Use pasted text for calculation</label>
+          <div id="pastedStats" class="muted"></div>
+        </div>
+      </div>
+      <div id="contextNote" class="context-note" hidden></div>
+      <div id="contextBar" class="context-bar" hidden>
+        <div id="contextFill" class="context-fill"></div>
+      </div>
+    </section>
+
+    <section class="panel stats" id="statsPanel">
+      <h2>Stats</h2>
+      <div class="stats-grid">
+        <div>
+          <div class="label">Tokens</div>
+          <div id="outTokens" class="value">-</div>
+        </div>
+        <div>
+          <div class="label">Characters</div>
+          <div id="outChars" class="value">-</div>
+        </div>
+        <div>
+          <div class="label">Avg chars per token</div>
+          <div id="outCharsPerToken" class="value">-</div>
+        </div>
+        <div>
+          <div class="label">Approx Words</div>
+          <div id="outWords" class="value">-</div>
+        </div>
+        <div>
+          <div class="label">Pages</div>
+          <div id="outPages" class="value">-</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="visualPanel">
+      <h2>Pages Visualization</h2>
+      <div class="row input-row">
+        <div class="input-group">
+          <label for="charsPerPage">Chars per page</label>
+          <input id="charsPerPage" type="number" min="500" step="50" value="1800" />
+        </div>
+      </div>
+      <div class="pages-count-block">
+        <div class="label">Number of pages</div>
+        <div id="pagesGrid" class="pages-grid"></div>
+      </div>
+      <div class="page-preview" id="pagePreview">
+        <div class="page-box">
+          <div id="pageLines" class="page-lines"></div>
+        </div>
+        <div id="pageBadge" class="page-badge"></div>
+      </div>
+      <div id="groupNote" class="group-note" hidden></div>
+    </section>
+
+    <section class="panel" id="booksPanel">
+      <h2>Book Comparisons</h2>
+      <div id="booksList" class="books-list"></div>
+    </section>
+
+    <section class="panel" id="textPanel">
+      <h2>Generated Text</h2>
+      <div id="textNote" class="text-note" hidden></div>
+      <textarea id="outputText" rows="12" spellcheck="false" readonly></textarea>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <span></span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+<!--
+  If opening directly via file://, your browser may block fetch() for CSV.
+  The app has default data fallback, but using a local static server is recommended.
+-->
+</html>

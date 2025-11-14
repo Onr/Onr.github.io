@@ -1,0 +1,10 @@
+provider,model,context_tokens,chars_per_token,tokens_per_char
+OpenAI,gpt-4o,128000,4.0,0.25
+OpenAI,gpt-4.1,128000,4.0,0.25
+OpenAI,gpt-3.5-turbo,16000,4.0,0.25
+OpenAI,gpt-4o-mini,128000,4.0,0.25
+Anthropic,Claude 3.5 Sonnet,200000,4.0,0.25
+Anthropic,Claude 3 Opus,200000,4.0,0.25
+Meta,Llama 3 70B,8000,4.0,0.25
+Mistral,Mistral Large,32000,4.0,0.25
+Google,Gemini 1.5 Pro,1000000,4.0,0.25
