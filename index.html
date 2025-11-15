@@ -107,6 +107,69 @@
       margin-bottom: 2rem;
       gap: 0;
     }
+
+    /* ===== Blog section ===== */
+    .blog-section {
+      margin-top: 3rem;
+    }
+    .blog-intro {
+      max-width: 650px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    .blog-card {
+      background: var(--bg);
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    :root[data-theme="dark"] .blog-card {
+      border-color: rgba(255,255,255,0.08);
+    }
+    .blog-card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .blog-card time {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .blog-card p {
+      margin: 0;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    .blog-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .blog-tag {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(0, 123, 255, 0.12);
+      color: var(--accent);
+    }
+    :root[data-theme="dark"] .blog-tag {
+      background: rgba(187, 134, 252, 0.15);
+    }
+    .blog-card a {
+      align-self: flex-start;
+      font-weight: 600;
+    }
     .tab-button {
       background: none;
       border: none;
@@ -350,6 +413,7 @@
         <button class="tab-button active" onclick="showTab('publications')">Publications</button>
         <button class="tab-button" onclick="showTab('pypi')">PyPI</button>
         <button class="tab-button" onclick="showTab('projects')">Projects</button>
+        <button class="tab-button" onclick="showTab('blogs')">Blogs</button>
       </div>
 
       <div id="publications" class="tab-content active">
@@ -412,6 +476,37 @@
           </article>
         </div>
       </div>
+        <div id="blogs" class="tab-content">
+          <section class="blog-section">
+            <h2>Blogs</h2>
+            <p class="blog-intro">
+              Occasional deep dives into tools, experiments, and workflows that make machine learning research more joyful.
+              Explore full articles, complete with interactive demos and implementation details.
+            </p>
+
+            <div class="blog-grid">
+              <article class="blog-card">
+                <time datetime="2025-10-01">October 2025</time>
+                <h3>
+                  <a href="./blogs/gum-cli-blog.html" target="_blank" rel="noopener">
+                    Taming LLM Codebases with Gum
+                  </a>
+                </h3>
+                <p>
+                  How a single Gum-powered CLI keeps AI-assisted projects organized, safe, and easy to onboard—even as scripts multiply.
+                </p>
+                <div class="blog-tags" aria-label="Article tags">
+                  <span class="blog-tag">Developer Experience</span>
+                  <span class="blog-tag">Tooling</span>
+                  <span class="blog-tag">LLMs</span>
+                </div>
+                <a href="./blogs/gum-cli-blog.html" target="_blank" rel="noopener">
+                  Read the article
+                </a>
+              </article>
+            </div>
+          </section>
+        </div>
     </section>
 
   </main>

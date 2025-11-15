@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Taming LLM Codebases with Gum | Ori Nizan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --emerald-200: #5eead4;
+      --emerald-300: #34d399;
+      --emerald-400: #34d399;
+      --emerald-500: #10b981;
+      --emerald-700: #047857;
+      --emerald-900: #064e3b;
+      --cyan-400: #22d3ee;
+      --zinc-50: #fafafa;
+      --zinc-100: #f4f4f5;
+      --zinc-200: #e4e4e7;
+      --zinc-300: #d4d4d8;
+      --zinc-400: #a1a1aa;
+      --zinc-500: #71717a;
+      --zinc-600: #52525b;
+      --zinc-700: #3f3f46;
+      --zinc-800: #27272a;
+      --zinc-900: #18181b;
+      --zinc-950: #09090b;
+      --red-400: #f87171;
+      --red-900: #7f1d1d;
+      --amber-400: #facc15;
+      --amber-950: #422006;
+      --max-width: 960px;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      color: var(--zinc-100);
+      background: linear-gradient(180deg, var(--zinc-950) 0%, var(--zinc-900) 45%, var(--zinc-950) 100%);
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--emerald-300);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 3rem 1.75rem 5rem;
+    }
+
+    header.hero {
+      margin-bottom: 3rem;
+    }
+
+    header.hero .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--zinc-800);
+      color: var(--zinc-200);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    header.hero h1 {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      line-height: 1.1;
+      margin: 1rem 0 1.25rem;
+      font-weight: 700;
+    }
+
+    header.hero h1 span {
+      background: linear-gradient(90deg, var(--emerald-300), var(--cyan-400));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    header.hero p.lede {
+      margin: 0;
+      color: var(--zinc-400);
+      font-size: 1.1rem;
+    }
+
+    header.hero .meta {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--zinc-500);
+    }
+
+    header.hero .link-out {
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--emerald-300);
+      transition: color 150ms ease;
+    }
+
+    header.hero .link-out:hover { color: var(--emerald-200); }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      background: rgba(24, 24, 27, 0.75);
+      border-radius: 18px;
+      padding: 2rem;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.35);
+    }
+
+    .card.accent {
+      border-color: rgba(250, 204, 21, 0.4);
+      background: rgba(39, 39, 42, 0.85);
+    }
+
+    .card h2 {
+      font-size: 1.9rem;
+      margin: 0 0 1.5rem;
+      color: var(--emerald-300);
+    }
+
+    .card:not(.accent) h2 { color: var(--zinc-100); }
+
+    .card p {
+      color: var(--zinc-200);
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--zinc-200);
+      line-height: 1.6;
+    }
+
+    .card li + li { margin-top: 0.6rem; }
+
+    .alert {
+      border: 1px solid rgba(248, 113, 113, 0.6);
+      background: rgba(127, 29, 29, 0.6);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.75rem 0;
+    }
+
+    .alert h4 {
+      margin: 0 0 0.75rem;
+      color: var(--red-400);
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .tips-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .tip {
+      border: 1px solid rgba(63, 63, 70, 0.6);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      gap: 1.1rem;
+      background: rgba(24, 24, 27, 0.65);
+    }
+
+    .tip-number {
+      width: 2.3rem;
+      height: 2.3rem;
+      flex-shrink: 0;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--emerald-300);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .tip h3 {
+      margin: 0 0 0.35rem;
+      font-size: 1rem;
+    }
+
+    .tip p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--zinc-300);
+      line-height: 1.6;
+    }
+
+    .warning {
+      border: 1px solid rgba(250, 204, 21, 0.45);
+      background: rgba(66, 32, 6, 0.65);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      margin-top: 1.75rem;
+      font-size: 0.95rem;
+      color: var(--zinc-100);
+    }
+
+    .warning strong { color: var(--amber-400); }
+
+    .code-block {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      border: 1px solid rgba(63, 63, 70, 0.7);
+      background: rgba(9, 9, 11, 0.85);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+
+    .code-block header,
+    .code-block pre {
+      width: 100%;
+      display: block;
+    }
+
+    .code-block header {
+      margin: 0;
+      padding: 0.65rem 1.5rem;
+      padding-right: 3.75rem;
+      border-bottom: 1px solid rgba(63, 63, 70, 0.7);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--zinc-500);
+    }
+
+    .code-block pre {
+      margin: 0;
+      padding: 1.25rem 1.5rem;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.82rem;
+      color: var(--zinc-200);
+      line-height: 1.7;
+      overflow-x: auto;
+      min-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .copy-button {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.8rem;
+      font-size: 0.75rem;
+      border: 1px solid rgba(63, 63, 70, 0.9);
+      background: rgba(39, 39, 42, 0.85);
+      color: var(--zinc-300);
+      border-radius: 8px;
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .copy-button:hover {
+      color: var(--emerald-300);
+      border-color: rgba(20, 184, 166, 0.6);
+    }
+
+    .terminal {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      border-radius: 16px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      background: rgba(9, 9, 11, 0.85);
+      padding: 1.5rem;
+      color: var(--zinc-200);
+      box-shadow: inset 0 0 0 1px rgba(14, 116, 144, 0.15);
+    }
+
+    .terminal .titlebar {
+      display: flex;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .terminal .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .terminal .dot.red { background: #f87171; }
+    .terminal .dot.yellow { background: #fbbf24; }
+    .terminal .dot.green { background: #34d399; }
+
+    .terminal .line strong { color: var(--emerald-300); }
+    .terminal .line.dim { color: var(--zinc-500); font-size: 0.75rem; }
+    .terminal .line.muted { color: var(--zinc-500); }
+
+    footer {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(63, 63, 70, 0.6);
+      text-align: center;
+      color: var(--zinc-500);
+      font-size: 0.85rem;
+    }
+
+    footer a { color: var(--emerald-300); }
+
+    @media (max-width: 720px) {
+      main { padding: 2.25rem 1rem 4rem; }
+      .card { padding: 1.75rem; }
+      .tip { flex-direction: column; }
+      .tip-number { align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <div class="pill"><span style="display:inline-block;width:6px;height:6px;border-radius:999px;background:var(--emerald-300);"></span>Developer Workflow</div>
+      <h1>Taming LLM Codebases with <span>Gum</span></h1>
+      <p class="lede">Stop drowning in AI-generated scripts. Build a single CLI that remembers everything.</p>
+      <p class="meta">Updated: Oct 2025 · 6 min read</p>
+      <a class="link-out" href="https://github.com/charmbracelet/gum" target="_blank" rel="noopener">🎀 charmbracelet/gum: A tool for glamorous shell scripts →</a>
+    </header>
+
+    <section class="card">
+      <div class="terminal" aria-label="Terminal teaser">
+        <div class="titlebar">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="line"><strong>My Project Developer CLI</strong></div>
+        <div class="line dim">Profile: dev | Port: 8000</div>
+        <div class="line dim">Use ↑/↓ to navigate, Enter to select</div>
+        <div class="line">&gt; 🚀 Start Services       :: Launch Docker containers</div>
+        <div class="line">  🛑 Stop Services        :: Shut down gracefully</div>
+        <div class="line">  🗄️  Database Operations  :: Migrations, seeding, backups</div>
+        <div class="line">  🛠️  Development Tools    :: Tests, linting, formatting</div>
+        <div class="line">  ⚡ Quick Actions        :: Common tasks and health checks</div>
+        <div class="line">  ❌ Exit</div>
+        <p style="margin-top:1.1rem;color:var(--zinc-400);font-size:0.9rem;">One command. All your tools. Never forget how your project works again.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>The Problem: AI-Generated Chaos</h2>
+      <p>You're building a web app with an LLM. First week: basic CRUD operations and database schema. Second week: authentication, file uploads, and email notifications. Third week: API versioning, rate limiting, and caching. A month in, you have scripts for development, testing, deployment, database operations, monitoring setup, and more. Each feature added a few more files. Now you have 25+ scripts scattered across your repo, and honestly, you're not sure which ones are still relevant.</p>
+      <div class="alert">
+        <h4>Common Developer Frustrations:</h4>
+        <ul>
+          <li><strong>Script sprawl:</strong> Dozens of <code style="color:var(--red-400);">run-*.sh</code> files with no clear organization</li>
+          <li><strong>Memory loss:</strong> "What parameters does deploy.sh need again?"</li>
+          <li><strong>Onboarding hell:</strong> New developers (or future you) can't figure out how to start</li>
+          <li><strong>LLM amnesia:</strong> The AI forgets to integrate new features into existing workflows</li>
+        </ul>
+      </div>
+      <p>Three months later, you return to the project. You stare at your <code style="color:var(--emerald-300);">scripts/</code> folder like an archaeologist examining ancient ruins. <em>"What does run-worker-prod-v2-final.sh do?"</em></p>
+    </section>
+
+    <section class="card">
+      <h2>Why Gum for LLM-Generated Projects?</h2>
+      <p><strong>Gum</strong> is a command-line tool that lets you build beautiful, interactive CLIs in bash. For LLM-generated projects, a well-structured Gum CLI becomes your <strong>single source of truth</strong> — a self-documenting front door to your entire codebase.</p>
+      <div style="display:grid;gap:1.5rem;margin:2rem 0;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+        <div style="border:1px solid rgba(16,185,129,0.35);background:rgba(6,78,59,0.4);border-radius:16px;padding:1.5rem;">
+          <h4 style="margin:0 0 0.75rem;color:var(--emerald-300);">✅ With Gum CLI</h4>
+          <ul>
+            <li>Run <code style="color:var(--emerald-200);">./main-cli.sh</code></li>
+            <li>See every available action with descriptions</li>
+            <li>Choose what you need interactively</li>
+            <li>Preview commands before they run</li>
+            <li>Safe confirmations for dangerous ops</li>
+          </ul>
+        </div>
+        <div style="border:1px solid rgba(82,82,91,0.6);background:rgba(39,39,42,0.75);border-radius:16px;padding:1.5rem;">
+          <h4 style="margin:0 0 0.75rem;color:var(--zinc-300);">❌ Without It</h4>
+          <ul>
+            <li>Grep through scripts/ folder</li>
+            <li>Read source code to understand options</li>
+            <li>Copy-paste commands from docs</li>
+            <li>Hope you didn't miss a required flag</li>
+          </ul>
+        </div>
+      </div>
+      <h3 style="font-size:1.15rem;margin-bottom:0.9rem;color:var(--zinc-200);">Key Benefits for Developers:</h3>
+      <ul>
+        <li><strong>One entry point:</strong> Everything starts from <code style="color:var(--emerald-200);">./main-cli.sh</code> in your repo root</li>
+        <li><strong>Self-documenting:</strong> Each option explains itself — no need to maintain separate docs</li>
+        <li><strong>Progressive disclosure:</strong> Start with core commands, reveal advanced options only when needed</li>
+        <li><strong>Safe by default:</strong> Preview and confirm before any destructive action</li>
+        <li><strong>Future-proof:</strong> Forces you (and your LLM) to integrate new features instead of creating orphan scripts</li>
+        <li><strong>AI-friendly:</strong> Modern LLMs excel at creating polished Gum CLIs with minimal guidance</li>
+      </ul>
+    </section>
+
+    <section class="card accent">
+      <h2>🎯 Essential Tips for Success</h2>
+      <div class="tips-grid">
+        <div class="tip">
+          <div class="tip-number">1</div>
+          <div>
+            <h3>Use ONE Single ./main-cli.sh File</h3>
+            <p>Everything starts from ./main-cli.sh in your repo root. No exceptions. No "quick scripts" outside the CLI. If you need it more than once, it belongs in the menu. This is your contract with yourself (and your LLM).</p>
+          </div>
+        </div>
+        <div class="tip">
+          <div class="tip-number">2</div>
+          <div>
+            <h3>Start Small, Add Incrementally</h3>
+            <p>Begin with one core command. As features grow, create separate scripts in a scripts/ folder that your main CLI calls—keep main-cli.sh focused on orchestration. Get it working perfectly before adding more.</p>
+          </div>
+        </div>
+        <div class="tip">
+          <div class="tip-number">3</div>
+          <div>
+            <h3>Test After Every Addition</h3>
+            <p>After each new menu item, run through the entire flow. Does the order make sense? Are the descriptions clear? Can you use it without looking at the code? If not, refine before moving on.</p>
+          </div>
+        </div>
+        <div class="tip">
+          <div class="tip-number">4</div>
+          <div>
+            <h3>Always Provide Defaults &amp; Explanations</h3>
+            <p>Never leave yourself guessing. Use gum input with default values, gum choose for selections, and always explain what each option does. Include examples for complex inputs.</p>
+          </div>
+        </div>
+        <div class="tip">
+          <div class="tip-number">5</div>
+          <div>
+            <h3>Preview + Confirm for Everything Important</h3>
+            <p>Show the exact command that will run. Use gum confirm before execution. This builds trust and helps you learn what's happening under the hood. Your future self will thank you.</p>
+          </div>
+        </div>
+      </div>
+      <div class="warning">
+        <strong>⚠️ Critical Reminder:</strong> LLMs don't always listen to instructions. After <em>every request</em>, check if the main entry point was updated. If not, explicitly ask: <em>"Now update main-cli.sh with a menu option for this feature, including description, command preview, and confirmation prompt."</em>
+      </div>
+    </section>
+
+    <section class="card accent">
+      <h2>Example: Interactive Workflow</h2>
+      <p>Here's what your CLI looks like in action:</p>
+      <div style="display:grid;gap:1.75rem;margin-top:1.5rem;">
+        <div>
+          <h3 style="margin:0 0 0.5rem;color:var(--zinc-300);font-size:0.95rem;text-transform:uppercase;letter-spacing:0.08em;">Step 1: Main Menu</h3>
+          <div class="terminal">
+            <div class="line"><strong>My Project Developer CLI</strong></div>
+            <div class="line dim">Profile: dev | Port: 8000</div>
+            <div class="line dim">Use ↑/↓ to navigate, Enter to select</div>
+            <div class="line muted"> </div>
+            <div class="line muted">  🚀 Start Services       :: Launch Docker containers</div>
+            <div class="line"><strong>&gt; 🗄️  Database Operations  :: Migrations, seeding, backups</strong></div>
+            <div class="line muted">  🛠️  Development Tools    :: Tests, linting, formatting</div>
+            <div class="line muted">  ⚡ Quick Actions        :: Common tasks</div>
+            <div class="line muted">  ❌ Exit</div>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 0.5rem;color:var(--zinc-300);font-size:0.95rem;text-transform:uppercase;letter-spacing:0.08em;">Step 2: Submenu Opens</h3>
+          <div class="terminal">
+            <div class="line"><strong>🗄️ Database Operations</strong></div>
+            <div class="line dim">Use ↑/↓ to navigate, Enter to select</div>
+            <div class="line muted"> </div>
+            <div class="line"><strong>&gt; 📤 Run migrations       :: Apply pending database migrations</strong></div>
+            <div class="line muted">  ⏪ Rollback migration   :: Undo last migration</div>
+            <div class="line muted">  🌱 Seed data            :: Load demo data into database</div>
+            <div class="line muted">  💾 Create backup        :: Backup database to file</div>
+            <div class="line muted">  🔄 Restore backup       :: Restore from backup file</div>
+            <div class="line muted">  🐚 Open DB shell        :: Interactive PostgreSQL shell</div>
+            <div class="line muted">  ← Back to main menu</div>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 0.5rem;color:var(--zinc-300);font-size:0.95rem;text-transform:uppercase;letter-spacing:0.08em;">Step 3: Command Preview &amp; Confirm</h3>
+          <div class="terminal">
+            <div class="line dim">📋 Command Preview:</div>
+            <div class="line">┌─────────────────────────────────────────────┐</div>
+            <div class="line" style="color:var(--emerald-300);">│ docker compose exec api alembic upgrade head │</div>
+            <div class="line">└─────────────────────────────────────────────┘</div>
+            <div class="line muted"> </div>
+            <div class="line">This will apply all pending migrations to the database.</div>
+            <div class="line muted"> </div>
+            <div class="line"><strong>&gt; Yes, run this command</strong></div>
+            <div class="line muted">  No, cancel</div>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 0.5rem;color:var(--zinc-300);font-size:0.95rem;text-transform:uppercase;letter-spacing:0.08em;">Step 4: Execution &amp; Feedback</h3>
+          <div class="terminal">
+            <div class="line muted">Running migrations...</div>
+            <div class="line muted"> </div>
+            <div class="line dim">INFO  [alembic.runtime.migration] Running upgrade abc123 -&gt; def456</div>
+            <div class="line dim">INFO  [alembic.runtime.migration] Running upgrade def456 -&gt; ghi789</div>
+            <div class="line muted"> </div>
+            <div class="line" style="color:var(--emerald-300);">┌──────────────────────────────────────────┐</div>
+            <div class="line" style="color:var(--emerald-300);">│ ✅ Migrations applied successfully!      │</div>
+            <div class="line" style="color:var(--emerald-300);">│    2 migrations run                      │</div>
+            <div class="line" style="color:var(--emerald-300);">└──────────────────────────────────────────┘</div>
+            <div class="line muted"> </div>
+            <div class="line dim">Press Enter to return to menu...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Getting Started</h2>
+      <div style="display:grid;gap:1.75rem;">
+        <div>
+          <h3 style="margin:0 0 0.75rem;color:var(--zinc-200);">1. Install Gum</h3>
+          <div class="code-block" data-copy>
+            <header>terminal</header>
+            <pre># macOS
+brew install gum
+
+# Linux
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
+sudo apt update && sudo apt install gum</pre>
+            <button class="copy-button" type="button">Copy</button>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 0.75rem;color:var(--zinc-200);">2. Create Agent Instructions File</h3>
+          <p style="margin-bottom:0.8rem;color:var(--zinc-300);">Save this as <code style="color:var(--emerald-300);">AGENTS.md</code> in your project root:</p>
+          <div class="code-block" data-copy>
+            <header>AGENTS.md</header>
+            <pre>## Gum CLI Development Rules
+
+### CORE PRINCIPLE: SINGLE ENTRYPOINT
+- ONE main script at repo root: ./main-cli.sh using gum
+- ALL features integrate into this menu - NO orphan scripts
+- Menu provides orientation with clear descriptions for each action
+
+### IMPLEMENTATION STRATEGY
+1. Start with one essential command
+2. As features grow, create separate scripts in scripts/ folder
+3. Main CLI should call these scripts - keep main-cli.sh clean
+4. Test thoroughly before adding more
+5. Ensure menu order makes logical sense
+6. Group related actions together
+
+### FOR EVERY MENU ITEM
+- Show: action name + one-line description
+- Include default values where applicable
+- Use gum style for visual hierarchy
+
+### PARAMETER CONTROL
+- Use `gum input` for text with default values
+- Use `gum choose` for option selection
+- Use `gum confirm` for yes/no decisions
+
+### PREVIEW + CONFIRM (MANDATORY)
+- ALWAYS show the exact command before execution
+- Use `gum confirm` for ANY impactful operation
+- Allow abort at confirmation
+
+### CRITICAL REMINDER FOR EVERY TASK
+After completing ANY development task, you MUST:
+1. Add/update corresponding action in ./main-cli.sh
+2. Include descriptive label + help text
+3. Add command preview + confirmation
+4. Test the new menu option end-to-end</pre>
+            <button class="copy-button" type="button">Copy</button>
+          </div>
+          <div style="margin-top:1.1rem;border:1px solid rgba(82,82,91,0.6);border-radius:14px;padding:1rem 1.2rem;color:var(--zinc-400);font-size:0.85rem;background:rgba(24,24,27,0.55);">
+            <p style="margin:0 0 0.75rem;font-size:0.9rem;color:var(--zinc-200);font-weight:600;">Optional: Agent-specific instruction files</p>
+            <ul style="margin:0;padding-left:1.1rem;">
+              <li><code style="color:var(--emerald-200);">.cursorrules</code> - For Cursor IDE</li>
+              <li><code style="color:var(--emerald-200);">.clinerules</code> - For Cline (VS Code extension)</li>
+              <li><code style="color:var(--emerald-200);">.github/copilot-instructions.md</code> - For GitHub Copilot</li>
+              <li><code style="color:var(--emerald-200);">.windsurf/rules.md</code> - For Windsurf IDE</li>
+            </ul>
+            <p style="margin-top:0.75rem;color:var(--zinc-500);font-size:0.8rem;">Each file can contain similar rules tailored to that agent's workflow. Reference your AGENTS.md in these files.</p>
+          </div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 0.75rem;color:var(--zinc-200);">3. Let Your LLM Create the CLI</h3>
+          <p style="margin-bottom:0.8rem;color:var(--zinc-300);">Ask your AI assistant to create the initial CLI structure:</p>
+          <div class="code-block" data-copy>
+            <header>prompt</header>
+            <pre>Create a main-cli.sh file in the repo root using Gum.
+
+Requirements:
+- Single entry point for all project operations
+- Start with 1-2 basic commands (like start/stop services)
+- Each menu item should have a description
+- Preview commands before execution
+- Use gum confirm for confirmations
+- Include proper error handling
+
+Make it simple and we'll expand it incrementally.</pre>
+            <button class="copy-button" type="button">Copy</button>
+          </div>
+          <div class="warning" style="margin-top:1.25rem;">
+            <strong>⚠️ Important:</strong> When running the CLI, always use <code style="color:var(--amber-400);">bash main-cli.sh</code> instead of <code style="text-decoration:line-through;color:var(--zinc-500);">sh main-cli.sh</code>. The <code style="color:var(--amber-400);">bash</code> command ensures proper shell feature support that Gum relies on.
+          </div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 0.75rem;color:var(--zinc-200);">4. Start Using It</h3>
+          <div class="code-block" data-copy>
+            <header>terminal</header>
+            <pre>chmod +x main-cli.sh
+
+# Run with bash (not sh!)
+bash main-cli.sh
+
+# Or if executable:
+./main-cli.sh</pre>
+            <button class="copy-button" type="button">Copy</button>
+          </div>
+          <p style="margin-top:0.85rem;color:var(--zinc-300);">From now on, every time you ask your AI to create a new feature, remind it to check the AGENTS.md file and update the main-cli.sh menu accordingly.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Built for solo developers using LLMs to build projects.</p>
+      <p><a href="https://github.com/charmbracelet/gum" target="_blank" rel="noopener">Get Gum →</a></p>
+    </footer>
+  </main>
+
+  <div id="live-region" aria-live="polite" aria-atomic="true" style="position:fixed;top:-9999px;left:-9999px;"></div>
+
+  <script>
+    document.querySelectorAll('.code-block').forEach(function (block) {
+      var button = block.querySelector('.copy-button');
+      var pre = block.querySelector('pre');
+      button.addEventListener('click', function () {
+        if (!navigator.clipboard) {
+          return;
+        }
+        navigator.clipboard.writeText(pre.textContent).then(function () {
+          var live = document.getElementById('live-region');
+          live.textContent = 'Code copied to clipboard';
+          button.textContent = 'Copied!';
+          button.disabled = true;
+          setTimeout(function () {
+            button.textContent = 'Copy';
+            button.disabled = false;
+            live.textContent = '';
+          }, 2000);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
