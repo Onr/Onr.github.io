@@ -14,9 +14,13 @@
 
   <main class="container">
     <section class="panel">
-      <div class="row">
+      <div class="row model-row">
         <label for="modelSelect">Model</label>
         <select id="modelSelect"></select>
+        <div class="input-group model-info">
+          <label for="modelInfoBox">Chars per token</label>
+          <input id="modelInfoBox" type="text" value="-" readonly />
+        </div>
       </div>
       <div class="row input-row">
         <div class="input-group">

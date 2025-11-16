@@ -13,6 +13,7 @@ const calcBtn = document.getElementById('calcBtn');
 const contextNote = document.getElementById('contextNote');
 const contextBar = document.getElementById('contextBar');
 const contextFill = document.getElementById('contextFill');
+const modelInfoBox = document.getElementById('modelInfoBox');
 
 const pastedText = document.getElementById('pastedText');
 const usePasted = document.getElementById('usePasted');
@@ -20,9 +21,9 @@ const pastedStats = document.getElementById('pastedStats');
 
 const outTokens = document.getElementById('outTokens');
 const outChars = document.getElementById('outChars');
-const outCharsPerToken = document.getElementById('outCharsPerToken');
 const outWords = document.getElementById('outWords');
 const outPages = document.getElementById('outPages');
+const outCharsPerToken = document.getElementById('outCharsPerToken');
 
 const scaleBar = document.getElementById('scaleBar');
 const scaleFill = document.getElementById('scaleFill');
@@ -39,15 +40,44 @@ const textNote = document.getElementById('textNote');
 
 // Default datasets if CSV fails to load (e.g., file:// restrictions)
 const DEFAULT_MODELS = [
-  { provider: 'OpenAI', model: 'gpt-4o', context_tokens: 128000, chars_per_token: 4.0, tokens_per_char: 0.25 },
-  { provider: 'OpenAI', model: 'gpt-4.1', context_tokens: 128000, chars_per_token: 4.0, tokens_per_char: 0.25 },
-  { provider: 'OpenAI', model: 'gpt-3.5-turbo', context_tokens: 16000, chars_per_token: 4.0, tokens_per_char: 0.25 },
-  { provider: 'OpenAI', model: 'gpt-4o-mini', context_tokens: 128000, chars_per_token: 4.0, tokens_per_char: 0.25 },
-  { provider: 'Anthropic', model: 'Claude 3.5 Sonnet', context_tokens: 200000, chars_per_token: 4.0, tokens_per_char: 0.25 },
-  { provider: 'Anthropic', model: 'Claude 3 Opus', context_tokens: 200000, chars_per_token: 4.0, tokens_per_char: 0.25 },
-  { provider: 'Meta', model: 'Llama 3 70B', context_tokens: 8000, chars_per_token: 4.0, tokens_per_char: 0.25 },
-  { provider: 'Mistral', model: 'Mistral Large', context_tokens: 32000, chars_per_token: 4.0, tokens_per_char: 0.25 },
-  { provider: 'Google', model: 'Gemini 1.5 Pro', context_tokens: 1000000, chars_per_token: 4.0, tokens_per_char: 0.25 }
+  { provider: 'OpenAI', model: 'gpt-4o', context_tokens: 128000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'OpenAI', model: 'gpt-4.1', context_tokens: 128000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'OpenAI', model: 'gpt-3.5-turbo', context_tokens: 16000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'OpenAI', model: 'gpt-4o-mini', context_tokens: 128000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'OpenAI', model: 'o1-preview', context_tokens: 200000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'OpenAI', model: 'o3-mini', context_tokens: 200000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'OpenAI', model: 'gpt-5', context_tokens: 200000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'OpenAI', model: 'gpt-5.1', context_tokens: 200000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'OpenAI', model: 'codex-davinci-002', context_tokens: 8000, chars_per_token: 3.3, tokens_per_char: 0.303, approximation_flag: 'estimated' },
+  { provider: 'OpenAI', model: 'codex-cushman-001', context_tokens: 2048, chars_per_token: 3.3, tokens_per_char: 0.303, approximation_flag: 'estimated' },
+  { provider: 'Anthropic', model: 'Claude 3.5 Sonnet', context_tokens: 200000, chars_per_token: 3.9, tokens_per_char: 0.256, approximation_flag: 'estimated' },
+  { provider: 'Anthropic', model: 'Claude 3 Opus', context_tokens: 200000, chars_per_token: 3.9, tokens_per_char: 0.256, approximation_flag: 'estimated' },
+  { provider: 'Anthropic', model: 'Claude 3.5 Haiku', context_tokens: 200000, chars_per_token: 3.9, tokens_per_char: 0.256, approximation_flag: 'estimated' },
+  { provider: 'Meta', model: 'Llama-3 70B', context_tokens: 128000, chars_per_token: 3.5, tokens_per_char: 0.285, approximation_flag: 'estimated' },
+  { provider: 'Meta', model: 'Llama-3 8B', context_tokens: 128000, chars_per_token: 3.5, tokens_per_char: 0.285, approximation_flag: 'estimated' },
+  { provider: 'Meta', model: 'Llama-3.1 405B', context_tokens: 128000, chars_per_token: 3.5, tokens_per_char: 0.285, approximation_flag: 'estimated' },
+  { provider: 'Meta', model: 'Llama-Guard 3', context_tokens: 80000, chars_per_token: 3.5, tokens_per_char: 0.285, approximation_flag: 'estimated' },
+  { provider: 'Meta', model: 'Llama-Code 3', context_tokens: 80000, chars_per_token: 3.5, tokens_per_char: 0.285, approximation_flag: 'estimated' },
+  { provider: 'Mistral', model: 'Mistral Large', context_tokens: 32000, chars_per_token: 3.6, tokens_per_char: 0.277, approximation_flag: 'estimated' },
+  { provider: 'Mistral', model: 'Mixtral 8x22B', context_tokens: 64000, chars_per_token: 3.6, tokens_per_char: 0.277, approximation_flag: 'estimated' },
+  { provider: 'Google', model: 'Gemini 1.5 Pro', context_tokens: 1000000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'Google', model: 'Gemini 1.5 Flash', context_tokens: 1000000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'Google', model: 'Gemini 2.0 Flash', context_tokens: 1000000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'Google', model: 'Gemini 2.0 Pro', context_tokens: 2000000, chars_per_token: 4.0, tokens_per_char: 0.25, approximation_flag: 'estimated' },
+  { provider: 'Google', model: 'Gemini Nano', context_tokens: 128000, chars_per_token: 4.2, tokens_per_char: 0.238, approximation_flag: 'estimated' },
+  { provider: 'Google', model: 'Gemini Edge', context_tokens: 128000, chars_per_token: 4.2, tokens_per_char: 0.238, approximation_flag: 'estimated' },
+  { provider: 'Alibaba', model: 'Qwen2.5-72B', context_tokens: 128000, chars_per_token: 3.4, tokens_per_char: 0.294, approximation_flag: 'confirmed' },
+  { provider: 'Alibaba', model: 'Qwen2.5-32B', context_tokens: 128000, chars_per_token: 3.4, tokens_per_char: 0.294, approximation_flag: 'confirmed' },
+  { provider: 'Alibaba', model: 'Qwen2.5-7B', context_tokens: 128000, chars_per_token: 3.4, tokens_per_char: 0.294, approximation_flag: 'confirmed' },
+  { provider: 'Alibaba', model: 'Qwen2.5-Coder', context_tokens: 128000, chars_per_token: 3.3, tokens_per_char: 0.303, approximation_flag: 'estimated' },
+  { provider: 'Microsoft', model: 'Phi-4', context_tokens: 128000, chars_per_token: 3.7, tokens_per_char: 0.270, approximation_flag: 'estimated' },
+  { provider: 'Microsoft', model: 'Phi-4-mini', context_tokens: 128000, chars_per_token: 3.7, tokens_per_char: 0.270, approximation_flag: 'estimated' },
+  { provider: 'Microsoft', model: 'Phi-3.5', context_tokens: 128000, chars_per_token: 3.7, tokens_per_char: 0.270, approximation_flag: 'estimated' },
+  { provider: 'DeepSeek', model: 'DeepSeek V3', context_tokens: 128000, chars_per_token: 3.5, tokens_per_char: 0.285, approximation_flag: 'estimated' },
+  { provider: 'DeepSeek', model: 'DeepSeek Coder V2', context_tokens: 128000, chars_per_token: 3.3, tokens_per_char: 0.303, approximation_flag: 'estimated' },
+  { provider: 'StateSpaceResearch', model: 'Mamba-2 2.7B', context_tokens: 65536, chars_per_token: 3.8, tokens_per_char: 0.263, approximation_flag: 'estimated' },
+  { provider: 'StateSpaceResearch', model: 'Mamba-2 8.3B', context_tokens: 65536, chars_per_token: 3.8, tokens_per_char: 0.263, approximation_flag: 'estimated' },
+  { provider: 'StateSpaceResearch', model: 'Mamba-2 Coder', context_tokens: 65536, chars_per_token: 3.4, tokens_per_char: 0.294, approximation_flag: 'estimated' }
 ];
 
 const DEFAULT_BOOKS = [
@@ -108,7 +138,13 @@ function populateModels(models) {
   for (const m of models) {
     const opt = document.createElement('option');
     opt.value = m.provider + '::' + m.model;
-    opt.textContent = `${m.provider} — ${m.model} (ctx ${formatNum(m.context_tokens)} tok)`;
+    const flag = (m.approximation_flag || '').toLowerCase();
+    const isEstimate = flag === 'estimated';
+    const labelModel = `${m.model}${isEstimate ? ' *' : ''}`;
+    opt.textContent = `${m.provider} — ${labelModel} (ctx ${formatNum(m.context_tokens)} tok)`;
+    if (flag) {
+      opt.dataset.approximationFlag = flag;
+    }
     modelSelect.appendChild(opt);
   }
 }
@@ -116,6 +152,27 @@ function populateModels(models) {
 function getModelByValue(val) {
   const [provider, model] = val.split('::');
   return MODELS.find(m => m.provider === provider && m.model === model);
+}
+
+function updateModelInfo(model) {
+  if (!modelInfoBox) return;
+  if (!model) {
+    modelInfoBox.value = '-';
+    modelInfoBox.title = '';
+    return;
+  }
+  const charsPerToken = Number(model.chars_per_token);
+  const tokensPerChar = Number(model.tokens_per_char || (charsPerToken ? (1 / charsPerToken) : NaN));
+  const infoParts = [];
+  if (!isNaN(charsPerToken)) {
+    infoParts.push(`${charsPerToken.toFixed(2)} chars/token`);
+  }
+  if (!isNaN(tokensPerChar)) {
+    infoParts.push(`${tokensPerChar.toFixed(3)} tok/char`);
+  }
+  modelInfoBox.value = infoParts.length ? infoParts.join(' • ') : '-';
+  const ctx = model.context_tokens ? `Context: ${formatNum(model.context_tokens)} tokens` : '';
+  modelInfoBox.title = [model.provider + ' - ' + model.model, ctx].filter(Boolean).join(' | ');
 }
 
 function calcAll({ amount, unit, model, charsPerPage }) {
@@ -133,19 +190,15 @@ function calcAll({ amount, unit, model, charsPerPage }) {
   return { tokens, chars, words, pages };
 }
 
-function setStats({ tokens, chars, words, pages }) {
+function setStats({ tokens, chars, words, pages }, charsPerToken) {
   outTokens.textContent = formatNum(tokens);
   outChars.textContent = formatNum(chars);
-  if (tokens > 0 && chars > 0) {
-    const avgCharsPerToken = chars / tokens;
-    outCharsPerToken.textContent = avgCharsPerToken.toLocaleString(undefined, {
-      maximumFractionDigits: 2
-    });
-  } else {
-    outCharsPerToken.textContent = '-';
-  }
   outWords.textContent = formatNum(words);
   outPages.textContent = formatNum(pages);
+  if (outCharsPerToken) {
+    const val = typeof charsPerToken === 'number' && isFinite(charsPerToken) ? charsPerToken : NaN;
+    outCharsPerToken.textContent = isNaN(val) ? '-' : val.toFixed(2);
+  }
 }
 
 function drawScale(pages) {
@@ -273,6 +326,8 @@ function makeLorem(targetChars) {
 
 function updateAll() {
   const model = getModelByValue(modelSelect.value) || MODELS[0];
+  updateModelInfo(model);
+  const modelCharsPerToken = model?.chars_per_token || 4.0;
   const unit = getSelectedUnit();
   const amount = Number(amountInput.value || 0);
   const charsPerPage = Number(charsPerPageInput.value || DEFAULT_CHARS_PER_PAGE);
@@ -283,15 +338,14 @@ function updateAll() {
   const usingPasted = usePasted.checked && (pastedText.value || '').length > 0;
   if (usingPasted) {
     // Drive calculation directly from pasted text length
-    const cpt = model.chars_per_token || 4.0;
     chars = (pastedText.value || '').length;
-    tokens = Math.ceil(chars / cpt);
+    tokens = Math.ceil(chars / modelCharsPerToken);
     words = Math.round(chars / AVG_CHARS_PER_WORD);
     pages = Math.max(0, Math.ceil(charsPerPage ? (chars / charsPerPage) : 0));
   } else {
     ({ tokens, chars, words, pages } = calcAll({ amount, unit, model, charsPerPage }));
   }
-  setStats({ tokens, chars, words, pages });
+  setStats({ tokens, chars, words, pages }, modelCharsPerToken);
   drawScale(pages);
   drawPages(pages);
   drawSinglePage(chars, charsPerPage, pages);
@@ -370,6 +424,7 @@ async function init() {
     context_tokens: Number(row.context_tokens || 0),
     chars_per_token: Number(row.chars_per_token || 4.0),
     tokens_per_char: Number(row.tokens_per_char || (1 / 4.0)),
+    approximation_flag: row.approximation_flag || ''
   }));
 
   BOOKS = await loadCSVOrDefault('data/books.csv', DEFAULT_BOOKS, row => ({

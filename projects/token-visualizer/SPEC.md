@@ -5,8 +5,8 @@
 
 ## Data
 - `data/models.csv` — list of models with approximate context window and conversion ratios.
-  - Columns: `provider,model,context_tokens,chars_per_token,tokens_per_char`
-  - `chars_per_token` is the average characters per token (default ~4.0 for English). `tokens_per_char` is 1 / `chars_per_token` (included for convenience).
+  - Columns: `provider,model,context_tokens,chars_per_token,tokens_per_char,approximation_flag`
+  - `chars_per_token` is the average characters per token (default ~4.0 for English). `tokens_per_char` is 1 / `chars_per_token` (included for convenience). `approximation_flag` notes whether figures are `estimated` or `confirmed`.
 - `data/books.csv` — list of books and their word counts (approximate).
   - Columns: `title,words`
 
@@ -14,7 +14,7 @@ Notes
 - CSV is used for user-editable data. The UI has a JS fallback dataset if loading CSV is blocked by file-origin restrictions when opening `index.html` directly. Serving with a local web server is recommended.
 
 ## UI Requirements
-- Pick a model from a dropdown (populated from `models.csv`).
+- Pick a model from a dropdown (populated from `models.csv`). Estimated entries are marked with a trailing `*`.
 - Choose an input amount and unit: `Tokens` or `Characters`.
 - Show computed stats:
   - Tokens, Characters, Approx Words
@@ -51,4 +51,3 @@ Notes
   - Python: `python -m http.server 8080` from `token-visualizer` and open `http://localhost:8080/`.
   - Node: `npx http-server` (or any equivalent static server).
 - Alternatively: open `index.html` directly; if CSV fails to load, defaults are used.
-

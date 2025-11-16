@@ -1,10 +1,39 @@
-provider,model,context_tokens,chars_per_token,tokens_per_char
-OpenAI,gpt-4o,128000,4.0,0.25
-OpenAI,gpt-4.1,128000,4.0,0.25
-OpenAI,gpt-3.5-turbo,16000,4.0,0.25
-OpenAI,gpt-4o-mini,128000,4.0,0.25
-Anthropic,Claude 3.5 Sonnet,200000,4.0,0.25
-Anthropic,Claude 3 Opus,200000,4.0,0.25
-Meta,Llama 3 70B,8000,4.0,0.25
-Mistral,Mistral Large,32000,4.0,0.25
-Google,Gemini 1.5 Pro,1000000,4.0,0.25
+provider,model,context_tokens,chars_per_token,tokens_per_char,approximation_flag
+OpenAI,gpt-4o,128000,4.0,0.25,estimated
+OpenAI,gpt-4.1,128000,4.0,0.25,estimated
+OpenAI,gpt-3.5-turbo,16000,4.0,0.25,estimated
+OpenAI,gpt-4o-mini,128000,4.0,0.25,estimated
+OpenAI,o1-preview,200000,4.0,0.25,estimated
+OpenAI,o3-mini,200000,4.0,0.25,estimated
+OpenAI,gpt-5,200000,4.0,0.25,estimated
+OpenAI,gpt-5.1,200000,4.0,0.25,estimated
+OpenAI,codex-davinci-002,8000,3.3,0.303,estimated
+OpenAI,codex-cushman-001,2048,3.3,0.303,estimated
+Anthropic,Claude 3.5 Sonnet,200000,3.9,0.256,estimated
+Anthropic,Claude 3 Opus,200000,3.9,0.256,estimated
+Anthropic,Claude 3.5 Haiku,200000,3.9,0.256,estimated
+Meta,Llama-3 70B,128000,3.5,0.285,estimated
+Meta,Llama-3 8B,128000,3.5,0.285,estimated
+Meta,Llama-3.1 405B,128000,3.5,0.285,estimated
+Meta,Llama-Guard 3,80000,3.5,0.285,estimated
+Meta,Llama-Code 3,80000,3.5,0.285,estimated
+Mistral,Mistral Large,32000,3.6,0.277,estimated
+Mistral,Mixtral 8x22B,64000,3.6,0.277,estimated
+Google,Gemini 1.5 Pro,1000000,4.0,0.25,estimated
+Google,Gemini 1.5 Flash,1000000,4.0,0.25,estimated
+Google,Gemini 2.0 Flash,1000000,4.0,0.25,estimated
+Google,Gemini 2.0 Pro,2000000,4.0,0.25,estimated
+Google,Gemini Nano,128000,4.2,0.238,estimated
+Google,Gemini Edge,128000,4.2,0.238,estimated
+Alibaba,Qwen2.5-72B,128000,3.4,0.294,confirmed
+Alibaba,Qwen2.5-32B,128000,3.4,0.294,confirmed
+Alibaba,Qwen2.5-7B,128000,3.4,0.294,confirmed
+Alibaba,Qwen2.5-Coder,128000,3.3,0.303,estimated
+Microsoft,Phi-4,128000,3.7,0.270,estimated
+Microsoft,Phi-4-mini,128000,3.7,0.270,estimated
+Microsoft,Phi-3.5,128000,3.7,0.270,estimated
+DeepSeek,DeepSeek V3,128000,3.5,0.285,estimated
+DeepSeek,DeepSeek Coder V2,128000,3.3,0.303,estimated
+StateSpaceResearch,Mamba-2 2.7B,65536,3.8,0.263,estimated
+StateSpaceResearch,Mamba-2 8.3B,65536,3.8,0.263,estimated
+StateSpaceResearch,Mamba-2 Coder,65536,3.4,0.294,estimated
