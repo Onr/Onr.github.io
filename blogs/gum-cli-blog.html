@@ -380,6 +380,13 @@
     <section class="card">
       <h2>Meet Your New Command Center</h2>
       <p>Stop drowning in script chaos. When building with LLMs, your project accumulates dozens of scattered scripts that become impossible to manage. The solution isn't better documentation—it's one beautiful, interactive CLI that serves as your project's front door.</p>
+      <p><strong>Gum CLI</strong> is a toolkit from <a href="https://charm.sh" target="_blank" rel="noopener">Charmbracelet</a> that packages polished terminal UI components—menus, prompts, spinners, confirmations, and more—so you can assemble friendly shell experiences with just a few lines of bash.</p>
+      <p>Pop open <a href="https://github.com/charmbracelet/gum" target="_blank" rel="noopener">the Gum repo</a> and you will see tiny scripts everywhere. A minimal one might look like:</p>
+      <pre style="font-size:0.95rem;background:rgba(24,24,27,0.65);border:1px solid rgba(16,185,129,0.3);padding:1.25rem;border-radius:14px;overflow:auto;"><code>#!/usr/bin/env bash
+choice=$(gum choose "Docs" "Tests" "Deploy")
+gum spin --title "Running $choice" -- sleep 2
+echo "✨ Next up: $choice"</code></pre>
+      <p>The <code>gum choose</code> prompt renders a friendly picker, the spinner animates while the task runs, and the script prints the selection when it finishes. You never have to memorize this syntax yourself—your LLM co-pilot can generate or update Gum snippets on demand.</p>
     </section>
 
     <section class="card">
