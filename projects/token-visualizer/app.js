@@ -446,7 +446,15 @@ async function init() {
   });
   unitRadios.forEach(r => r.addEventListener('change', updateAll));
   charsPerPageInput.addEventListener('change', updateAll);
-  pastedText.addEventListener('input', () => { updatePastedStats(getModelByValue(modelSelect.value) || MODELS[0]); if (usePasted.checked) updateAll(); });
+  pastedText.addEventListener('input', () => {
+    const hasText = (pastedText.value || '').length > 0;
+    if (hasText && !usePasted.checked) {
+      usePasted.checked = true;
+    } else if (!hasText && usePasted.checked) {
+      usePasted.checked = false;
+    }
+    updateAll();
+  });
   usePasted.addEventListener('change', updateAll);
 
   updateAll();
