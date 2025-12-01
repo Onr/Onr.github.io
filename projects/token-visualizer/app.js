@@ -439,14 +439,29 @@ async function init() {
   }
 
   // Events
-  calcBtn.addEventListener('click', updateAll);
   modelSelect.addEventListener('change', updateAll);
-  amountInput.addEventListener('input', () => {
-    // debounce not really needed; keep snappy
-  });
+  amountInput.addEventListener('input', updateAll);
   unitRadios.forEach(r => r.addEventListener('change', updateAll));
-  charsPerPageInput.addEventListener('change', updateAll);
-  pastedText.addEventListener('input', () => { updatePastedStats(getModelByValue(modelSelect.value) || MODELS[0]); if (usePasted.checked) updateAll(); });
+  charsPerPageInput.addEventListener('input', updateAll);
+  pastedText.addEventListener('input', () => {
+    const model = getModelByValue(modelSelect.value) || MODELS[0];
+    updatePastedStats(model);
+
+    const text = pastedText.value || '';
+    if (text.length > 0 && !usePasted.checked) {
+      usePasted.checked = true;
+    }
+
+    const unit = getSelectedUnit();
+    if (unit === 'tokens') {
+      const cpt = model.chars_per_token || 4.0;
+      amountInput.value = Math.ceil(text.length / cpt);
+    } else {
+      amountInput.value = text.length;
+    }
+
+    updateAll();
+  });
   usePasted.addEventListener('change', updateAll);
 
   updateAll();
