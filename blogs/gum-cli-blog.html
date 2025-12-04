@@ -490,6 +490,13 @@
             <p>Show the exact command that will run. Use gum confirm before execution. This builds trust and helps you learn what's happening under the hood. Your future self will thank you.</p>
           </div>
         </div>
+        <div class="tip">
+          <div class="tip-number">6</div>
+          <div>
+            <h3>Keep the Menu Flat and Unique</h3>
+            <p>Humans often enjoy deep, nicely structured menus, but LLMs work best with shallow, mostly flat menus. Extra nesting can look good while still making it harder for the agent to remember which options were previously selected and which path it is updating. Treat a flat, unique menu as a strong preference rather than a strict rule—whenever possible, design your scripts so most actions live at a single level, and only add deeper menus when they are truly needed.</p>
+          </div>
+        </div>
       </div>
       <div class="warning">
         <strong>⚠️ Critical Reminder:</strong> LLMs don't always listen to instructions. After <em>every request</em>, check if the main entry point was updated. If not, explicitly ask: <em>"Now update main-cli.sh with a menu option for this feature, including description, command preview, and confirmation prompt."</em>
@@ -588,6 +595,7 @@ sudo apt update && sudo apt install gum</pre>
           <div class="code-block" data-copy>
             <header>AGENTS.md</header>
             <pre>## Gum CLI Development Rules
+https://github.com/charmbracelet/gum
 
 ### CORE PRINCIPLE: SINGLE ENTRYPOINT
 - ONE main script at repo root: ./main-cli.sh using gum
@@ -601,16 +609,12 @@ sudo apt update && sudo apt install gum</pre>
 4. Test thoroughly before adding more
 5. Ensure menu order makes logical sense
 6. Group related actions together
+7. Prefer shallow, mostly flat menus with unique options.
 
 ### FOR EVERY MENU ITEM
 - Show: action name + one-line description
 - Include default values where applicable
 - Use gum style for visual hierarchy
-
-### PARAMETER CONTROL
-- Use `gum input` for text with default values
-- Use `gum choose` for option selection
-- Use `gum confirm` for yes/no decisions
 
 ### PREVIEW + CONFIRM (MANDATORY)
 - ALWAYS show the exact command before execution
@@ -641,7 +645,7 @@ After completing ANY development task, you MUST:
           <p style="margin-bottom:0.8rem;color:var(--zinc-300);">Ask your AI assistant to create the initial CLI structure:</p>
           <div class="code-block" data-copy>
             <header>prompt</header>
-            <pre>Create a main-cli.sh file in the repo root using Gum.
+            <pre>Create a main-cli.sh file in the repo root using Gum CLI.
 
 Requirements:
 - Single entry point for all project operations
