@@ -8,205 +8,20 @@
   <link rel="icon" type="image/png" href="/icon-32.png" sizes="32x32">
   <link rel="icon" type="image/png" href="/icon-48.png" sizes="48x48">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <script src="https://analytics.ahrefs.com/analytics.js" data-key="kW4vyQ9awU+oCz8K2l3VJw" async></script>
   
-  <!-- REMOVE If not in use (https://app.ahrefs.com/) -->
+  <!-- Analytics -->
+  <script src="https://analytics.ahrefs.com/analytics.js" data-key="kW4vyQ9awU+oCz8K2l3VJw" async></script>
   <meta name="description" content="Personal website of Ori Nizan; Computer Vision &amp; Machine Learning at Technion—Israel Institute of Technology.">
   <meta name="ahrefs-site-verification" content="9d852cd922be1c5bb47dd395576667772c882ab9c4af22463013c48c8fcaec98">
 
-  <!-- Google Fonts → Inter -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    /* ===== Design tokens ===== */
-    :root {
-      --accent:       #007bff;
-      --text:         #1a1a1a;
-      --bg:           #ffffff;
-      --muted:        #666666;
-      --image-height: 160px;
-      --icon-size:    20px;
-      --card-radius:  6px;
-      --card-shadow:  0 4px 6px rgba(0,0,0,0.1);
-    }
-    /* Dark mode design tokens */
-    :root[data-theme="dark"] {
-      --bg: #121212;
-      --text: #e0e0e0;
-      --muted: #bbbbbb;
-      --accent: #bb86fc;
-      --card-shadow: 0 2px 4px rgba(255,255,255,0.1);
-    }
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css">
 
-    /* ===== Reset & basics ===== */
-    *,*::before,*::after { box-sizing: border-box; }
-    html,body { margin: 0; padding: 0; height: 100%; }
-    body { font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.6; color: var(--text); background: var(--bg); }
-    a { color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; }
-    .social-icon {
-      width: var(--icon-size);
-      height: var(--icon-size);
-      fill: var(--text); /* Default color from design tokens */
-    }
-    body[data-theme='dark'] .social-icon {
-      fill: #ffffff; /* White in dark mode */
-    }
-    a:hover { text-decoration: underline; }
-    h1,h2,h3 { line-height: 1.25; margin: 0 0 0.5em; }
-    h1 { font-size: 1.75rem; font-weight: 700; }
-    h2 { font-size: 1.35rem; font-weight: 600; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.25em; }
-    h3 { font-size: 1.1rem; }
-
-    /* ===== Layout helpers ===== */
-    .container { max-width: 900px; margin: 0 auto; padding: 1rem; }
-
-    /* ===== Header ===== */
-    header { border-bottom: 1px solid #e5e5e5; }
-    .hero { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; padding: 2rem 1rem; }
-    .hero img { height: var(--image-height); width: auto; object-fit: cover; border-radius: var(--card-radius); } /* Adjusted for the new GIF */
-    nav ul { list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0.5rem 0 0 0; }
-    nav ul li a svg,
-    nav ul li a img { width: var(--icon-size) !important; height: var(--icon-size) !important; }
-
-    nav ul li a:hover {
-      transform: translateY(-2px);
-      transition: transform 0.2s ease-in-out;
-    }
-
-    /* ===== Main content ===== */
-    main { padding: 2rem 1rem 3rem; }
-    section + section { margin-top: 3rem; }
-
-    /* ===== Publications (cards) ===== */
-    .pub-list { display: flex; flex-direction: column; gap: 3rem; }
-    .publication {
-      background: var(--bg);
-      border-radius: var(--card-radius);
-      box-shadow: var(--card-shadow);
-      padding: 1rem 1.25rem;
-    }
-    .pub-meta { font-size: 0.9rem; color: var(--muted); }
-
-    /* ===== Figures & thumbnails ===== */
-    figure { margin: 0; text-align: left; }
-    figure img {
-      height: var(--image-height);
-      width: auto;
-      max-width: 100%;
-      object-fit: cover;
-      border: 1px solid #ddd;
-      border-radius: var(--card-radius);
-      loading: lazy;
-    }
-    figcaption { margin-top: 0.35rem; font-weight: 600; font-size: 0.85rem; }
-    .thumbs { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-    /* ===== Tabs ===== */
-    .tabs {
-      display: flex;
-      border-bottom: 2px solid #e5e5e5;
-      margin-bottom: 2rem;
-      gap: 0;
-    }
-
-    /* ===== Blog section ===== */
-    .blog-section {
-      margin-top: 3rem;
-    }
-    .blog-intro {
-      max-width: 650px;
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-bottom: 1.5rem;
-    }
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-    }
-    .blog-card {
-      background: var(--bg);
-      border-radius: var(--card-radius);
-      box-shadow: var(--card-shadow);
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      border: 1px solid rgba(0,0,0,0.04);
-    }
-    :root[data-theme="dark"] .blog-card {
-      border-color: rgba(255,255,255,0.08);
-    }
-    .blog-card h3 {
-      margin: 0;
-      font-size: 1.1rem;
-    }
-    .blog-card time {
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-    .blog-card p {
-      margin: 0;
-      color: var(--text);
-      font-size: 0.95rem;
-    }
-    .blog-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-    .blog-tag {
-      font-size: 0.75rem;
-      padding: 0.25rem 0.5rem;
-      border-radius: 999px;
-      background: rgba(0, 123, 255, 0.12);
-      color: var(--accent);
-    }
-    :root[data-theme="dark"] .blog-tag {
-      background: rgba(187, 134, 252, 0.15);
-    }
-    .blog-card a {
-      align-self: flex-start;
-      font-weight: 600;
-    }
-    .tab-button {
-      background: none;
-      border: none;
-      padding: 1rem 1.5rem;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--muted);
-      border-bottom: 3px solid transparent;
-      transition: all 0.3s ease;
-    }
-    .tab-button:hover {
-      color: var(--text);
-      background-color: rgba(0, 123, 255, 0.1);
-    }
-    .tab-button.active {
-      color: var(--accent);
-      border-bottom-color: var(--accent);
-    }
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-    }
-
-    /* ===== Responsive ===== */
-    @media (max-width: 600px) {
-      .hero { flex-direction: column; text-align: center; }
-      nav ul { justify-content: center; }
-      .tabs { flex-wrap: wrap; }
-      .tab-button { padding: 0.75rem 1rem; font-size: 0.9rem; }
-    }
-  </style>
   <!-- Theme icons -->
   <svg aria-hidden="true" style="display: none;">
     <symbol id="icon-sun" viewBox="0 0 16 16">
@@ -221,7 +36,6 @@
     function toggleTheme() {
       const root = document.documentElement;
       const isDark = root.getAttribute('data-theme') === 'dark';
-      // Toggle data-theme attribute and icon
       if (isDark) {
         root.removeAttribute('data-theme');
         document.getElementById('themeIconUse').setAttribute('href', '#icon-sun');
@@ -231,112 +45,107 @@
       }
     }
 
-    // Tab switching functionality
     function showTab(tabName) {
-      // Hide all tab contents
       const tabContents = document.querySelectorAll('.tab-content');
-      tabContents.forEach(content => {
-        content.classList.remove('active');
-      });
-
-      // Remove active class from all tab buttons
+      tabContents.forEach(content => content.classList.remove('active'));
+      
       const tabButtons = document.querySelectorAll('.tab-button');
-      tabButtons.forEach(button => {
-        button.classList.remove('active');
-      });
+      tabButtons.forEach(button => button.classList.remove('active'));
 
-      // Show selected tab content
       document.getElementById(tabName).classList.add('active');
-
-      // Add active class to clicked button
-      event.target.classList.add('active');
+      // Find the button that corresponds to this tabName. 
+      // The click event target might be inner text if not careful, but onclick="showTab" is on the button itself.
+      // To be safe, we can just select by an attribute or iterate.
+      // Or just rely on `event.currentTarget` passed implicitly? The original code used `event.target`.
+      // I'll fix this to be more robust: select by onclick attribute content or similar if needed, 
+      // but `event.currentTarget` is best.
     }
   </script>
 </head>
 
 <body>
   <header>
-    <div class="container hero">
-      <img src="Ori.PNG" alt="Ori Nizan" loading="lazy">
-      <div style="flex: 1;">
-        <h1>Ori Nizan</h1>
-        <p style="font-weight:600;">Computer Vision &amp; Machine Learning Researcher</p>
-        <p class="pub-meta">
-          PhD Student · Department of Electrical Engineering, Technion<br>
-          Supervised by <a href="http://webee.technion.ac.il/~ayellet/" target="_blank" rel="noopener">Prof. Ayelet Tal</a> · <a href="https://cgm.technion.ac.il/" target="_blank" rel="noopener">CGM Lab</a>
-        </p>
-        <nav aria-label="Contacts">
-          <ul>
-            <li>
-              <a href="mailto:snizori@campus.technion.ac.il">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H2a2 2 0 01-2-2V4zm2-.5a.5.5 0 00-.5.5v.217l6 4.182 6-4.182V4a.5.5 0 00-.5-.5H2z"/></svg>
-                Email
-              </a>
-            </li>
-            <li>
-              <a href="https://github.com/Onr" target="_blank" rel="noopener">
-                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="social-icon"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://www.linkedin.com/in/ori-nizan-3b8140158/" target="_blank" rel="noopener">
-                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="social-icon"><title>LinkedIn</title><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                LinkedIn
-              </a>
-            </li>
-            <li>
-              <a href="https://scholar.google.co.il/citations?user=HDWDLcEAAAAJ&hl=en" target="_blank" rel="noopener">
-                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="social-icon"><title>Google Scholar</title><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
-                Google Scholar
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/OriNizan" target="_blank" rel="noopener">
-                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="social-icon"><title>X</title><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
-                X
-              </a>
-            </li>
-          </ul>
-        </nav>
+    <div class="container">
+      <div class="hero">
+        <img src="Ori.PNG" alt="Ori Nizan" class="hero-image" loading="lazy">
+        
+        <div class="hero-content">
+          <h1>Ori Nizan</h1>
+          <p style="font-weight:600; margin-top:0.5rem;">Computer Vision &amp; Machine Learning Researcher</p>
+          <p class="pub-meta">
+            PhD Student · Department of Electrical Engineering, Technion<br>
+            Supervised by <a href="http://webee.technion.ac.il/~ayellet/" target="_blank" rel="noopener">Prof. Ayelet Tal</a> · <a href="https://cgm.technion.ac.il/" target="_blank" rel="noopener">CGM Lab</a>
+          </p>
+          
+          <nav class="social-nav" aria-label="Contacts">
+            <ul>
+              <li>
+                <a href="mailto:snizori@campus.technion.ac.il">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="social-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H2a2 2 0 01-2-2V4zm2-.5a.5.5 0 00-.5.5v.217l6 4.182 6-4.182V4a.5.5 0 00-.5-.5H2z"/></svg>
+                  Email
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/Onr" target="_blank" rel="noopener">
+                  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="social-icon"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.466-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/ori-nizan-3b8140158/" target="_blank" rel="noopener">
+                  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="social-icon"><title>LinkedIn</title><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a href="https://scholar.google.co.il/citations?user=HDWDLcEAAAAJ&hl=en" target="_blank" rel="noopener">
+                  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="social-icon"><title>Google Scholar</title><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
+                  Google Scholar
+                </a>
+              </li>
+              <li>
+                <a href="https://x.com/OriNizan" target="_blank" rel="noopener">
+                  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="social-icon"><title>X</title><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+                  X
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <img src="wmap_third_year.gif" alt="WMAP Third Year GIF" class="hero-gif" loading="lazy">
       </div>
-      <img src="wmap_third_year.gif" alt="WMAP Third Year GIF" loading="lazy" style="height: var(--image-height); width: auto; object-fit: cover; border-radius: var(--card-radius);">
+      
+      <button onclick="toggleTheme()" id="themeToggleButton" aria-label="Toggle theme">
+        <svg id="themeIcon" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+          <use id="themeIconUse" href="#icon-sun"></use>
+        </svg>
+      </button>
     </div>
-    <button onclick="toggleTheme()" id="themeToggleButton" aria-label="Toggle theme" style="position: absolute; top: 10px; right: 10px; padding: 0.5rem; background-color: var(--accent); color: var(--bg); border: none; border-radius: 5px; cursor: pointer;">
-      <svg id="themeIcon" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-        <use id="themeIconUse" href="#icon-sun"></use>
-      </svg>
-    </button>
   </header>
 
   <main class="container">
     <section id="about">
-      <h2>Research Interests
-      </h2>
-
+      <h2>Research Interests</h2>
       <p>My work focuses on <strong>image domain transfer</strong>, <strong>anomaly detection</strong>, and <strong>generative modeling</strong> for <strong>visual understanding</strong>.</p>
 
-      <svg width="300" height="100" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+      <svg width="300" height="100" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <!-- Domain Transfer Panel -->
         <defs>
           <linearGradient id="domainGrad" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#3498db">
-              <animate attributeName="stop-color"
-                      values="#3498db;#e67e22;#3498db"
-                      dur="8s" repeatCount="indefinite"/>
+              <animate attributeName="stop-color" values="#3498db;#e67e22;#3498db" dur="8s" repeatCount="indefinite"/>
             </stop>
             <stop offset="100%" stop-color="#e67e22">
-              <animate attributeName="stop-color"
-                      values="#e67e22;#3498db;#e67e22"
-                      dur="8s" repeatCount="indefinite"/>
+              <animate attributeName="stop-color" values="#e67e22;#3498db;#e67e22" dur="8s" repeatCount="indefinite"/>
             </stop>
           </linearGradient>
         </defs>
-        <rect x="0" y="0" width="200" height="200"
-              fill="url(#domainGrad)" rx="10"/>
+        <rect x="0" y="0" width="200" height="200" fill="url(#domainGrad)" rx="12"/>
 
         <!-- Anomaly Detection Panel -->
         <g transform="translate(220,0)">
+          <rect x="0" y="0" width="200" height="200" fill="none" stroke="#e5e5e5" rx="12" />
           <!-- grid of normal dots -->
           <g>
             <circle cx="20" cy="20"   r="8" fill="#bdc3c7"/>
@@ -367,17 +176,14 @@
           </g>
           <!-- pulsing anomaly -->
           <circle cx="100" cy="100" r="8" fill="#e74c3c">
-            <animate attributeName="r"
-                    values="8;12;8"
-                    dur="1s" repeatCount="indefinite"/>
-            <animate attributeName="fill-opacity"
-                    values="1;0.3;1"
-                    dur="1s" repeatCount="indefinite"/>
+            <animate attributeName="r" values="8;12;8" dur="1s" repeatCount="indefinite"/>
+            <animate attributeName="fill-opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
           </circle>
         </g>
 
         <!-- Bimodal Gaussian Mixture Panel -->
         <g transform="translate(440,0)">
+           <rect x="0" y="0" width="200" height="200" fill="none" stroke="#e5e5e5" rx="12" />
           <!-- Mode 1 -->
           <circle cx="50" cy="100" r="30" fill="#3498db" fill-opacity="0.6">
             <animate attributeName="cx" values="30;70;30" dur="5s" repeatCount="indefinite"/>
@@ -407,19 +213,17 @@
           </g>
         </g>
       </svg>
-
-
     </section>
 
     <section id="content-tabs">
-      <div class="tabs">
-        <button class="tab-button active" onclick="showTab('publications')">Publications</button>
-        <button class="tab-button" onclick="showTab('pypi')">PyPI</button>
-        <button class="tab-button" onclick="showTab('projects')">Projects</button>
-        <button class="tab-button" onclick="showTab('blogs')">Blogs</button>
+      <div class="tabs" role="tablist">
+        <button class="tab-button active" onclick="showTab('publications'); event.currentTarget.classList.add('active')" role="tab" aria-selected="true">Publications</button>
+        <button class="tab-button" onclick="showTab('pypi'); event.currentTarget.classList.add('active')" role="tab" aria-selected="false">PyPI</button>
+        <button class="tab-button" onclick="showTab('projects'); event.currentTarget.classList.add('active')" role="tab" aria-selected="false">Projects</button>
+        <button class="tab-button" onclick="showTab('blogs'); event.currentTarget.classList.add('active')" role="tab" aria-selected="false">Blogs</button>
       </div>
 
-      <div id="publications" class="tab-content active">
+      <div id="publications" class="tab-content active" role="tabpanel">
         <div class="pub-list">
           <article class="publication">
             <h3><a href="https://arxiv.org/pdf/1911.10538.pdf" target="_blank" rel="noopener">Breaking the Cycle — Colleagues Are All You Need</a></h3>
@@ -445,12 +249,12 @@
           <article class="publication">
             <h3><a href="https://arxiv.org/pdf/2308.06985" target="_blank" rel="noopener">Patchcontrast: Self-supervised pre-training for 3D object detection</a></h3>
             <p class="pub-meta">O.&nbsp;Shrout, <strong>O.&nbsp;Nitzan</strong>, Y.&nbsp;Ben-Shabat, A.&nbsp;Tal · arXiv 2023</p>
-              <figure><img src="patch_contrast_teaser.png" alt="Patchcontrast teaser image" loading="lazy"></figure>
+            <figure><img src="patch_contrast_teaser.png" alt="Patchcontrast teaser image" loading="lazy"></figure>
           </article>
         </div>
       </div>
 
-      <div id="pypi" class="tab-content">
+      <div id="pypi" class="tab-content" role="tabpanel">
         <div class="pub-list">
           <article class="publication">
             <h3><a href="https://pypi.org/project/coret/" target="_blank" rel="noopener">coret</a></h3>
@@ -470,7 +274,7 @@
         </div>
       </div>
 
-      <div id="projects" class="tab-content">
+      <div id="projects" class="tab-content" role="tabpanel">
         <div class="pub-list">
           <article class="publication">
             <h3><a href="https://onr.github.io/Dichoptic_Therapy_Games/" target="_blank" rel="noopener">Dichoptic Therapy Games</a></h3>
@@ -487,32 +291,30 @@
           </article>
         </div>
       </div>
-        <div id="blogs" class="tab-content">
-          <section class="blog-section">
-            <h2>Blogs</h2>
-            <div class="blog-grid">
-              <article class="blog-card">
-                <time datetime="2025-10-01">October 2025</time>
-                <h3>
-                  <a href="./blogs/gum-cli-blog.html" target="_blank" rel="noopener">
-                    Taming LLM Codebases with Gum
-                  </a>
-                </h3>
-                <p>
-                  How a single Gum-powered CLI keeps AI-assisted projects organized, safe, and easy to onboard—even as scripts multiply.
-                </p>
-                <div class="blog-tags" aria-label="Article tags">
-                  <span class="blog-tag">Developer Experience</span>
-                  <span class="blog-tag">Tooling</span>
-                  <span class="blog-tag">LLMs</span>
-                </div>
-                <a href="./blogs/gum-cli-blog.html" target="_blank" rel="noopener">
-                  Read the article
-                </a>
-              </article>
+
+      <div id="blogs" class="tab-content" role="tabpanel">
+        <div class="blog-grid">
+          <article class="blog-card">
+            <time datetime="2025-10-01">October 2025</time>
+            <h3>
+              <a href="./blogs/gum-cli-blog.html" target="_blank" rel="noopener">
+                Taming LLM Codebases with Gum
+              </a>
+            </h3>
+            <p>
+              How a single Gum-powered CLI keeps AI-assisted projects organized, safe, and easy to onboard—even as scripts multiply.
+            </p>
+            <div class="blog-tags" aria-label="Article tags">
+              <span class="blog-tag">Developer Experience</span>
+              <span class="blog-tag">Tooling</span>
+              <span class="blog-tag">LLMs</span>
             </div>
-          </section>
+            <a href="./blogs/gum-cli-blog.html" target="_blank" rel="noopener" style="margin-top: auto; font-weight: 600;">
+              Read the article
+            </a>
+          </article>
         </div>
+      </div>
     </section>
 
   </main>
