@@ -187,10 +187,9 @@ section + section { margin-top: 4rem; }
     width: 100%;
     height: auto;
     max-height: 200px;
-    border-radius: var(--card-radius);
-    background: var(--bg-alt);
-    border: 1px solid var(--border);
-    padding: 1rem;
+    /* Removed background/border per user request for a cleaner look */
+    display: block;
+    margin: 1rem auto;
 }
 
 /* ===== Tabs ===== */
