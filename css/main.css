@@ -41,7 +41,7 @@ html {
   overflow-y: scroll; /* Forces scrollbar to be always visible to prevent layout shift */
 }
 
-body { 
+body { overflow-anchor: none; 
   margin: 0; 
   padding: 0; 
   min-height: 100vh;
@@ -386,6 +386,53 @@ figcaption {
     background: var(--accent);
     color: white;
     transform: rotate(15deg);
+}
+
+
+/* ===== Folded Header State ===== */
+header {
+  transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+header .hero, header .hero-image, header .hero-content h1 {
+    transition: all 0.3s ease;
+}
+
+header.folded {
+  background-color: rgba(var(--bg), 0.98);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+header.folded .hero {
+  padding: 0.5rem 0;
+}
+
+header.folded .hero-image {
+  width: 48px;
+  height: 48px;
+  border-width: 2px;
+}
+
+header.folded .hero-content h1 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+/* Hide elements when folded */
+header.folded .hero-content p,
+header.folded .pub-meta,
+header.folded .social-nav,
+header.folded .hero-gif {
+  display: none;
+}
+
+/* Adjust Theme Button in folded state */
+header.folded #themeToggleButton {
+  top: 50%;
+  transform: translateY(-50%);
+}
+header.folded #themeToggleButton:hover {
+  transform: translateY(-50%) rotate(15deg);
 }
 
 /* ===== Responsive ===== */

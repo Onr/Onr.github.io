@@ -60,7 +60,25 @@
       // I'll fix this to be more robust: select by onclick attribute content or similar if needed, 
       // but `event.currentTarget` is best.
     }
-  </script>
+  
+    // Fold header on scroll
+    let isScrolling = false;
+    window.addEventListener('scroll', function() {
+      if (!isScrolling) {
+        window.requestAnimationFrame(function() {
+          const header = document.querySelector('header');
+          // Hysteresis: Fold at > 50, Unfold at < 10
+          if (window.scrollY > 50 && !header.classList.contains('folded')) {
+            header.classList.add('folded');
+          } else if (window.scrollY < 10 && header.classList.contains('folded')) {
+            header.classList.remove('folded');
+          }
+          isScrolling = false;
+        });
+        isScrolling = true;
+      }
+    });
+</script>
 </head>
 
 <body>
