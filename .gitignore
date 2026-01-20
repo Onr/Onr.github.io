@@ -1,6 +1,12 @@
 # Website improvements document
 website-improvements.md
 
+# Local tooling / scratch (do not commit)
+chatspace/
+scripts/
+agent-cli.sh
+main-cli.sh
+
 # OS generated files
 .DS_Store
 .DS_Store?
