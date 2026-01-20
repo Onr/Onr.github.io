@@ -107,13 +107,38 @@
       <div id="textNote" class="text-note" hidden></div>
       <textarea id="outputText" rows="12" spellcheck="false" readonly></textarea>
     </section>
+
+    <section class="panel" id="tokenPanel">
+      <h2>Tokenization (Exact)</h2>
+      <div class="row input-row">
+        <div class="input-group">
+          <label for="tokenizerMode">Tokenizer</label>
+          <select id="tokenizerMode">
+            <option value="auto" selected>Auto (OpenAI only)</option>
+            <option value="o200k_base">o200k_base</option>
+            <option value="cl100k_base">cl100k_base</option>
+            <option value="p50k_base">p50k_base</option>
+            <option value="r50k_base">r50k_base</option>
+            <option value="off">Off (estimate)</option>
+          </select>
+        </div>
+        <div id="tokenizerStatus" class="muted"></div>
+      </div>
+      <div class="tokenized-block">
+        <div class="row tokenized-header">
+          <div class="label">Token-colored text (preview)</div>
+          <div id="tokenPreviewMeta" class="muted"></div>
+        </div>
+        <div id="tokenizedText" class="tokenized-text" aria-label="Tokenized text preview"></div>
+      </div>
+    </section>
   </main>
 
   <footer class="app-footer">
     <span></span>
   </footer>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 <!--
   If opening directly via file://, your browser may block fetch() for CSV.

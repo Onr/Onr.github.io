@@ -2,6 +2,7 @@
 
 ## Goal
 - Provide a simple website to explore LLM token/character lengths, visualize page-equivalents for scale, and compare lengths to common books.
+ - When possible, provide exact token counts using the same tokenizer families used by real models (not a chars/token approximation).
 
 ## Data
 - `data/models.csv` — list of models with approximate context window and conversion ratios.
@@ -16,6 +17,10 @@ Notes
 ## UI Requirements
 - Pick a model from a dropdown (populated from `models.csv`). Estimated entries are marked with a trailing `*`.
 - Choose an input amount and unit: `Tokens` or `Characters`.
+- Choose an optional exact tokenizer mode:
+  - `Auto (OpenAI only)` uses OpenAI-compatible encodings via `js-tiktoken` when the selected model is known.
+  - Manual encodings: `o200k_base`, `cl100k_base`, `p50k_base`, `r50k_base`.
+  - `Off` uses the historical chars/token approximation.
 - Show computed stats:
   - Tokens, Characters, Approx Words
   - Pages (configurable chars per page)
@@ -40,6 +45,9 @@ Notes
 
 ## Performance & Safety
 - Max generated text: 200,000 characters to avoid browser freezes. If input > cap, generate first N chars and show a notice with the full intended size.
+- Exact tokenization safety caps:
+  - Token counts are computed for up to 200,000 characters.
+  - Token-target generation is capped at 50,000 tokens.
 - CSV loading uses `fetch`. If blocked when opened via `file://`, the app uses built-in defaults.
 
 ## Extensibility

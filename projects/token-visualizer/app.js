@@ -2,6 +2,9 @@
 const DEFAULT_CHARS_PER_PAGE = 1800; // ~300 words @ 6 chars/word
 const AVG_CHARS_PER_WORD = 6.0;      // includes space/punct on average
 const MAX_GENERATED_CHARS = 200000;  // safety cap for generated text
+const MAX_EXACT_TOKENIZE_CHARS = 200000; // safety cap for exact token counts
+const MAX_TOKEN_PREVIEW_CHARS = 4000;    // safety cap for token-colored preview
+const MAX_GENERATED_TOKENS = 50000;      // safety cap for token-target generation
 const PAGE_GROUP_TARGET_MAX_DOTS = 1000;
 
 // DOM elements
@@ -37,6 +40,11 @@ const booksList = document.getElementById('booksList');
 
 const outputText = document.getElementById('outputText');
 const textNote = document.getElementById('textNote');
+
+const tokenizerMode = document.getElementById('tokenizerMode');
+const tokenizerStatus = document.getElementById('tokenizerStatus');
+const tokenPreviewMeta = document.getElementById('tokenPreviewMeta');
+const tokenizedText = document.getElementById('tokenizedText');
 
 // Default datasets if CSV fails to load (e.g., file:// restrictions)
 const DEFAULT_MODELS = [
@@ -126,6 +134,128 @@ async function loadCSVOrDefault(path, fallback, transform) {
 
 function formatNum(n) {
   return n.toLocaleString(undefined);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Exact tokenization (OpenAI-compatible via js-tiktoken)
+// ─────────────────────────────────────────────────────────────────────────────
+const OPENAI_MODEL_TO_ENCODING = {
+  'gpt-4o': 'o200k_base',
+  'gpt-4o-mini': 'o200k_base',
+  'gpt-4.1': 'o200k_base',
+  'o1-preview': 'o200k_base',
+  'o3-mini': 'o200k_base',
+  'gpt-5': 'o200k_base',
+  'gpt-5.1': 'o200k_base',
+  'gpt-3.5-turbo': 'cl100k_base',
+  'codex-davinci-002': 'p50k_base',
+  'codex-cushman-001': 'p50k_base',
+};
+
+let _jsTiktokenPromise = null;
+const _encoderCache = new Map(); // key: encodingName -> encoder
+
+async function loadJsTiktoken() {
+  if (_jsTiktokenPromise) return _jsTiktokenPromise;
+  _jsTiktokenPromise = import('https://cdn.jsdelivr.net/npm/js-tiktoken@1.0.12/+esm');
+  return _jsTiktokenPromise;
+}
+
+async function getEncoderFor({ model, mode }) {
+  if (!mode || mode === 'off') return { encoder: null, reason: 'disabled' };
+  if (!model) return { encoder: null, reason: 'no-model' };
+
+  if (mode !== 'auto') {
+    const { getEncoding } = await loadJsTiktoken();
+    if (_encoderCache.has(mode)) return { encoder: _encoderCache.get(mode), encoding: mode };
+    const enc = getEncoding(mode);
+    _encoderCache.set(mode, enc);
+    return { encoder: enc, encoding: mode };
+  }
+
+  // auto
+  if (model.provider !== 'OpenAI') return { encoder: null, reason: 'unsupported-provider' };
+
+  const encoding = OPENAI_MODEL_TO_ENCODING[model.model] || null;
+  if (!encoding) return { encoder: null, reason: 'unknown-model' };
+
+  const { getEncoding } = await loadJsTiktoken();
+  if (_encoderCache.has(encoding)) return { encoder: _encoderCache.get(encoding), encoding };
+  const enc = getEncoding(encoding);
+  _encoderCache.set(encoding, enc);
+  return { encoder: enc, encoding };
+}
+
+function escapeForTitle(s) {
+  return (s || '')
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t');
+}
+
+function tokenColor(index) {
+  const hue = (index * 47) % 360; // deterministic spread
+  return `hsla(${hue}, 80%, 55%, 0.22)`;
+}
+
+function renderTokenPreview({ text, encoder }) {
+  if (!tokenizedText) return;
+  tokenizedText.innerHTML = '';
+  if (!encoder) {
+    tokenizedText.textContent = 'Exact tokenizer unavailable (using estimate).';
+    if (tokenPreviewMeta) tokenPreviewMeta.textContent = '';
+    return;
+  }
+
+  const preview = (text || '').slice(0, MAX_TOKEN_PREVIEW_CHARS);
+  const ids = encoder.encode(preview);
+
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < ids.length; i++) {
+    const id = ids[i];
+    const piece = encoder.decode([id]);
+    const span = document.createElement('span');
+    span.className = 'tok';
+    span.style.background = tokenColor(i);
+    span.textContent = piece;
+    span.title = `#${i}  id:${id}  "${escapeForTitle(piece)}"`;
+    frag.appendChild(span);
+  }
+  tokenizedText.appendChild(frag);
+
+  if (tokenPreviewMeta) {
+    tokenPreviewMeta.textContent = `${formatNum(ids.length)} tokens • ${formatNum(preview.length)} chars` +
+      (text.length > preview.length ? ` (showing first ${formatNum(preview.length)} chars)` : '');
+  }
+}
+
+function setTokenizerStatus({ model, mode, encoding, reason, error }) {
+  if (!tokenizerStatus) return;
+  if (mode === 'off') {
+    tokenizerStatus.textContent = 'Tokenizer: off (estimate mode)';
+    return;
+  }
+  if (error) {
+    tokenizerStatus.textContent = `Tokenizer error: ${error}`;
+    return;
+  }
+  if (encoding) {
+    tokenizerStatus.textContent = `Tokenizer: js-tiktoken (${encoding})`;
+    return;
+  }
+  if (reason === 'unsupported-provider') {
+    tokenizerStatus.textContent = `Tokenizer: exact tokenization currently supported for OpenAI models only`;
+    return;
+  }
+  if (reason === 'unknown-model') {
+    tokenizerStatus.textContent = `Tokenizer: unknown model tokenizer; choose an encoding manually (cl100k_base / o200k_base / …)`;
+    return;
+  }
+  if (!model) {
+    tokenizerStatus.textContent = `Tokenizer: pick a model`;
+    return;
+  }
+  tokenizerStatus.textContent = `Tokenizer: unavailable`;
 }
 
 function getSelectedUnit() {
@@ -298,14 +428,9 @@ function compareBooks(words) {
   booksList.appendChild(frag);
 }
 
-function updatePastedStats(model) {
-  const cpt = model?.chars_per_token || 4.0;
-  const text = pastedText.value || '';
-  const chars = text.length;
-  const tokens = Math.ceil(chars / cpt);
-  const words = Math.round(chars / AVG_CHARS_PER_WORD);
+function setPastedStats({ chars, tokens, words, exact }) {
   if (chars > 0) {
-    pastedStats.textContent = `Pasted: ${formatNum(chars)} chars ≈ ${formatNum(tokens)} tokens, ${formatNum(words)} words`;
+    pastedStats.textContent = `Pasted: ${formatNum(chars)} chars ${exact ? '' : '≈ '}${formatNum(tokens)} tokens, ${formatNum(words)} words`;
   } else {
     pastedStats.textContent = '';
   }
@@ -324,28 +449,121 @@ function makeLorem(targetChars) {
   return out.slice(0, cap);
 }
 
-function updateAll() {
+function generateTextByTokens(targetTokens, encoder) {
+  const wanted = Math.max(0, Math.floor(targetTokens || 0));
+  const capTokens = Math.min(wanted, MAX_GENERATED_TOKENS);
+
+  const base = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
+               'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ';
+
+  const tokens = [];
+  let i = 0;
+  while (tokens.length < capTokens) {
+    // Ensure chunk boundary is safe: chunks always end with a space.
+    const chunk = base + `(${i++}) `;
+    const chunkTokens = encoder.encode(chunk);
+    tokens.push(...chunkTokens);
+    if (tokens.length > capTokens * 2) break; // extra safety
+  }
+
+  const text = encoder.decode(tokens.slice(0, capTokens));
+  return { text, wantedTokens: wanted, usedTokens: capTokens };
+}
+
+async function updateAll() {
   const model = getModelByValue(modelSelect.value) || MODELS[0];
   updateModelInfo(model);
-  const modelCharsPerToken = model?.chars_per_token || 4.0;
   const unit = getSelectedUnit();
   const amount = Number(amountInput.value || 0);
   const charsPerPage = Number(charsPerPageInput.value || DEFAULT_CHARS_PER_PAGE);
 
-  updatePastedStats(model);
+  const mode = tokenizerMode?.value || 'off';
+  let encoderInfo;
+  try {
+    encoderInfo = await getEncoderFor({ model, mode });
+  } catch (e) {
+    encoderInfo = { encoder: null, reason: 'error', error: e?.message || String(e) };
+  }
+  setTokenizerStatus({ model, mode, ...encoderInfo });
+  const encoder = encoderInfo.encoder;
+
+  // Pasted-text quick stats (independent of "use pasted" checkbox)
+  {
+    const full = pastedText.value || '';
+    if (!full.length) {
+      pastedStats.textContent = '';
+    } else {
+      const capped = full.slice(0, MAX_EXACT_TOKENIZE_CHARS);
+      const chars = capped.length;
+      const words = Math.round(chars / AVG_CHARS_PER_WORD);
+      let tokens;
+      let exact = false;
+      if (encoder) {
+        tokens = encoder.encode(capped).length;
+        exact = true;
+      } else {
+        const cpt = model?.chars_per_token || 4.0;
+        tokens = Math.ceil(chars / cpt);
+      }
+      setPastedStats({ chars, tokens, words, exact });
+    }
+  }
 
   let tokens, chars, words, pages;
   const usingPasted = usePasted.checked && (pastedText.value || '').length > 0;
+  let textForDisplay = '';
+  let exactTokens = false;
+
   if (usingPasted) {
-    // Drive calculation directly from pasted text length
-    chars = (pastedText.value || '').length;
-    tokens = Math.ceil(chars / modelCharsPerToken);
+    const full = pastedText.value || '';
+    const capped = full.slice(0, MAX_EXACT_TOKENIZE_CHARS);
+    textForDisplay = capped.slice(0, MAX_GENERATED_CHARS);
+    chars = capped.length;
+
+    if (encoder) {
+      tokens = encoder.encode(capped).length;
+      exactTokens = true;
+    } else {
+      const cpt = model?.chars_per_token || 4.0;
+      tokens = Math.ceil(chars / cpt);
+    }
+
     words = Math.round(chars / AVG_CHARS_PER_WORD);
     pages = Math.max(0, Math.ceil(charsPerPage ? (chars / charsPerPage) : 0));
   } else {
-    ({ tokens, chars, words, pages } = calcAll({ amount, unit, model, charsPerPage }));
+    if (unit === 'tokens') {
+      const wantedTokens = Math.max(0, Math.floor(amount));
+      if (encoder) {
+        const gen = generateTextByTokens(wantedTokens, encoder);
+        textForDisplay = gen.text.slice(0, MAX_GENERATED_CHARS);
+        chars = gen.text.length;
+        tokens = gen.usedTokens;
+        exactTokens = true;
+      } else {
+        const cpt = model?.chars_per_token || 4.0;
+        tokens = wantedTokens;
+        chars = Math.max(0, Math.round(tokens * cpt));
+        textForDisplay = makeLorem(chars);
+      }
+    } else {
+      const wantedChars = Math.max(0, Math.floor(amount));
+      textForDisplay = makeLorem(wantedChars);
+      chars = textForDisplay.length;
+      if (encoder) {
+        tokens = encoder.encode(textForDisplay).length;
+        exactTokens = true;
+      } else {
+        const cpt = model?.chars_per_token || 4.0;
+        tokens = Math.max(0, Math.ceil(chars / cpt));
+      }
+      words = Math.round(chars / AVG_CHARS_PER_WORD);
+      pages = Math.max(0, Math.ceil(charsPerPage ? (chars / charsPerPage) : 0));
+    }
   }
-  setStats({ tokens, chars, words, pages }, modelCharsPerToken);
+  words = words ?? Math.round(chars / AVG_CHARS_PER_WORD);
+  pages = pages ?? Math.max(0, Math.ceil(charsPerPage ? (chars / charsPerPage) : 0));
+  const avgCharsPerToken = tokens > 0 ? (chars / tokens) : NaN;
+  setStats({ tokens, chars, words, pages }, avgCharsPerToken);
   drawScale(pages);
   drawPages(pages);
   drawSinglePage(chars, charsPerPage, pages);
@@ -373,26 +591,34 @@ function updateAll() {
   // Generated text (capped)
   if (usingPasted) {
     const full = pastedText.value || '';
-    const shown = full.slice(0, MAX_GENERATED_CHARS);
+    const capped = full.slice(0, MAX_EXACT_TOKENIZE_CHARS);
+    const shown = capped.slice(0, MAX_GENERATED_CHARS);
     outputText.value = shown;
-    if (full.length > MAX_GENERATED_CHARS) {
+    if (full.length > MAX_EXACT_TOKENIZE_CHARS) {
       textNote.hidden = false;
-      textNote.textContent = `Showing first ${formatNum(MAX_GENERATED_CHARS)} of ${formatNum(full.length)} pasted chars.`;
+      textNote.textContent = `Stats use first ${formatNum(MAX_EXACT_TOKENIZE_CHARS)} pasted chars (safety cap). Showing first ${formatNum(shown.length)} chars.`;
+    } else if (capped.length > MAX_GENERATED_CHARS) {
+      textNote.hidden = false;
+      textNote.textContent = `Showing first ${formatNum(MAX_GENERATED_CHARS)} of ${formatNum(capped.length)} pasted chars.`;
     } else {
       textNote.hidden = false;
-      textNote.textContent = `Showing pasted text (${formatNum(full.length)} chars).`;
+      textNote.textContent = `Showing pasted text (${formatNum(capped.length)} chars).`;
     }
   } else {
-    const text = makeLorem(chars);
-    outputText.value = text;
-    if (chars > MAX_GENERATED_CHARS) {
-      textNote.hidden = false;
-      textNote.textContent = `Generated ${formatNum(text.length)} chars (showing first ${formatNum(MAX_GENERATED_CHARS)} of ${formatNum(chars)}).`;
+    outputText.value = textForDisplay || '';
+    textNote.hidden = false;
+    if (unit === 'tokens' && encoder && Math.max(0, Math.floor(amount)) > MAX_GENERATED_TOKENS) {
+      textNote.textContent = `Generated ${formatNum(textForDisplay.length)} chars from ${formatNum(MAX_GENERATED_TOKENS)} tokens (safety cap).`;
+    } else if ((textForDisplay || '').length >= MAX_GENERATED_CHARS) {
+      textNote.textContent = `Generated ${formatNum(textForDisplay.length)} chars (safety cap).`;
+    } else if (unit === 'tokens' && encoder) {
+      textNote.textContent = `Generated ${formatNum(textForDisplay.length)} chars from ${formatNum(tokens)} tokens.`;
     } else {
-      textNote.hidden = false;
-      textNote.textContent = `Generated ${formatNum(text.length)} chars.`;
+      textNote.textContent = `Generated ${formatNum(textForDisplay.length)} chars.`;
     }
   }
+
+  renderTokenPreview({ text: outputText.value || '', encoder });
 }
 
 function drawContextBar(ctxTokens, usedTokens) {
@@ -439,32 +665,46 @@ async function init() {
   }
 
   // Events
-  modelSelect.addEventListener('change', updateAll);
-  amountInput.addEventListener('input', updateAll);
-  unitRadios.forEach(r => r.addEventListener('change', updateAll));
-  charsPerPageInput.addEventListener('input', updateAll);
-  pastedText.addEventListener('input', () => {
-    const model = getModelByValue(modelSelect.value) || MODELS[0];
-    updatePastedStats(model);
+  modelSelect.addEventListener('change', () => { void updateAll(); });
+  amountInput.addEventListener('input', () => { void updateAll(); });
+  unitRadios.forEach(r => r.addEventListener('change', () => { void updateAll(); }));
+  charsPerPageInput.addEventListener('input', () => { void updateAll(); });
+  tokenizerMode?.addEventListener('change', () => { void updateAll(); });
 
+  pastedText.addEventListener('input', async () => {
+    const model = getModelByValue(modelSelect.value) || MODELS[0];
     const text = pastedText.value || '';
+
     if (text.length > 0 && !usePasted.checked) {
       usePasted.checked = true;
     }
 
     const unit = getSelectedUnit();
+    const capped = text.slice(0, MAX_EXACT_TOKENIZE_CHARS);
     if (unit === 'tokens') {
-      const cpt = model.chars_per_token || 4.0;
-      amountInput.value = Math.ceil(text.length / cpt);
+      const mode = tokenizerMode?.value || 'off';
+      let enc;
+      try {
+        enc = (await getEncoderFor({ model, mode }))?.encoder || null;
+      } catch {
+        enc = null;
+      }
+
+      if (enc) {
+        amountInput.value = enc.encode(capped).length;
+      } else {
+        const cpt = model?.chars_per_token || 4.0;
+        amountInput.value = Math.ceil(capped.length / cpt);
+      }
     } else {
-      amountInput.value = text.length;
+      amountInput.value = capped.length;
     }
 
-    updateAll();
+    void updateAll();
   });
-  usePasted.addEventListener('change', updateAll);
+  usePasted.addEventListener('change', () => { void updateAll(); });
 
-  updateAll();
+  void updateAll();
 }
 
 init();
