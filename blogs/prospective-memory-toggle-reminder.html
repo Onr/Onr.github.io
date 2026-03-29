@@ -6,502 +6,763 @@
   <title>Toggle Reminder | Prospective Memory</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-left: #131518;
-      --bg-right: #181b1f;
-      --text-main: #e2e4e9;
-      --text-muted: #9ba0a6;
-      --accent: #b4e68e;
-      --card-bg: #202428;
-      --card-border: rgba(255, 255, 255, 0.08);
-      --font-serif: 'Newsreader', serif;
-      --font-sans: 'Inter', sans-serif;
+      --bg: #0d1014;
+      --bg-soft: #12161b;
+      --panel: rgba(21, 25, 31, 0.88);
+      --panel-strong: rgba(24, 29, 36, 0.96);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(180, 230, 142, 0.26);
+      --text: #f2f0ec;
+      --muted: #a3a9b1;
+      --muted-strong: #cbd2db;
+      --accent: #b6eb82;
+      --accent-soft: rgba(182, 235, 130, 0.12);
+      --shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
+      --font-serif: "Newsreader", serif;
+      --font-sans: "Inter", sans-serif;
+      --page-width: 1480px;
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: var(--font-sans);
-      color: var(--text-main);
-      display: flex;
+      margin: 0;
       min-height: 100vh;
-      background: var(--bg-left);
-      line-height: 1.5;
+      font-family: var(--font-sans);
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 14%, rgba(182, 235, 130, 0.12), transparent 24%),
+        radial-gradient(circle at 84% 78%, rgba(61, 128, 163, 0.14), transparent 20%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0, rgba(255, 255, 255, 0) 1px),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0, rgba(255, 255, 255, 0) 1px),
+        linear-gradient(180deg, #0d1014, #12161b);
+      background-size: auto, auto, 36px 36px, 36px 36px, auto;
+      line-height: 1.65;
     }
 
-    .container {
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page-shell {
+      width: min(calc(100% - 40px), var(--page-width));
+      margin: 24px auto;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: rgba(10, 13, 17, 0.72);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .site-header {
       display: flex;
-      width: 100%;
-      max-width: 1600px;
-      margin: 0 auto;
-    }
-
-    .left-pane {
-      flex: 1;
-      padding: 2.5rem 4rem;
-      background: var(--bg-left);
-      border-right: 1px solid var(--card-border);
-    }
-
-    .right-pane {
-      flex: 1;
-      padding: 2.5rem 4rem;
-      background: var(--bg-right);
-      position: relative;
-    }
-
-    /* Typography */
-    h1, h2, h3 {
-      font-family: var(--font-serif);
-      font-weight: 500;
-    }
-
-    h1 {
-      font-size: 2.8rem;
-      line-height: 1.1;
-      margin-bottom: 2.5rem;
-      max-width: 450px;
-    }
-
-    h2 {
-      font-size: 1.8rem;
-      margin-top: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-      line-height: 1.6;
-    }
-
-    /* Header */
-    .header {
-      display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4rem;
+      gap: 24px;
+      margin-bottom: 28px;
     }
 
-    .logo {
-      display: flex;
+    .brand {
+      display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 10px;
+      font-size: 0.98rem;
       font-weight: 500;
-      color: var(--text-muted);
-      font-size: 0.9rem;
+      color: var(--muted-strong);
+      text-decoration: none;
     }
 
-    .logo svg {
-      width: 20px;
-      height: 20px;
+    .brand svg {
+      width: 21px;
+      height: 21px;
       fill: none;
       stroke: var(--accent);
-      stroke-width: 2;
+      stroke-width: 1.8;
+      flex: 0 0 auto;
     }
 
     .menu-icon {
       width: 24px;
       height: 24px;
-      stroke: var(--text-muted);
-      stroke-width: 2;
-    }
-
-    /* Left Pane Layout */
-    .hero-section {
-      position: relative;
-      min-height: 250px;
-    }
-
-    .hero-watch {
-      position: absolute;
-      top: -30px;
-      right: -20px;
-      width: 280px;
-      height: auto;
-      mix-blend-mode: screen;
-    }
-
-    .diagram-img {
-      width: 100%;
-      max-width: 550px;
-      display: block;
-      margin: 1.5rem 0;
-      border-radius: 12px;
-    }
-
-    /* Cards Grid */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 1.2rem;
-    }
-
-    .card h4 {
-      font-family: var(--font-sans);
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .card h4 svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--accent);
+      stroke: var(--muted);
+      stroke-width: 1.8;
       fill: none;
-      stroke-width: 2;
     }
 
-    .card p {
-      font-size: 0.8rem;
-      margin: 0;
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(360px, 0.94fr);
+      gap: 0;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(18, 22, 27, 0.94), rgba(15, 18, 23, 0.92));
     }
 
-    .card-accent h4 {
-      color: var(--text-main);
+    .left-pane,
+    .right-pane {
+      position: relative;
+      padding: 34px 34px 38px;
     }
 
-    /* Right Pane Layout */
-    .suit-pro-tip-container {
-      display: flex;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-      margin-top: 1.5rem;
+    .left-pane {
+      border-right: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 40% 16%, rgba(182, 235, 130, 0.06), transparent 26%),
+        linear-gradient(180deg, rgba(15, 19, 24, 0.96), rgba(17, 21, 26, 0.92));
     }
 
-    .suit-img {
-      width: 230px;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
+    .right-pane {
+      background:
+        radial-gradient(circle at 74% 72%, rgba(96, 158, 166, 0.1), transparent 28%),
+        linear-gradient(180deg, rgba(19, 24, 30, 0.95), rgba(16, 19, 24, 0.94));
     }
 
-    .pro-tip {
-      flex: 1;
-      background: rgba(180, 230, 142, 0.05);
-      border: 1px solid rgba(180, 230, 142, 0.2);
-      border-radius: 12px;
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .pro-tip h4 {
-      color: var(--accent);
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-
-    .pro-tip p {
-      color: var(--text-main);
-      font-size: 0.9rem;
-      margin: 0;
-    }
-
-    .benefits-list {
-      list-style: none;
-      margin: 1rem 0;
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .benefits-list li {
-      font-size: 0.9rem;
-      display: flex;
+    .eyebrow {
+      display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      color: var(--text-main);
+      gap: 8px;
+      padding: 8px 12px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(182, 235, 130, 0.18);
+      border-radius: 999px;
+      background: rgba(182, 235, 130, 0.06);
+      color: var(--muted-strong);
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
     }
 
-    .benefits-list li::before {
-      content: '';
-      display: inline-block;
+    .eyebrow::before {
+      content: "";
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: var(--accent);
+      box-shadow: 0 0 18px rgba(182, 235, 130, 0.68);
     }
 
-    .bullet-points {
-      margin-top: 1rem;
-      list-style: none;
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(210px, 0.8fr);
+      gap: 22px;
+      align-items: end;
+      margin-bottom: 28px;
     }
 
-    .bullet-points li {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-weight: 500;
+      letter-spacing: -0.025em;
+    }
+
+    h1 {
+      max-width: 9ch;
+      font-size: clamp(2.75rem, 3.95vw, 4.2rem);
+      line-height: 0.94;
+      text-wrap: balance;
+    }
+
+    h2 {
+      font-size: clamp(1.7rem, 2.2vw, 2.35rem);
+      line-height: 1.04;
+      margin-bottom: 14px;
+      text-wrap: balance;
+    }
+
+    h3 {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+    }
+
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.72;
+    }
+
+    .hero-visual {
+      min-height: 254px;
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background:
+        radial-gradient(circle at 48% 26%, rgba(229, 246, 255, 0.24), transparent 16%),
+        radial-gradient(circle at 40% 40%, rgba(182, 235, 130, 0.14), transparent 24%),
+        linear-gradient(180deg, rgba(32, 36, 42, 0.92), rgba(26, 30, 37, 0.88));
       display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
     }
 
-    .bullet-points li::before {
-      content: '•';
-      color: var(--text-muted);
+    .hero-visual img {
+      width: min(100%, 264px);
+      mix-blend-mode: screen;
+      transform: translateY(6px) scale(1.04);
+      filter: drop-shadow(0 28px 38px rgba(0, 0, 0, 0.35));
+    }
+
+    .section {
+      margin-top: 26px;
+      scroll-margin-top: 40px;
+    }
+
+    .diagram-frame,
+    .media-card,
+    .insight-card,
+    .use-case-card,
+    .cta-block {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    }
+
+    .diagram-frame {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 20px;
+      background:
+        linear-gradient(180deg, rgba(22, 26, 31, 0.98), rgba(18, 22, 27, 0.98));
+    }
+
+    .diagram-frame img {
+      width: 100%;
+      border-radius: 12px;
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .insight-card {
+      min-height: 100%;
+      padding: 18px 18px 16px;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(30, 35, 41, 0.92), rgba(22, 26, 31, 0.92));
+    }
+
+    .insight-card.is-accent {
+      border-color: rgba(182, 235, 130, 0.2);
+      background:
+        linear-gradient(180deg, rgba(33, 39, 34, 0.95), rgba(25, 29, 28, 0.95));
+    }
+
+    .insight-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 10px;
+      font-family: var(--font-sans);
+      font-size: 0.96rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+    }
+
+    .insight-title svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 1.8;
+    }
+
+    .insight-card p {
+      margin: 0;
+      font-size: 0.86rem;
+      line-height: 1.62;
+    }
+
+    .right-pane-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 124px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .right-main {
+      min-width: 0;
+    }
+
+    .quick-nav {
+      position: sticky;
+      top: 26px;
+      align-self: start;
+      padding-left: 18px;
+      border-left: 1px solid var(--border);
+    }
+
+    .quick-nav h4 {
+      margin-bottom: 12px;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .quick-nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .quick-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.84rem;
+      line-height: 1.4;
+    }
+
+    .quick-nav a:hover,
+    .quick-nav a.active {
+      color: var(--text);
+    }
+
+    .hero-side-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(240px, 0.9fr);
+      gap: 14px;
+      margin: 18px 0 18px;
+    }
+
+    .media-card {
+      border-radius: 18px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(26, 31, 38, 0.96), rgba(19, 22, 28, 0.96));
+    }
+
+    .media-card img {
+      width: 100%;
+      aspect-ratio: 1.55 / 1;
+      object-fit: cover;
+    }
+
+    .media-meta {
+      padding: 14px 16px 16px;
+    }
+
+    .media-meta h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .benefits-list {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted-strong);
+      font-size: 0.9rem;
+    }
+
+    .benefits-list li {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .benefits-list li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(182, 235, 130, 0.35);
+    }
+
+    .pro-tip {
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border-strong);
+      background:
+        linear-gradient(180deg, rgba(32, 39, 33, 0.72), rgba(25, 29, 28, 0.78));
+    }
+
+    .pro-tip .label {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .pro-tip p {
+      margin: 0;
+      color: var(--text);
+      font-size: 0.96rem;
+      line-height: 1.68;
     }
 
     .use-cases-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
     }
 
-    .use-cases-grid .card {
-      background: var(--bg-left);
+    .use-case-card {
+      padding: 18px 18px 16px;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(20, 24, 29, 0.92), rgba(17, 21, 26, 0.94));
     }
 
-    .use-cases-grid .card ul {
+    .use-case-card h4 {
+      margin-bottom: 12px;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .use-case-card ul {
+      margin: 0;
+      padding: 0;
       list-style: none;
-      margin-top: 0.8rem;
+      display: grid;
+      gap: 8px;
     }
 
-    .use-cases-grid .card ul li {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 0.4rem;
-    }
-    
-    .use-cases-grid .card ul li::before {
-      content: '• ';
-      color: var(--accent);
-    }
-
-    .bottom-section {
+    .use-case-card li {
       display: flex;
-      justify-content: space-between;
       align-items: flex-start;
-      margin-top: 3rem;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.52;
     }
 
-    .bottom-text {
-      flex: 1;
-      max-width: 250px;
+    .use-case-card li::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      margin-top: 0.5em;
+      border-radius: 50%;
+      background: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .cta-block {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+      gap: 20px;
+      align-items: center;
+      margin-top: 28px;
+      padding: 24px;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 18% 28%, rgba(182, 235, 130, 0.08), transparent 22%),
+        linear-gradient(180deg, rgba(19, 24, 29, 0.98), rgba(18, 21, 26, 0.98));
+    }
+
+    .cta-block p {
+      max-width: 36ch;
     }
 
     .bottom-watches {
-      width: 320px;
-      object-fit: contain;
-      mix-blend-mode: screen;
+      justify-self: end;
+      width: min(100%, 320px);
+      filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.32));
     }
 
     .btn {
-      display: inline-block;
-      padding: 0.6rem 1.2rem;
-      background: transparent;
-      color: var(--accent);
-      border: 1px solid var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 18px;
+      margin-top: 10px;
+      border: 1px solid rgba(182, 235, 130, 0.88);
       border-radius: 999px;
+      color: var(--accent);
       text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 500;
-      margin-top: 1rem;
-      transition: all 0.2s;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: rgba(182, 235, 130, 0.04);
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
     }
 
     .btn:hover {
-      background: rgba(180, 230, 142, 0.1);
+      transform: translateY(-1px);
+      background: rgba(182, 235, 130, 0.12);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
     }
 
-    /* Quick Nav */
-    .quick-nav {
-      position: absolute;
-      top: 2.5rem;
-      right: 2.5rem;
-      width: 150px;
-    }
-
-    .quick-nav h4 {
-      font-size: 0.85rem;
-      color: var(--text-main);
-      margin-bottom: 1rem;
-    }
-
-    .quick-nav ul {
-      list-style: none;
-    }
-
-    .quick-nav li {
-      margin-bottom: 0.6rem;
-    }
-
-    .quick-nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      transition: color 0.2s;
-    }
-
-    .quick-nav a:hover, .quick-nav a.active {
-      color: var(--text-main);
-    }
-
-    .quick-nav li.active {
-      border-left: 2px solid var(--accent);
-      padding-left: 0.8rem;
-      margin-left: -0.9rem;
-    }
-
-    @media (max-width: 1100px) {
-      .container {
-        flex-direction: column;
+    @media (max-width: 1260px) {
+      .page-shell {
+        width: min(calc(100% - 24px), var(--page-width));
+        padding: 14px;
       }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .left-pane {
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .right-pane-inner {
+        grid-template-columns: 1fr;
+      }
+
       .quick-nav {
-        display: none;
-      }
-      .hero-watch {
         position: static;
-        display: block;
-        margin-top: 2rem;
+        padding-left: 0;
+        border-left: 0;
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+      }
+
+      .quick-nav ul {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .site-header {
+        margin-bottom: 18px;
+      }
+
+      .left-pane,
+      .right-pane {
+        padding: 22px 20px 26px;
+      }
+
+      .hero-grid,
+      .hero-side-row,
+      .cta-block,
+      .insight-grid,
+      .use-cases-grid,
+      .quick-nav ul {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        min-height: 220px;
+      }
+
+      h1 {
+        max-width: 9.5ch;
+        font-size: clamp(2.2rem, 12vw, 3.4rem);
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      .bottom-watches {
+        justify-self: start;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Left Pane -->
-    <div class="left-pane">
-      <header class="header">
-        <div class="logo">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><path d="M12 6v6l4 2"/></svg>
-          Toggle Reminder
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="../index.html">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="6"></circle>
+          <path d="M12 6v6l4 2"></path>
+        </svg>
+        <span>Toggle Reminder</span>
+      </a>
+      <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16"></path>
+      </svg>
+    </header>
+
+    <main class="layout">
+      <section class="left-pane">
+        <div class="eyebrow">Prospective memory and wrist cues</div>
+
+        <div class="hero-grid" id="introduction">
+          <div>
+            <h1>Prospective memory works better when the reminder lives where you actually look</h1>
+          </div>
+          <div class="hero-visual" aria-hidden="true">
+            <img src="assets/hero_watch.png" alt="">
+          </div>
         </div>
-        <svg class="menu-icon" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-      </header>
 
-      <div class="hero-section">
-        <h1>Prospective memory works better when the reminder lives where you actually look</h1>
-        <img src="assets/hero_watch.png" alt="Smartwatch notification glow" class="hero-watch">
-      </div>
+        <section class="section" id="science">
+          <h2>The Science of Prospective Memory</h2>
+          <p>
+            Prospective memory is different from remembering facts or recalling a past event. It is remembering to act later. In daily life, many of these tasks are small, repeated, and easy to lose: did I already take my medication, do I still need to send that message, did I lock the car, did I finish today's habit?
+          </p>
+        </section>
 
-      <h2>The Science of Prospective Memory</h2>
-      <p>
-        Prospective memory is different from remembering facts or recalling a past event. It is remembering to act later. In daily life, many of these tasks are small, repeated, and easy to lose: did I already take my medication, do I still need to send that message, did I lock the car, did I finish today's habit?
-      </p>
+        <section class="section" id="problem">
+          <h2>The Problem: Fleeting vs. Persistent Cues</h2>
+          <p>
+            These tasks are vulnerable because they compete with whatever currently has your attention. If the cue is weak, delayed, or buried in a long notification list, the intention can disappear.
+          </p>
+          <div class="diagram-frame">
+            <img src="assets/diagram.png" alt="Fleeting notification vs Persistent wrist cue">
+          </div>
+        </section>
 
-      <h2>The Problem: Fleeting vs. Persistent Cues</h2>
-      <p>
-        These tasks are vulnerable because they compete with whatever currently has your attention. If the cue is weak, delayed, or buried in a long notification list, the intention can disappear.
-      </p>
-      <img src="assets/diagram.png" alt="Fleeting notification vs Persistent wrist cue" class="diagram-img">
+        <section class="section" id="why-cues-help">
+          <h2>Why External Cues Help</h2>
+          <p>
+            An external cue reduces the amount of memory work your brain has to do. Instead of rehearsing the intention internally, you offload it into the environment.
+          </p>
 
-      <h2>Why External Cues Help</h2>
-      <p>
-        An external cue reduces the amount of memory work your brain has to do. Instead of rehearsing the intention internally, you offload it into the environment.
-      </p>
-      
-      <div class="cards-grid">
-        <div class="card">
-          <h4><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Visible</h4>
-          <p><strong>Easier to re-check</strong><br>A visible cue is easier to re-check than a fleeting thought.</p>
+          <div class="insight-grid">
+            <article class="insight-card">
+              <div class="insight-title">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span>Visible</span>
+              </div>
+              <p>A visible cue is easier to re-check than a fleeting thought.</p>
+            </article>
+
+            <article class="insight-card is-accent">
+              <div class="insight-title">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"></path></svg>
+                <span>Persistent</span>
+              </div>
+              <p>A persistent cue is better than a one-time alert for unfinished tasks.</p>
+            </article>
+
+            <article class="insight-card">
+              <div class="insight-title">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <span>At Point of Action</span>
+              </div>
+              <p>A cue at the point of action is more useful than a cue that arrives too early.</p>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section class="right-pane">
+        <div class="right-pane-inner">
+          <div class="right-main">
+            <section class="section" id="wrist-glance">
+              <h2>The Wrist Glance: A Persistent Cue</h2>
+
+              <div class="hero-side-row">
+                <article class="media-card">
+                  <img src="assets/suit_meeting.png" alt="Business men in meeting">
+                  <div class="media-meta">
+                    <h3>Benefits</h3>
+                    <ul class="benefits-list">
+                      <li>Visible</li>
+                      <li>Persistent</li>
+                      <li>At point of action</li>
+                    </ul>
+                  </div>
+                </article>
+
+                <aside class="pro-tip">
+                  <span class="label">Pro Tip:</span>
+                  <p>Place reminders where your gaze naturally falls for maximum effectiveness.</p>
+                </aside>
+              </div>
+
+              <p>
+                That is why a note on the door works differently from a reminder notification you dismiss. One is still there when the action moment arrives. The same logic applies to a watch face: it sits in a place you naturally glance at throughout the day.
+              </p>
+            </section>
+
+            <section class="section" id="use-cases">
+              <h3>Use Cases</h3>
+              <div class="use-cases-grid">
+                <article class="use-case-card">
+                  <h4>Work follow-ups</h4>
+                  <ul>
+                    <li>Email follow ups</li>
+                    <li>Send HR forms</li>
+                    <li>Schedule calls</li>
+                  </ul>
+                </article>
+
+                <article class="use-case-card">
+                  <h4>Daily task tracking</h4>
+                  <ul>
+                    <li>Take medication</li>
+                    <li>Hydration breaks</li>
+                    <li>Check oven tasks</li>
+                  </ul>
+                </article>
+
+                <article class="use-case-card">
+                  <h4>Short-latency reminders</h4>
+                  <ul>
+                    <li>Check oven</li>
+                    <li>Check washer</li>
+                    <li>Move laundry</li>
+                  </ul>
+                </article>
+              </div>
+            </section>
+
+            <section class="section" id="solution">
+              <div class="cta-block">
+                <div>
+                  <h2>The Integrated Solution:<br>Toggle Reminder</h2>
+                  <p>
+                    For many everyday tasks, the ideal reminder is not a loud interruption. It is a quiet, always-available signal.
+                  </p>
+                  <p>
+                    Experience the scientific advantage of Toggle Reminder on your wrist.
+                  </p>
+                  <a href="https://play.google.com/store/apps/details?id=com.onr.watch_toggle_reminder" target="_blank" rel="noopener" class="btn">View Toggle Reminder on Google Play</a>
+                </div>
+                <img src="assets/bottom_watches.png" alt="Toggle Reminder watchfaces" class="bottom-watches">
+              </div>
+            </section>
+          </div>
+
+          <nav class="quick-nav" aria-label="Quick navigation">
+            <h4>Quick Nav</h4>
+            <ul>
+              <li><a href="#introduction">Introduction</a></li>
+              <li><a href="#science" class="active">The Science</a></li>
+              <li><a href="#problem">The Problem</a></li>
+              <li><a href="#why-cues-help">Why Cues Help</a></li>
+              <li><a href="#wrist-glance">The Wrist Glance</a></li>
+              <li><a href="#use-cases">Use Cases</a></li>
+              <li><a href="#solution">The Integrated Solution</a></li>
+            </ul>
+          </nav>
         </div>
-        <div class="card card-accent">
-          <h4><svg viewBox="0 0 24 24"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg> Persistent</h4>
-          <p><strong>Better than one-time alerts</strong><br>A persistent cue is better than a one-time alert for unfinished tasks.</p>
-        </div>
-        <div class="card">
-          <h4><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> At Point of Action</h4>
-          <p><strong>Better than early cues</strong><br>A cue at the point of action is more useful than a cue that arrives too early.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Pane -->
-    <div class="right-pane">
-      <nav class="quick-nav">
-        <h4>Quick Nav</h4>
-        <ul>
-          <li><a href="#">Introduction</a></li>
-          <li class="active"><a href="#" class="active">The Science</a></li>
-          <li><a href="#">The Problem</a></li>
-          <li><a href="#">Why Cues Help</a></li>
-          <li><a href="#">The Wrist Glance</a></li>
-          <li><a href="#">Use Cases</a></li>
-          <li><a href="#">The Integrated Solution</a></li>
-        </ul>
-      </nav>
-
-      <h2>The Wrist Glance: A Persistent Cue</h2>
-      
-      <div class="suit-pro-tip-container">
-        <img src="assets/suit_meeting.png" alt="Business men in meeting" class="suit-img">
-        <div class="pro-tip">
-          <h4>Pro Tip:</h4>
-          <p>Place reminders where your gaze naturally falls for maximum effectiveness.</p>
-        </div>
-      </div>
-
-      <p>
-        That is why a note on the door works differently from a reminder notification you dismiss. One is still there when the action moment arrives. The same logic applies to a watch face: it sits in a place you naturally glance at throughout the day.
-      </p>
-
-      <h3 style="margin-top: 2rem;">Benefits</h3>
-      <ul class="benefits-list">
-        <li>Visible</li>
-        <li>Persistent</li>
-        <li>At point of action</li>
-      </ul>
-
-      <h3 style="margin-top: 2rem;">Use Cases</h3>
-      <div class="use-cases-grid cards-grid">
-        <div class="card">
-          <h4>Work follow-ups</h4>
-          <ul>
-            <li>Email follow ups</li>
-            <li>Send HR forms</li>
-            <li>Schedule calls</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h4>Daily task tracking</h4>
-          <ul>
-            <li>Take medication</li>
-            <li>Hydration breaks</li>
-            <li>Check oven tasks</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h4>Short-latency reminders</h4>
-          <ul>
-            <li>Check oven</li>
-            <li>Check washer</li>
-            <li>Move laundry</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="bottom-section">
-        <div class="bottom-text">
-          <h2>The Integrated Solution:<br>Toggle Reminder</h2>
-          <p>For many everyday tasks, the ideal reminder is not a loud interruption. It is a quiet, always-available signal. Experience the scientific advantage of Toggle Reminder on your wrist.</p>
-          <a href="https://play.google.com/store/apps/details?id=com.onr.watch_toggle_reminder" target="_blank" class="btn">View Toggle Reminder on Google Play</a>
-        </div>
-        <img src="assets/bottom_watches.png" alt="Toggle Reminder watchfaces" class="bottom-watches">
-      </div>
-    </div>
+      </section>
+    </main>
   </div>
 </body>
 </html>
