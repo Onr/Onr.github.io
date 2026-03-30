@@ -149,7 +149,7 @@
       line-height: 1.72;
     }
 
-    /* ── Hero Visual (Now in Sidebar) ── */
+    /* ── Hero Visual (Sticky in Sidebar) ── */
     .hero-visual {
       position: relative;
       width: 100%;
@@ -187,16 +187,22 @@
     /* ── Main Layout Grid ── */
     .body-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) 240px;
-      gap: 28px;
+      grid-template-columns: minmax(0, 1fr) 240px;
+      gap: 40px;
       align-items: start;
       margin-bottom: 6px;
     }
 
     .hero-title {
-      grid-column: 1 / span 2;
+      grid-column: 1;
       margin-bottom: 32px;
       scroll-margin-top: 30px;
+    }
+
+    .col-content {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
     }
 
     .col-sidebar {
@@ -205,16 +211,12 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
-      grid-row: 1 / span 10; /* Span multiple rows to stay next to content */
-      grid-column: 3;
+      grid-row: 1 / span 10;
+      grid-column: 2;
     }
 
     .section {
       scroll-margin-top: 30px;
-    }
-
-    .col-left .section + .section {
-      margin-top: 26px;
     }
 
     /* ── Panels ── */
@@ -244,7 +246,7 @@
     .insight-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
+      gap: 12px;
       margin-top: 14px;
     }
 
@@ -323,19 +325,13 @@
       color: var(--text);
     }
 
-    /* ── Wrist Glance (center column) ── */
-    .col-center {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      overflow: hidden;
-    }
-
+    /* ── Wrist Glance Stack ── */
     .wrist-row {
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 12px;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
       align-items: start;
+      margin-top: 14px;
     }
 
     .media-card {
@@ -363,19 +359,19 @@
 
     .benefits-list {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin: 0;
+      margin: 10px 0 0 0;
       padding: 0;
       list-style: none;
       color: var(--muted-strong);
-      font-size: 0.9rem;
+      font-size: 0.94rem;
     }
 
     .benefits-list li {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
     }
 
     .benefits-list li::before {
@@ -388,7 +384,7 @@
     }
 
     .pro-tip {
-      padding: 14px 16px;
+      padding: 16px 20px;
       border-radius: 14px;
       border: 1px solid var(--border-strong);
       background: rgba(31, 38, 33, 0.72);
@@ -399,31 +395,26 @@
       margin-bottom: 8px;
       color: var(--accent);
       font-weight: 700;
-      font-size: 0.92rem;
+      font-size: 0.94rem;
     }
 
     .pro-tip p {
       margin: 0;
       color: var(--text);
-      font-size: 0.96rem;
+      font-size: 1rem;
       line-height: 1.6;
-    }
-
-    .wrist-text p {
-      font-size: 0.96rem;
-      line-height: 1.66;
     }
 
     /* ── Use Cases ── */
     .use-cases-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 12px;
+      gap: 14px;
+      margin-top: 16px;
     }
 
     .use-case-card {
-      padding: 14px 14px 12px;
+      padding: 16px 16px 14px;
       border-radius: 12px;
       background: var(--panel);
     }
@@ -431,7 +422,7 @@
     .use-case-card h4 {
       margin-bottom: 12px;
       font-family: var(--font-sans);
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       letter-spacing: -0.01em;
     }
@@ -441,7 +432,7 @@
       padding: 0;
       list-style: none;
       display: grid;
-      gap: 8px;
+      gap: 10px;
     }
 
     .use-case-card li {
@@ -449,15 +440,15 @@
       align-items: flex-start;
       gap: 8px;
       color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.58;
+      font-size: 0.94rem;
+      line-height: 1.6;
     }
 
     .use-case-card li::before {
       content: "";
       width: 6px;
       height: 6px;
-      margin-top: 0.5em;
+      margin-top: 0.55em;
       border-radius: 50%;
       background: var(--accent);
       flex: 0 0 auto;
@@ -466,25 +457,19 @@
     /* ── CTA ── */
     .cta-block {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(200px, 280px);
-      gap: 16px;
+      grid-template-columns: minmax(0, 1fr) minmax(200px, 300px);
+      gap: 20px;
       align-items: center;
-      margin-top: 20px;
-      padding: 18px;
+      margin-top: 24px;
+      padding: 24px;
       border-radius: 16px;
       background: var(--panel-strong);
     }
 
-    .cta-block p {
-      max-width: 36ch;
-    }
-
     .bottom-watches {
       justify-self: end;
-      width: min(100%, 260px);
+      width: min(100%, 280px);
       filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.32));
-      -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 66%, transparent 92%);
-      mask-image: radial-gradient(circle at 50% 45%, #000 66%, transparent 92%);
     }
 
     .btn {
@@ -492,155 +477,76 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      min-height: 42px;
-      padding: 0 16px;
-      margin-top: 8px;
+      min-height: 46px;
+      padding: 0 20px;
+      margin-top: 12px;
       border: 1px solid rgba(182, 235, 130, 0.88);
       border-radius: 999px;
       color: var(--accent);
       text-decoration: none;
-      font-size: 0.82rem;
+      font-size: 0.9rem;
       font-weight: 600;
       background: rgba(182, 235, 130, 0.06);
-      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.2s ease, background 0.2s ease;
     }
 
     .btn:hover {
       transform: translateY(-1px);
       background: rgba(182, 235, 130, 0.12);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
     }
 
-    /* ── Full-width sections below the grid ── */
+    /* ── Full-width sections ── */
     .section-full {
-      margin-top: 22px;
+      margin-top: 40px;
       scroll-margin-top: 30px;
     }
 
     /* ── Responsive ── */
-    @media (max-width: 1180px) {
-      .page-shell {
-        width: min(calc(100% - 24px), var(--page-width));
-      }
-
-      .content {
-        padding: 26px 24px 30px;
-      }
-    }
-
     @media (max-width: 960px) {
-      .body-grid {
-        grid-template-columns: minmax(0, 1fr) 220px;
-        gap: 18px;
-      }
-
-      .hero-title {
-        grid-column: 1;
-      }
-
-      .col-center {
-        grid-column: 1;
-      }
-
-      .col-sidebar {
-        grid-column: 2;
-        grid-row: 1 / span 10;
-      }
-
-      .wrist-row {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .site-header {
-        margin-bottom: 16px;
-      }
-
-      .content {
-        padding: 22px 20px 26px;
-      }
-
-      .hero-visual {
-        min-height: 180px;
-        justify-content: center;
-      }
-
-      h1 {
-        max-width: 14ch;
-        font-size: clamp(2.25rem, 12vw, 3.1rem);
-      }
-
-      h2 {
-        font-size: 1.85rem;
-      }
-
       .body-grid {
         grid-template-columns: 1fr;
         gap: 0;
       }
 
-      .hero-title {
-        margin-bottom: 20px;
-      }
-
-      .col-left .section + .section {
-        margin-top: 18px;
-      }
-
-      .col-center {
-        grid-template-columns: 1fr;
-        margin-top: 18px;
-      }
-
       .col-sidebar {
         position: static;
         order: -1;
-        margin-bottom: 18px;
-      }
-
-      .quick-nav {
-        order: 1;
+        margin-bottom: 30px;
       }
 
       .hero-visual {
-        order: 0;
+        max-width: 300px;
+        margin: 0 auto 20px;
       }
 
-      .insight-grid {
+      .quick-nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .insight-grid, .use-cases-grid, .wrist-row, .cta-block {
         grid-template-columns: 1fr;
       }
-
-      .use-cases-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .cta-block {
-        grid-template-columns: 1fr;
-      }
-
-      .bottom-watches {
-        justify-self: center;
-      }
+      
+      h1 { font-size: 2.25rem; }
     }
   </style>
 </head>
 <body>
   <div class="page-shell">
     <main class="content">
-      <!-- One Unified Grid for Title & Sidebar -->
       <div class="body-grid">
-        <!-- Hero Title (Spans two columns) -->
-        <div class="hero-title" id="introduction">
-          <h1>Prospective memory works better when the reminder lives where you actually look</h1>
-        </div>
+        <!-- Main Content -->
+        <div class="col-content">
+          <div class="hero-title" id="introduction">
+            <h1>Prospective memory works better when the reminder lives where you actually look</h1>
+          </div>
 
-        <!-- Left Sections (Column 1) -->
-        <div class="col-left">
           <section class="section" id="science">
             <h2>The Science of Prospective Memory</h2>
             <p>
-              Prospective memory is the ability to remember to perform an action at a future time. One recalling facts, remember the future environment is to translate recalling between actions and remembering future actions, thus can remembering future action to avoids.
+              Prospective memory is the ability to remember to perform an action at a future time. It is the bridge between intention and action.
             </p>
             <p>
               In daily life, many of these tasks are small, repeated, and easy to lose: did I already take my medication, do I still need to send that message, did I lock the car, did I finish today's habit?
@@ -669,7 +575,7 @@
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                   <span>Visible</span>
                 </div>
-                <p>Easier to re-check than a fleeting thought, external visual cues provide a physical signal.</p>
+                <p>Easier to re-check than a fleeting thought.</p>
               </article>
 
               <article class="insight-card is-accent">
@@ -677,7 +583,7 @@
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"></path></svg>
                   <span>Persistent</span>
                 </div>
-                <p>Better than one-time alerts. Wrist cues offer a continuous signal, reducing cognitive load.</p>
+                <p>Better than one-time alerts. Wrist cues offer a continuous signal.</p>
               </article>
 
               <article class="insight-card">
@@ -685,42 +591,38 @@
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                   <span>At Point of Action</span>
                 </div>
-                <p>Better than early cues. Reminders are most effective when visible during the action moment.</p>
+                <p>Visible during the exact moment of decision.</p>
               </article>
+            </div>
+          </section>
+
+          <section class="section" id="wrist-glance">
+            <h2>The Wrist Glance: A Persistent Cue</h2>
+            <p>
+              By positioning reminders on your wrist, you create a persistent visual cue that is easily accessible during daily activities.
+            </p>
+
+            <div class="wrist-row">
+              <article class="media-card">
+                <img src="assets/watchinmeeting.png" alt="Business meeting with watch reminder">
+                <div class="media-meta">
+                  <h3>Key Benefits</h3>
+                  <ul class="benefits-list">
+                    <li>Instantly Visible</li>
+                    <li>Low Friction</li>
+                    <li>Zero Notification Noise</li>
+                  </ul>
+                </div>
+              </article>
+              <aside class="pro-tip">
+                <span class="label">Pro Tip:</span>
+                <p>Place reminders where your gaze naturally falls for maximum effectiveness.</p>
+              </aside>
             </div>
           </section>
         </div>
 
-        <!-- Center Column (Column 2) -->
-        <div class="col-center" id="wrist-glance">
-          <h2>The Wrist Glance: A Persistent Cue</h2>
-
-          <div class="wrist-row">
-            <article class="media-card">
-              <img src="assets/watchinmeeting.png" alt="Business meeting with watch reminder">
-            </article>
-            <aside class="pro-tip">
-              <span class="label">Pro Tip:</span>
-              <p>Place reminders where your gaze naturally falls for maximum effectiveness.</p>
-            </aside>
-          </div>
-
-          <div class="wrist-text">
-            <h3>The Wrist Glance:</h3>
-            <p>
-              By positioning reminders on your wrist, you create a persistent visual cue that is easily accessible during daily activities, reducing the cognitive load of remembering.
-            </p>
-
-            <h3>Benefits</h3>
-            <ul class="benefits-list">
-              <li>Visible</li>
-              <li>Persistent</li>
-              <li>At point of action</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Sticky Sidebar (Column 3) -->
+        <!-- Sticky Sidebar -->
         <div class="col-sidebar">
           <div class="hero-visual" aria-hidden="true">
             <img src="assets/powerwatch.png" alt="">
@@ -749,27 +651,27 @@
           <article class="use-case-card">
             <h4>Cognitive Load & ADHD</h4>
             <ul>
-              <li><strong>Medication Tracking:</strong> Eliminate the "did I take it?" anxiety with an instant visual state.</li>
-              <li><strong>Task Switching:</strong> Maintain focus during transitions by keeping the primary goal on your wrist.</li>
-              <li><strong>Mental Buffer:</strong> Offload small 'to-dos' to free up bandwidth for deep work.</li>
+              <li><strong>Medication Tracking:</strong> Eliminate the "did I take it?" anxiety.</li>
+              <li><strong>Task Switching:</strong> Maintain focus during transitions.</li>
+              <li><strong>Mental Buffer:</strong> Offload small 'to-dos' to free up bandwidth.</li>
             </ul>
           </article>
 
           <article class="use-case-card">
             <h4>Habits & Consistency</h4>
             <ul>
-              <li><strong>Hydration/Health:</strong> A constant reminder to drink water or stand up that doesn't disappear.</li>
-              <li><strong>Daily Rituals:</strong> Close your rings or finish your reading habit with a visible toggle.</li>
-              <li><strong>Streak Protection:</strong> Never lose a habit streak due to a simple "forgetting to log" error.</li>
+              <li><strong>Hydration/Health:</strong> A constant reminder to drink water or stand up.</li>
+              <li><strong>Daily Rituals:</strong> Close your rings or finish your reading habit.</li>
+              <li><strong>Streak Protection:</strong> Never lose a habit streak due to error.</li>
             </ul>
           </article>
 
           <article class="use-case-card">
             <h4>Safety & Critical Checks</h4>
             <ul>
-              <li><strong>Home Security:</strong> "Did I lock the front door?"—check your wrist, not your anxiety.</li>
-              <li><strong>Kitchen Safety:</strong> A persistent indicator for the oven or stove that stays active until cleared.</li>
-              <li><strong>Short-Latency Tasks:</strong> Perfect for the 15-minute laundry cycle or a boiling pot.</li>
+              <li><strong>Home Security:</strong> "Did I lock the front door?"—check your wrist.</li>
+              <li><strong>Kitchen Safety:</strong> A persistent indicator for the oven or stove.</li>
+              <li><strong>Short-Latency Tasks:</strong> Perfect for laundry or a boiling pot.</li>
             </ul>
           </article>
         </div>
@@ -778,7 +680,7 @@
       <section class="section-full" id="solution">
         <div class="cta-block">
           <div>
-            <h2>The Integrated Solution:<br>Toggle Reminder</h2>
+            <h2>The Integrated Solution: Toggle Reminder</h2>
             <p>
               Experience the scientific advantage of Toggle Reminder on your wrist.
             </p>
