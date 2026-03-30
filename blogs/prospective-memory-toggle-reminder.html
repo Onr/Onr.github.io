@@ -112,13 +112,7 @@
       padding: 30px 30px 34px;
     }
 
-    /* ── Hero ── */
-    .hero-grid {
-      display: block;
-      margin-bottom: 32px;
-      scroll-margin-top: 30px;
-    }
-
+    /* ── Typography ── */
     h1, h2, h3, h4 {
       margin: 0;
       font-family: var(--font-serif);
@@ -155,6 +149,7 @@
       line-height: 1.72;
     }
 
+    /* ── Hero Visual (Now in Sidebar) ── */
     .hero-visual {
       position: relative;
       width: 100%;
@@ -189,7 +184,7 @@
       opacity: 0.96;
     }
 
-    /* ── Three-column body ── */
+    /* ── Main Layout Grid ── */
     .body-grid {
       display: grid;
       grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) 240px;
@@ -198,12 +193,20 @@
       margin-bottom: 6px;
     }
 
+    .hero-title {
+      grid-column: 1 / span 2;
+      margin-bottom: 32px;
+      scroll-margin-top: 30px;
+    }
+
     .col-sidebar {
       position: sticky;
       top: 20px;
       display: flex;
       flex-direction: column;
       gap: 20px;
+      grid-row: 1 / span 10; /* Span multiple rows to stay next to content */
+      grid-column: 3;
     }
 
     .section {
@@ -531,12 +534,17 @@
         gap: 18px;
       }
 
+      .hero-title {
+        grid-column: 1;
+      }
+
       .col-center {
         grid-column: 1;
       }
 
       .col-sidebar {
         grid-column: 2;
+        grid-row: 1 / span 10;
       }
 
       .wrist-row {
@@ -551,11 +559,6 @@
 
       .content {
         padding: 22px 20px 26px;
-      }
-
-      .hero-grid {
-        grid-template-columns: 1fr;
-        min-height: auto;
       }
 
       .hero-visual {
@@ -577,6 +580,10 @@
         gap: 0;
       }
 
+      .hero-title {
+        margin-bottom: 20px;
+      }
+
       .col-left .section + .section {
         margin-top: 18px;
       }
@@ -586,10 +593,18 @@
         margin-top: 18px;
       }
 
-      .quick-nav {
+      .col-sidebar {
         position: static;
         order: -1;
         margin-bottom: 18px;
+      }
+
+      .quick-nav {
+        order: 1;
+      }
+
+      .hero-visual {
+        order: 0;
       }
 
       .insight-grid {
@@ -613,15 +628,14 @@
 <body>
   <div class="page-shell">
     <main class="content">
-      <!-- Hero -->
-      <div class="hero-grid" id="introduction">
-        <div class="hero-title">
+      <!-- One Unified Grid for Title & Sidebar -->
+      <div class="body-grid">
+        <!-- Hero Title (Spans two columns) -->
+        <div class="hero-title" id="introduction">
           <h1>Prospective memory works better when the reminder lives where you actually look</h1>
         </div>
-      </div>
 
-      <!-- Three-column body: Left sections | Wrist Glance | Quick Nav -->
-      <div class="body-grid">
+        <!-- Left Sections (Column 1) -->
         <div class="col-left">
           <section class="section" id="science">
             <h2>The Science of Prospective Memory</h2>
@@ -677,6 +691,7 @@
           </section>
         </div>
 
+        <!-- Center Column (Column 2) -->
         <div class="col-center" id="wrist-glance">
           <h2>The Wrist Glance: A Persistent Cue</h2>
 
@@ -705,6 +720,7 @@
           </div>
         </div>
 
+        <!-- Sticky Sidebar (Column 3) -->
         <div class="col-sidebar">
           <div class="hero-visual" aria-hidden="true">
             <img src="assets/powerwatch.png" alt="">
