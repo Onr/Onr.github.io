@@ -3,10 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Toggle Reminder | Prospective Memory</title>
+  <title>Prospective Memory & Toggle Reminders | ADHD & Habits Tool</title>
+  <meta name="description" content="Discover how persistent wrist reminders improve prospective memory, ADHD management, and habit tracking. The science-backed way to never forget a daily task again.">
+  <meta name="keywords" content="prospective memory, ADHD reminders, habit tracking, Wear OS app, daily task reminder, memory cues, cognitive load reduction, Toggle Reminder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-left: #12151a;
@@ -23,6 +25,7 @@
       --shadow: 0 26px 70px rgba(0, 0, 0, 0.32);
       --font-serif: "Newsreader", serif;
       --font-sans: "Inter", sans-serif;
+      --font-title: "Plus Jakarta Sans", var(--font-sans);
       --page-width: 1240px;
     }
 
@@ -130,8 +133,11 @@
     h1 {
       max-width: none;
       width: 100%;
+      font-family: var(--font-title);
+      font-weight: 800;
       font-size: clamp(2.8rem, 4.2vw, 4.4rem);
       line-height: 1.05;
+      letter-spacing: -0.02em;
     }
 
     h2 {
@@ -715,32 +721,33 @@
 
       <!-- Full-width sections -->
       <section class="section-full" id="use-cases">
-        <h3>Use Cases</h3>
+        <h3>High-Value Use Cases</h3>
+        <p>From cognitive support to high-stakes safety, see how a persistent wrist cue transforms intentions into actions.</p>
         <div class="use-cases-grid">
           <article class="use-case-card">
-            <h4>Work follow-ups</h4>
+            <h4>Cognitive Load & ADHD</h4>
             <ul>
-              <li>Email follow ups</li>
-              <li>Send HR forms</li>
-              <li>Schedule calls</li>
+              <li><strong>Medication Tracking:</strong> Eliminate the "did I take it?" anxiety with an instant visual state.</li>
+              <li><strong>Task Switching:</strong> Maintain focus during transitions by keeping the primary goal on your wrist.</li>
+              <li><strong>Mental Buffer:</strong> Offload small 'to-dos' to free up bandwidth for deep work.</li>
             </ul>
           </article>
 
           <article class="use-case-card">
-            <h4>Daily task tracking</h4>
+            <h4>Habits & Consistency</h4>
             <ul>
-              <li>Take medication</li>
-              <li>Hydration breaks</li>
-              <li>Check oven tasks</li>
+              <li><strong>Hydration/Health:</strong> A constant reminder to drink water or stand up that doesn't disappear.</li>
+              <li><strong>Daily Rituals:</strong> Close your rings or finish your reading habit with a visible toggle.</li>
+              <li><strong>Streak Protection:</strong> Never lose a habit streak due to a simple "forgetting to log" error.</li>
             </ul>
           </article>
 
           <article class="use-case-card">
-            <h4>Short-latency reminders</h4>
+            <h4>Safety & Critical Checks</h4>
             <ul>
-              <li>Check oven</li>
-              <li>Check washer</li>
-              <li>Move laundry</li>
+              <li><strong>Home Security:</strong> "Did I lock the front door?"—check your wrist, not your anxiety.</li>
+              <li><strong>Kitchen Safety:</strong> A persistent indicator for the oven or stove that stays active until cleared.</li>
+              <li><strong>Short-Latency Tasks:</strong> Perfect for the 15-minute laundry cycle or a boiling pot.</li>
             </ul>
           </article>
         </div>
