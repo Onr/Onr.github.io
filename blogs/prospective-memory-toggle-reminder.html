@@ -114,12 +114,8 @@
 
     /* ── Hero ── */
     .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 2.5fr) minmax(200px, 0.6fr);
-      gap: 30px;
-      align-items: center;
+      display: block;
       margin-bottom: 32px;
-      min-height: 240px;
       scroll-margin-top: 30px;
     }
 
@@ -131,7 +127,7 @@
     }
 
     h1 {
-      max-width: none;
+      max-width: 20ch;
       width: 100%;
       font-family: var(--font-title);
       font-weight: 800;
@@ -161,10 +157,10 @@
 
     .hero-visual {
       position: relative;
-      grid-column: 2;
-      min-height: 230px;
+      width: 100%;
+      min-height: 200px;
+      margin-bottom: 20px;
       border-radius: 16px;
-      border: none;
       background: transparent;
       display: flex;
       align-items: center;
@@ -176,10 +172,8 @@
     .hero-visual::before {
       content: "";
       position: absolute;
-      width: 200px;
-      height: 200px;
-      right: 18px;
-      top: 6px;
+      width: 160px;
+      height: 160px;
       background: radial-gradient(circle, rgba(182, 235, 130, 0.28), transparent 60%);
       filter: blur(4px);
       opacity: 0.9;
@@ -187,9 +181,9 @@
     }
 
     .hero-visual img {
-      width: min(100%, 260px);
+      width: 100%;
+      max-width: 220px;
       mix-blend-mode: normal;
-      transform: translate(6px, 2px);
       filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.45)) saturate(1.08);
       z-index: 1;
       opacity: 0.96;
@@ -198,10 +192,18 @@
     /* ── Three-column body ── */
     .body-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr) 200px;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) 240px;
       gap: 28px;
       align-items: start;
       margin-bottom: 6px;
+    }
+
+    .col-sidebar {
+      position: sticky;
+      top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .section {
@@ -283,9 +285,6 @@
 
     /* ── Quick Nav (right sidebar) ── */
     .quick-nav {
-      position: sticky;
-      top: 20px;
-      align-self: start;
       padding: 12px 14px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 14px;
@@ -528,12 +527,16 @@
 
     @media (max-width: 960px) {
       .body-grid {
-        grid-template-columns: minmax(0, 1fr) 180px;
+        grid-template-columns: minmax(0, 1fr) 220px;
         gap: 18px;
       }
 
       .col-center {
         grid-column: 1;
+      }
+
+      .col-sidebar {
+        grid-column: 2;
       }
 
       .wrist-row {
@@ -614,9 +617,6 @@
       <div class="hero-grid" id="introduction">
         <div class="hero-title">
           <h1>Prospective memory works better when the reminder lives where you actually look</h1>
-        </div>
-        <div class="hero-visual" aria-hidden="true">
-          <img src="assets/powerwatch.png" alt="">
         </div>
       </div>
 
@@ -705,18 +705,24 @@
           </div>
         </div>
 
-        <nav class="quick-nav" aria-label="Quick navigation">
-          <h4>Quick Nav</h4>
-          <ul>
-            <li><a href="#introduction">Introduction</a></li>
-            <li><a href="#science">The Science</a></li>
-            <li><a href="#problem">The Problem</a></li>
-            <li><a href="#why-cues-help">Why Cues Help</a></li>
-            <li><a href="#wrist-glance">The Wrist Glance</a></li>
-            <li><a href="#use-cases">Use Cases</a></li>
-            <li><a href="#solution">The Integrated Solution</a></li>
-          </ul>
-        </nav>
+        <div class="col-sidebar">
+          <div class="hero-visual" aria-hidden="true">
+            <img src="assets/powerwatch.png" alt="">
+          </div>
+
+          <nav class="quick-nav" aria-label="Quick navigation">
+            <h4>Quick Nav</h4>
+            <ul>
+              <li><a href="#introduction">Introduction</a></li>
+              <li><a href="#science">The Science</a></li>
+              <li><a href="#problem">The Problem</a></li>
+              <li><a href="#why-cues-help">Why Cues Help</a></li>
+              <li><a href="#wrist-glance">The Wrist Glance</a></li>
+              <li><a href="#use-cases">Use Cases</a></li>
+              <li><a href="#solution">The Integrated Solution</a></li>
+            </ul>
+          </nav>
+        </div>
       </div>
 
       <!-- Full-width sections -->
