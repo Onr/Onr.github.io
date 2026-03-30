@@ -220,7 +220,6 @@
     }
 
     /* ── Panels ── */
-    .diagram-frame,
     .media-card,
     .insight-card,
     .use-case-card,
@@ -231,15 +230,18 @@
     }
 
     .diagram-frame {
-      margin-top: 14px;
-      padding: 12px;
-      border-radius: 16px;
-      background: var(--panel-strong);
+      margin: 28px 0;
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
     }
 
     .diagram-frame img {
       width: 100%;
-      border-radius: 12px;
+      height: auto;
+      border-radius: 0;
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.22));
     }
 
     /* ── Insight cards ── */
