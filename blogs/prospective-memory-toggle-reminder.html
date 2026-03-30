@@ -39,6 +39,7 @@
       min-height: 100vh;
       font-family: var(--font-sans);
       color: var(--text);
+      font-size: 16.5px;
       background:
         radial-gradient(circle at 22% 18%, rgba(182, 235, 130, 0.08), transparent 30%),
         radial-gradient(circle at 78% 70%, rgba(82, 140, 167, 0.1), transparent 26%),
@@ -94,47 +95,32 @@
       stroke: var(--muted);
       stroke-width: 1.8;
       fill: none;
+      cursor: pointer;
     }
 
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-      gap: 0;
-      overflow: hidden;
+    .content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
       border-radius: 18px;
       border: 1px solid var(--border);
-      background: transparent;
+      background: linear-gradient(135deg, var(--bg-left), var(--bg-right));
       box-shadow: var(--shadow);
-    }
-
-    .left-pane,
-    .right-pane {
-      position: relative;
       padding: 30px 30px 34px;
     }
 
-    .left-pane {
-      border-right: 1px solid var(--border);
-      background: var(--bg-left);
-    }
-
-    .right-pane {
-      background: var(--bg-right);
-    }
-
+    /* ── Hero ── */
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(200px, 0.95fr);
-      gap: 20px;
+      grid-template-columns: minmax(0, 2.5fr) minmax(200px, 0.6fr);
+      gap: 30px;
       align-items: center;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
       min-height: 240px;
+      scroll-margin-top: 30px;
     }
 
-    h1,
-    h2,
-    h3,
-    h4 {
+    h1, h2, h3, h4 {
       margin: 0;
       font-family: var(--font-serif);
       font-weight: 500;
@@ -142,51 +128,52 @@
     }
 
     h1 {
-      max-width: 12ch;
-      font-size: clamp(2.6rem, 3.6vw, 4rem);
-      line-height: 0.98;
-      text-wrap: balance;
+      max-width: none;
+      width: 100%;
+      font-size: clamp(2.8rem, 4.2vw, 4.4rem);
+      line-height: 1.05;
     }
 
     h2 {
-      font-size: clamp(1.55rem, 2vw, 2.1rem);
-      line-height: 1.08;
-      margin-bottom: 10px;
+      font-size: clamp(1.75rem, 2.2vw, 2.4rem);
+      line-height: 1.12;
+      margin-bottom: 12px;
       text-wrap: balance;
     }
 
     h3 {
-      font-size: 1.35rem;
+      font-size: 1.48rem;
       margin-bottom: 12px;
     }
 
     p {
-      margin: 0 0 12px;
+      margin: 0 0 14px;
       color: var(--muted);
-      font-size: 0.93rem;
-      line-height: 1.66;
+      font-size: 1rem;
+      line-height: 1.72;
     }
 
     .hero-visual {
       position: relative;
-      min-height: 210px;
+      grid-column: 2;
+      min-height: 230px;
       border-radius: 16px;
       border: none;
       background: transparent;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: center;
       overflow: visible;
-      margin-right: -6px;
+      padding: 0;
     }
 
     .hero-visual::before {
       content: "";
       position: absolute;
-      width: 180px;
-      height: 180px;
-      right: 20px;
-      top: 10px;
+      width: 200px;
+      height: 200px;
+      right: 18px;
+      top: 6px;
       background: radial-gradient(circle, rgba(182, 235, 130, 0.28), transparent 60%);
       filter: blur(4px);
       opacity: 0.9;
@@ -194,22 +181,32 @@
     }
 
     .hero-visual img {
-      width: min(100%, 220px);
-      mix-blend-mode: screen;
-      transform: translate(18px, 4px);
+      width: min(100%, 260px);
+      mix-blend-mode: normal;
+      transform: translate(6px, 2px);
       filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.45)) saturate(1.08);
       z-index: 1;
-      opacity: 0.92;
-      clip-path: circle(46% at 58% 42%);
-      -webkit-mask-image: radial-gradient(circle at 52% 48%, #000 48%, rgba(0, 0, 0, 0.25) 60%, transparent 78%);
-      mask-image: radial-gradient(circle at 52% 48%, #000 48%, rgba(0, 0, 0, 0.25) 60%, transparent 78%);
+      opacity: 0.96;
+    }
+
+    /* ── Three-column body ── */
+    .body-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr) 200px;
+      gap: 28px;
+      align-items: start;
+      margin-bottom: 6px;
     }
 
     .section {
-      margin-top: 22px;
       scroll-margin-top: 30px;
     }
 
+    .col-left .section + .section {
+      margin-top: 26px;
+    }
+
+    /* ── Panels ── */
     .diagram-frame,
     .media-card,
     .insight-card,
@@ -232,6 +229,7 @@
       border-radius: 12px;
     }
 
+    /* ── Insight cards ── */
     .insight-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -273,33 +271,26 @@
 
     .insight-card p {
       margin: 0;
-      font-size: 0.82rem;
-      line-height: 1.52;
+      font-size: 0.92rem;
+      line-height: 1.6;
     }
 
-    .right-pane-inner {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 140px;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .right-main {
-      min-width: 0;
-    }
-
+    /* ── Quick Nav (right sidebar) ── */
     .quick-nav {
       position: sticky;
-      top: 22px;
+      top: 20px;
       align-self: start;
-      padding-left: 14px;
-      border-left: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      background: rgba(19, 23, 30, 0.88);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
     }
 
     .quick-nav h4 {
       margin-bottom: 12px;
       font-family: var(--font-sans);
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       font-weight: 700;
       letter-spacing: 0.01em;
     }
@@ -315,7 +306,7 @@
     .quick-nav a {
       color: var(--muted);
       text-decoration: none;
-      font-size: 0.78rem;
+      font-size: 0.84rem;
       line-height: 1.4;
     }
 
@@ -324,11 +315,19 @@
       color: var(--text);
     }
 
-    .hero-side-row {
+    /* ── Wrist Glance (center column) ── */
+    .col-center {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    .wrist-row {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(220px, 0.9fr);
+      grid-template-columns: 1.2fr 1fr;
       gap: 12px;
-      margin: 18px 0 18px;
+      align-items: start;
     }
 
     .media-card {
@@ -339,8 +338,10 @@
 
     .media-card img {
       width: 100%;
-      aspect-ratio: 1.55 / 1;
-      object-fit: cover;
+      height: auto;
+      aspect-ratio: auto;
+      object-fit: contain;
+      background: #0f1216;
     }
 
     .media-meta {
@@ -360,7 +361,7 @@
       padding: 0;
       list-style: none;
       color: var(--muted-strong);
-      font-size: 0.82rem;
+      font-size: 0.9rem;
     }
 
     .benefits-list li {
@@ -396,10 +397,16 @@
     .pro-tip p {
       margin: 0;
       color: var(--text);
-      font-size: 0.88rem;
-      line-height: 1.58;
+      font-size: 0.96rem;
+      line-height: 1.6;
     }
 
+    .wrist-text p {
+      font-size: 0.96rem;
+      line-height: 1.66;
+    }
+
+    /* ── Use Cases ── */
     .use-cases-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -416,7 +423,7 @@
     .use-case-card h4 {
       margin-bottom: 12px;
       font-family: var(--font-sans);
-      font-size: 0.92rem;
+      font-size: 1rem;
       font-weight: 700;
       letter-spacing: -0.01em;
     }
@@ -434,8 +441,8 @@
       align-items: flex-start;
       gap: 8px;
       color: var(--muted);
-      font-size: 0.82rem;
-      line-height: 1.5;
+      font-size: 0.92rem;
+      line-height: 1.58;
     }
 
     .use-case-card li::before {
@@ -448,6 +455,7 @@
       flex: 0 0 auto;
     }
 
+    /* ── CTA ── */
     .cta-block {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(200px, 280px);
@@ -495,63 +503,59 @@
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
     }
 
+    /* ── Full-width sections below the grid ── */
+    .section-full {
+      margin-top: 22px;
+      scroll-margin-top: 30px;
+    }
+
+    /* ── Responsive ── */
     @media (max-width: 1180px) {
       .page-shell {
         width: min(calc(100% - 24px), var(--page-width));
       }
 
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .left-pane {
-        border-right: 0;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .right-pane-inner {
-        grid-template-columns: 1fr;
-      }
-
-      .quick-nav {
-        position: static;
-        padding-left: 0;
-        border-left: 0;
-        border-top: 1px solid var(--border);
-        padding-top: 12px;
-      }
-
-      .quick-nav ul {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+      .content {
+        padding: 26px 24px 30px;
       }
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 960px) {
+      .body-grid {
+        grid-template-columns: minmax(0, 1fr) 180px;
+        gap: 18px;
+      }
+
+      .col-center {
+        grid-column: 1;
+      }
+
+      .wrist-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
       .site-header {
         margin-bottom: 16px;
       }
 
-      .left-pane,
-      .right-pane {
+      .content {
         padding: 22px 20px 26px;
       }
 
-      .hero-grid,
-      .hero-side-row,
-      .cta-block,
-      .insight-grid,
-      .use-cases-grid,
-      .quick-nav ul {
+      .hero-grid {
         grid-template-columns: 1fr;
+        min-height: auto;
       }
 
       .hero-visual {
-        min-height: 200px;
+        min-height: 180px;
         justify-content: center;
       }
 
       h1 {
-        max-width: 12ch;
+        max-width: 14ch;
         font-size: clamp(2.25rem, 12vw, 3.1rem);
       }
 
@@ -559,184 +563,233 @@
         font-size: 1.85rem;
       }
 
+      .body-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .col-left .section + .section {
+        margin-top: 18px;
+      }
+
+      .col-center {
+        grid-template-columns: 1fr;
+        margin-top: 18px;
+      }
+
+      .quick-nav {
+        position: static;
+        order: -1;
+        margin-bottom: 18px;
+      }
+
+      .insight-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .use-cases-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-block {
+        grid-template-columns: 1fr;
+      }
+
       .bottom-watches {
-        justify-self: start;
+        justify-self: center;
       }
     }
   </style>
 </head>
 <body>
   <div class="page-shell">
-    <header class="site-header">
-      <a class="brand" href="../index.html">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"></circle>
-          <circle cx="12" cy="12" r="6"></circle>
-          <path d="M12 6v6l4 2"></path>
-        </svg>
-        <span>Toggle Reminder</span>
-      </a>
-      <svg class="menu-icon" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 7h16M4 12h16M4 17h16"></path>
-      </svg>
-    </header>
+    <main class="content">
+      <!-- Hero -->
+      <div class="hero-grid" id="introduction">
+        <div class="hero-title">
+          <h1>Prospective memory works better when the reminder lives where you actually look</h1>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <img src="assets/powerwatch.png" alt="">
+        </div>
+      </div>
 
-    <main class="layout">
-      <section class="left-pane">
-        <div class="hero-grid" id="introduction">
-          <div>
-            <h1>Prospective memory works better when the reminder lives where you actually look</h1>
+      <!-- Three-column body: Left sections | Wrist Glance | Quick Nav -->
+      <div class="body-grid">
+        <div class="col-left">
+          <section class="section" id="science">
+            <h2>The Science of Prospective Memory</h2>
+            <p>
+              Prospective memory is the ability to remember to perform an action at a future time. One recalling facts, remember the future environment is to translate recalling between actions and remembering future actions, thus can remembering future action to avoids.
+            </p>
+            <p>
+              In daily life, many of these tasks are small, repeated, and easy to lose: did I already take my medication, do I still need to send that message, did I lock the car, did I finish today's habit?
+            </p>
+          </section>
+
+          <section class="section" id="problem">
+            <h2>The Problem: Fleeting vs. Persistent Cues</h2>
+            <p>
+              These tasks are vulnerable because they compete with whatever currently has your attention. If the cue is weak, delayed, or buried in a long notification list, the intention can disappear.
+            </p>
+            <div class="diagram-frame">
+              <img src="assets/diagram.png" alt="Fleeting notification vs Persistent wrist cue">
+            </div>
+          </section>
+
+          <section class="section" id="why-cues-help">
+            <h2>Why External Cues Help</h2>
+            <p>
+              An external cue reduces the amount of memory work your brain has to do. Instead of rehearsing the intention internally, you offload it into the environment.
+            </p>
+
+            <div class="insight-grid">
+              <article class="insight-card">
+                <div class="insight-title">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <span>Visible</span>
+                </div>
+                <p>Easier to re-check than a fleeting thought, external visual cues provide a physical signal.</p>
+              </article>
+
+              <article class="insight-card is-accent">
+                <div class="insight-title">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"></path></svg>
+                  <span>Persistent</span>
+                </div>
+                <p>Better than one-time alerts. Wrist cues offer a continuous signal, reducing cognitive load.</p>
+              </article>
+
+              <article class="insight-card">
+                <div class="insight-title">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                  <span>At Point of Action</span>
+                </div>
+                <p>Better than early cues. Reminders are most effective when visible during the action moment.</p>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-center" id="wrist-glance">
+          <h2>The Wrist Glance: A Persistent Cue</h2>
+
+          <div class="wrist-row">
+            <article class="media-card">
+              <img src="assets/watchinmeeting.png" alt="Business meeting with watch reminder">
+            </article>
+            <aside class="pro-tip">
+              <span class="label">Pro Tip:</span>
+              <p>Place reminders where your gaze naturally falls for maximum effectiveness.</p>
+            </aside>
           </div>
-          <div class="hero-visual" aria-hidden="true">
-            <img src="assets/hero_watch.png" alt="">
+
+          <div class="wrist-text">
+            <h3>The Wrist Glance:</h3>
+            <p>
+              By positioning reminders on your wrist, you create a persistent visual cue that is easily accessible during daily activities, reducing the cognitive load of remembering.
+            </p>
+
+            <h3>Benefits</h3>
+            <ul class="benefits-list">
+              <li>Visible</li>
+              <li>Persistent</li>
+              <li>At point of action</li>
+            </ul>
           </div>
         </div>
 
-        <section class="section" id="science">
-          <h2>The Science of Prospective Memory</h2>
-          <p>
-            Prospective memory is different from remembering facts or recalling a past event. It is remembering to act later. In daily life, many of these tasks are small, repeated, and easy to lose: did I already take my medication, do I still need to send that message, did I lock the car, did I finish today's habit?
-          </p>
-        </section>
+        <nav class="quick-nav" aria-label="Quick navigation">
+          <h4>Quick Nav</h4>
+          <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#science">The Science</a></li>
+            <li><a href="#problem">The Problem</a></li>
+            <li><a href="#why-cues-help">Why Cues Help</a></li>
+            <li><a href="#wrist-glance">The Wrist Glance</a></li>
+            <li><a href="#use-cases">Use Cases</a></li>
+            <li><a href="#solution">The Integrated Solution</a></li>
+          </ul>
+        </nav>
+      </div>
 
-        <section class="section" id="problem">
-          <h2>The Problem: Fleeting vs. Persistent Cues</h2>
-          <p>
-            These tasks are vulnerable because they compete with whatever currently has your attention. If the cue is weak, delayed, or buried in a long notification list, the intention can disappear.
-          </p>
-          <div class="diagram-frame">
-            <img src="assets/diagram.png" alt="Fleeting notification vs Persistent wrist cue">
-          </div>
-        </section>
+      <!-- Full-width sections -->
+      <section class="section-full" id="use-cases">
+        <h3>Use Cases</h3>
+        <div class="use-cases-grid">
+          <article class="use-case-card">
+            <h4>Work follow-ups</h4>
+            <ul>
+              <li>Email follow ups</li>
+              <li>Send HR forms</li>
+              <li>Schedule calls</li>
+            </ul>
+          </article>
 
-        <section class="section" id="why-cues-help">
-          <h2>Why External Cues Help</h2>
-          <p>
-            An external cue reduces the amount of memory work your brain has to do. Instead of rehearsing the intention internally, you offload it into the environment.
-          </p>
+          <article class="use-case-card">
+            <h4>Daily task tracking</h4>
+            <ul>
+              <li>Take medication</li>
+              <li>Hydration breaks</li>
+              <li>Check oven tasks</li>
+            </ul>
+          </article>
 
-          <div class="insight-grid">
-            <article class="insight-card">
-              <div class="insight-title">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                <span>Visible</span>
-              </div>
-              <p>A visible cue is easier to re-check than a fleeting thought.</p>
-            </article>
-
-            <article class="insight-card is-accent">
-              <div class="insight-title">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"></path></svg>
-                <span>Persistent</span>
-              </div>
-              <p>A persistent cue is better than a one-time alert for unfinished tasks.</p>
-            </article>
-
-            <article class="insight-card">
-              <div class="insight-title">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                <span>At Point of Action</span>
-              </div>
-              <p>A cue at the point of action is more useful than a cue that arrives too early.</p>
-            </article>
-          </div>
-        </section>
+          <article class="use-case-card">
+            <h4>Short-latency reminders</h4>
+            <ul>
+              <li>Check oven</li>
+              <li>Check washer</li>
+              <li>Move laundry</li>
+            </ul>
+          </article>
+        </div>
       </section>
 
-      <section class="right-pane">
-        <div class="right-pane-inner">
-          <div class="right-main">
-            <section class="section" id="wrist-glance">
-              <h2>The Wrist Glance: A Persistent Cue</h2>
-
-              <div class="hero-side-row">
-                <article class="media-card">
-                  <img src="assets/suit_meeting.png" alt="Business men in meeting">
-                  <div class="media-meta">
-                    <h3>Benefits</h3>
-                    <ul class="benefits-list">
-                      <li>Visible</li>
-                      <li>Persistent</li>
-                      <li>At point of action</li>
-                    </ul>
-                  </div>
-                </article>
-
-                <aside class="pro-tip">
-                  <span class="label">Pro Tip:</span>
-                  <p>Place reminders where your gaze naturally falls for maximum effectiveness.</p>
-                </aside>
-              </div>
-
-              <p>
-                That is why a note on the door works differently from a reminder notification you dismiss. One is still there when the action moment arrives. The same logic applies to a watch face: it sits in a place you naturally glance at throughout the day.
-              </p>
-            </section>
-
-            <section class="section" id="use-cases">
-              <h3>Use Cases</h3>
-              <div class="use-cases-grid">
-                <article class="use-case-card">
-                  <h4>Work follow-ups</h4>
-                  <ul>
-                    <li>Email follow ups</li>
-                    <li>Send HR forms</li>
-                    <li>Schedule calls</li>
-                  </ul>
-                </article>
-
-                <article class="use-case-card">
-                  <h4>Daily task tracking</h4>
-                  <ul>
-                    <li>Take medication</li>
-                    <li>Hydration breaks</li>
-                    <li>Check oven tasks</li>
-                  </ul>
-                </article>
-
-                <article class="use-case-card">
-                  <h4>Short-latency reminders</h4>
-                  <ul>
-                    <li>Check oven</li>
-                    <li>Check washer</li>
-                    <li>Move laundry</li>
-                  </ul>
-                </article>
-              </div>
-            </section>
-
-            <section class="section" id="solution">
-              <div class="cta-block">
-                <div>
-                  <h2>The Integrated Solution:<br>Toggle Reminder</h2>
-                  <p>
-                    For many everyday tasks, the ideal reminder is not a loud interruption. It is a quiet, always-available signal.
-                  </p>
-                  <p>
-                    Experience the scientific advantage of Toggle Reminder on your wrist.
-                  </p>
-                  <a href="https://play.google.com/store/apps/details?id=com.onr.watch_toggle_reminder" target="_blank" rel="noopener" class="btn">View Toggle Reminder on Google Play</a>
-                </div>
-                <img src="assets/bottom_watches.png" alt="Toggle Reminder watchfaces" class="bottom-watches">
-              </div>
-            </section>
+      <section class="section-full" id="solution">
+        <div class="cta-block">
+          <div>
+            <h2>The Integrated Solution:<br>Toggle Reminder</h2>
+            <p>
+              Experience the scientific advantage of Toggle Reminder on your wrist.
+            </p>
+            <a href="https://play.google.com/store/apps/details?id=com.onr.watch_toggle_reminder" target="_blank" rel="noopener" class="btn">View Toggle Reminder on Google Play</a>
           </div>
-
-          <nav class="quick-nav" aria-label="Quick navigation">
-            <h4>Quick Nav</h4>
-            <ul>
-              <li><a href="#introduction">Introduction</a></li>
-              <li><a href="#science" class="active">The Science</a></li>
-              <li><a href="#problem">The Problem</a></li>
-              <li><a href="#why-cues-help">Why Cues Help</a></li>
-              <li><a href="#wrist-glance">The Wrist Glance</a></li>
-              <li><a href="#use-cases">Use Cases</a></li>
-              <li><a href="#solution">The Integrated Solution</a></li>
-            </ul>
-          </nav>
+          <img src="assets/bottom_watches.png" alt="Toggle Reminder watchfaces" class="bottom-watches">
         </div>
       </section>
     </main>
   </div>
+  <script>
+    const navLinks = Array.from(document.querySelectorAll(".quick-nav a"));
+    const sections = navLinks
+      .map((link) => document.querySelector(link.getAttribute("href")))
+      .filter(Boolean);
+
+    const setActiveLink = (id) => {
+      navLinks.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+      });
+    };
+
+    const updateActiveLink = () => {
+      const offset = window.scrollY + 140;
+      let current = sections[0];
+      sections.forEach((section) => {
+        if (section.offsetTop <= offset) {
+          current = section;
+        }
+      });
+      if (current) {
+        setActiveLink(current.id);
+      }
+    };
+
+    window.addEventListener("scroll", () => {
+      window.requestAnimationFrame(updateActiveLink);
+    }, { passive: true });
+    window.addEventListener("resize", updateActiveLink);
+    updateActiveLink();
+  </script>
 </body>
 </html>
