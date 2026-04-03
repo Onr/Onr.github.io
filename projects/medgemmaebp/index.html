@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta
+    name="description"
+    content="MEDGemmaEBP is an occupational therapy evidence-based practice copilot that helps clinicians move from patient questions to usable evidence."
+  />
+  <title>From Clinical Question to Usable Evidence | MEDGemmaEBP for Clinical Excellence</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Newsreader:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet"
+  />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            tertiary: "#266860",
+            "on-background": "#181c20",
+            "on-tertiary-fixed-variant": "#015049",
+            "tertiary-fixed-dim": "#93d3c8",
+            "on-tertiary": "#ffffff",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#d8e2ff",
+            "on-error": "#ffffff",
+            "on-secondary-fixed": "#001a41",
+            "on-primary-fixed-variant": "#004493",
+            surface: "#f7f9ff",
+            "secondary-fixed": "#d8e2ff",
+            "tertiary-container": "#428178",
+            "primary-fixed-dim": "#adc7ff",
+            "on-surface-variant": "#414754",
+            "surface-container": "#ebeef4",
+            outline: "#727785",
+            "on-primary": "#ffffff",
+            "on-surface": "#181c20",
+            "inverse-on-surface": "#eef1f7",
+            error: "#ba1a1a",
+            "surface-tint": "#005bc0",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-secondary-container": "#3d5481",
+            "surface-dim": "#d7dae0",
+            "surface-container-high": "#e5e8ee",
+            background: "#f7f9ff",
+            "on-tertiary-fixed": "#00201c",
+            "on-tertiary-container": "#ffffff",
+            "inverse-surface": "#2d3135",
+            "error-container": "#ffdad6",
+            "surface-container-low": "#f1f4fa",
+            primary: "#005bbf",
+            "surface-container-highest": "#dfe3e8",
+            secondary: "#475e8c",
+            "primary-container": "#1a73e8",
+            "outline-variant": "#c1c6d6",
+            "on-primary-fixed": "#001a41",
+            "inverse-primary": "#adc7ff",
+            "on-primary-container": "#ffffff",
+            "surface-variant": "#dfe3e8",
+            "surface-bright": "#f7f9ff",
+            "tertiary-fixed": "#aeefe4",
+            "on-secondary-fixed-variant": "#2e4673",
+            "secondary-fixed-dim": "#afc7fb",
+            "secondary-container": "#b2c9fe"
+          },
+          fontFamily: {
+            headline: ["Manrope", "sans-serif"],
+            body: ["Newsreader", "serif"],
+            label: ["Inter", "sans-serif"]
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            full: "9999px"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    }
+
+    .editorial-shadow {
+      box-shadow: 0 30px 60px -12px rgba(24, 28, 32, 0.08), 0 18px 36px -18px rgba(24, 28, 32, 0.12);
+    }
+
+    .glass-nav {
+      background-color: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(24px);
+    }
+
+    .text-balance {
+      text-wrap: balance;
+    }
+
+    .drop-cap::first-letter {
+      float: left;
+      font-size: 4.5rem;
+      line-height: 1;
+      padding-right: 0.75rem;
+      font-weight: 800;
+      color: #005bbf;
+      font-family: "Manrope", sans-serif;
+    }
+
+    .dotted-grid {
+      background-image: radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.55) 1px, transparent 0);
+      background-size: 36px 36px;
+    }
+
+    .nav-link-active {
+      color: #005bbf;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .nav-link-active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 2px;
+      background: #005bbf;
+    }
+
+    @media (max-width: 768px) {
+      .drop-cap::first-letter {
+        font-size: 3.25rem;
+        padding-right: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-label selection:bg-primary-fixed selection:text-on-primary-fixed">
+  <header class="fixed top-0 z-50 w-full border-b border-outline-variant/30 glass-nav">
+    <div class="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-8">
+      <div class="flex items-center gap-3">
+        <div class="flex h-8 w-8 items-center justify-center rounded bg-primary">
+          <span class="material-symbols-outlined text-xl text-white">clinical_notes</span>
+        </div>
+        <div class="font-headline text-xl font-extrabold tracking-tighter text-blue-900">MEDGemmaEBP for Clinical Excellence</div>
+      </div>
+      <nav class="hidden items-center gap-10 md:flex" id="top-nav">
+        <a class="nav-link text-sm font-semibold text-on-surface-variant transition-colors hover:text-primary" href="#problem">Problem</a>
+        <a class="nav-link text-sm font-semibold text-on-surface-variant transition-colors hover:text-primary" href="#solution">Solution</a>
+        <a class="nav-link text-sm font-semibold text-on-surface-variant transition-colors hover:text-primary" href="#demo">Demo</a>
+        <a class="nav-link text-sm font-semibold text-on-surface-variant transition-colors hover:text-primary" href="#workflow">Workflow</a>
+        <a class="nav-link text-sm font-semibold text-on-surface-variant transition-colors hover:text-primary" href="#example">Scenario</a>
+        <a class="nav-link text-sm font-semibold text-on-surface-variant transition-colors hover:text-primary" href="#benefits">Benefits</a>
+        <a class="ml-4 rounded-full bg-primary px-7 py-2.5 text-sm font-bold text-on-primary shadow-lg shadow-primary/20 transition-all hover:shadow-primary/30 active:scale-95" href="#contact">Contact</a>
+      </nav>
+      <button class="p-2 text-primary md:hidden" aria-label="Menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="pt-20">
+    <section class="relative overflow-hidden border-b border-outline-variant/20 bg-white">
+      <div class="mx-auto flex max-w-[1440px] flex-col lg:flex-row">
+        <div class="relative bg-gradient-to-br from-blue-50 to-white p-8 md:p-16 lg:w-2/3 lg:p-24">
+          <div class="max-w-3xl">
+            <div class="mb-10 inline-flex items-center gap-3 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-primary">
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: &quot;FILL&quot; 1, &quot;wght&quot; 400, &quot;GRAD&quot; 0, &quot;opsz&quot; 24;">analytics</span>
+              Project Overview
+            </div>
+            <h1 class="mb-10 text-balance font-headline text-6xl font-extrabold leading-[0.95] tracking-tight text-blue-950 md:text-8xl">
+              From Clinical Question to Usable Evidence
+            </h1>
+            <p class="mb-12 max-w-2xl font-body text-2xl italic leading-tight text-on-surface-variant opacity-80 md:text-3xl">
+              An AI-powered evidence-based practice copilot that helps occupational therapists turn clinical questions into relevant evidence, structured appraisal, and practical patient-centered decisions.
+            </p>
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-stretch">
+              <div class="inline-flex items-center gap-4 rounded-3xl border border-blue-100 bg-white/90 px-5 py-4 shadow-sm">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <span class="material-symbols-outlined text-3xl">neurology</span>
+                </div>
+                <a href="https://onr.github.io/" target="_blank" rel="noopener noreferrer" class="block transition hover:opacity-80">
+                  <p class="font-headline text-lg font-bold text-blue-900">Ori Nizan, PhD</p>
+                  <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Project Lead</p>
+                </a>
+              </div>
+              <div class="inline-flex items-center gap-4 rounded-3xl border border-blue-100 bg-white/90 px-5 py-4 shadow-sm">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <span class="material-symbols-outlined text-3xl">clinical_notes</span>
+                </div>
+                <a href="https://talbarnizan.github.io/" target="_blank" rel="noopener noreferrer" class="block transition hover:opacity-80">
+                  <p class="font-headline text-lg font-bold text-blue-900">Tal Bar Nizan, PhD Student, OT</p>
+                  <p class="text-sm font-semibold uppercase tracking-widest text-slate-500">Lead Clinical Architect</p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col justify-center bg-blue-950 p-8 text-white md:p-16 lg:w-1/3">
+          <div class="space-y-8">
+            <div class="flex items-center gap-4 text-primary-fixed-dim">
+              <span class="h-px w-12 bg-current"></span>
+              <span class="text-xs font-bold uppercase tracking-[0.2em]">Abstract</span>
+            </div>
+            <p class="font-body text-xl italic leading-relaxed text-blue-100 md:text-2xl">
+              MEDGemmaEBP is a MedGemma-powered evidence-based practice copilot for occupational therapy. It structures complex patient narratives, retrieves relevant papers, supports source-linked appraisal, and helps clinicians move deliberately from question to action.
+            </p>
+            <div class="border-t border-white/10 pt-8">
+              <dl class="grid grid-cols-2 gap-8">
+                <div>
+                  <dt class="mb-1 text-[10px] uppercase tracking-widest text-blue-300">Keywords</dt>
+                  <dd class="text-sm font-medium">LLM, OT, EBP, MedGemma</dd>
+                </div>
+                <div>
+                  <dt class="mb-1 text-[10px] uppercase tracking-widest text-blue-300">Product</dt>
+                  <dd class="text-sm font-medium">Clinical decision support</dd>
+                </div>
+                <div>
+                  <dt class="mb-1 text-[10px] uppercase tracking-widest text-blue-300">Audience</dt>
+                  <dd class="text-sm font-medium">Clinicians, partners, health organizations</dd>
+                </div>
+                <div>
+                  <dt class="mb-1 text-[10px] uppercase tracking-widest text-blue-300">Focus</dt>
+                  <dd class="text-sm font-medium">Evidence retrieval and application</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="mx-auto max-w-[1100px] px-8 py-24">
+      <article>
+        <section class="mb-32 scroll-mt-28" id="problem" data-section="problem">
+          <h2 class="mb-10 font-headline text-4xl font-extrabold leading-none tracking-tight text-blue-950 md:text-5xl">
+            The Fragmented Workflow:
+            <br />
+            <span class="text-primary/70">A Clinician's Burden</span>
+          </h2>
+          <div class="prose prose-xl mb-16 max-w-none font-body leading-relaxed text-on-surface-variant">
+            <p class="drop-cap text-2xl leading-[1.6]">
+              Every occupational therapist starts with narrative data. A patient recovering from stroke describes dressing failures, fatigue, shower-transfer risks, and frustration in the kitchen. Turning that story into evidence-based practice is still a slow, fragmented process spread across notes, search tools, abstracts, and improvised clinical reasoning.
+            </p>
+          </div>
+          <div class="mb-16 grid gap-8 md:grid-cols-2">
+            <div class="group rounded-[2rem] border border-outline-variant/20 bg-white p-10 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/5">
+              <div class="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-error-container/30 text-error transition-transform group-hover:scale-110">
+                <span class="material-symbols-outlined text-3xl">psychology_alt</span>
+              </div>
+              <h3 class="mb-4 font-headline text-xl font-extrabold text-blue-900">Cognitive overload</h3>
+              <p class="leading-relaxed text-slate-500">
+                Clinicians have to manually turn messy stories into a question, search the literature, filter noise, appraise study quality, and translate findings into a practical plan.
+              </p>
+            </div>
+            <div class="group rounded-[2rem] border border-outline-variant/20 bg-white p-10 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/5">
+              <div class="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-error-container/30 text-error transition-transform group-hover:scale-110">
+                <span class="material-symbols-outlined text-3xl">distance</span>
+              </div>
+              <h3 class="mb-4 font-headline text-xl font-extrabold text-blue-900">Translation gap</h3>
+              <p class="leading-relaxed text-slate-500">
+                Even when the right paper is found, the hard part remains: deciding whether that evidence fits this patient's goals, home setup, risks, and caregiver reality.
+              </p>
+            </div>
+          </div>
+          <div class="rounded-[2rem] border border-blue-100 bg-blue-50/60 p-8">
+            <p class="text-lg leading-relaxed text-slate-700">
+              The real failure mode is not lack of information. It is the lack of a reliable workflow that converts information into a patient-specific, inspectable, evidence-linked clinical plan.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-32 scroll-mt-28" id="solution" data-section="solution">
+          <div class="mx-auto mb-20 max-w-3xl text-center">
+            <h2 class="mb-6 font-headline text-4xl font-extrabold tracking-tight text-blue-950 md:text-6xl">The 5 A's Copilot</h2>
+            <p class="font-body text-xl italic text-slate-500">
+              “The goal is not to replace the therapist. The goal is to reduce the friction between clinical reasoning and usable evidence.”
+            </p>
+          </div>
+          <div class="relative overflow-hidden rounded-[3rem] border border-blue-100 bg-blue-50/50 p-8 md:p-16">
+            <div class="absolute -right-20 -top-20 h-96 w-96 rounded-full bg-primary/5 blur-[100px]"></div>
+            <div class="relative grid grid-cols-1 gap-4 md:grid-cols-5">
+              <div class="group flex cursor-default flex-col items-center text-center">
+                <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary/20 bg-white text-2xl font-black text-primary shadow-sm transition-all group-hover:scale-110 group-hover:border-primary">01</div>
+                <div class="h-full rounded-3xl border border-outline-variant/30 bg-white p-6 shadow-sm transition-shadow group-hover:shadow-xl">
+                  <h4 class="mb-2 font-headline text-lg font-bold text-blue-950">Ask</h4>
+                  <p class="text-xs leading-relaxed text-slate-500">Extract diagnosis, setting, goals, risks, and missing details into a structured clinical question.</p>
+                </div>
+              </div>
+              <div class="group flex cursor-default flex-col items-center text-center">
+                <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary/20 bg-white text-2xl font-black text-primary shadow-sm transition-all group-hover:scale-110 group-hover:border-primary">02</div>
+                <div class="h-full rounded-3xl border border-outline-variant/30 bg-white p-6 shadow-sm transition-shadow group-hover:shadow-xl">
+                  <h4 class="mb-2 font-headline text-lg font-bold text-blue-950">Acquire</h4>
+                  <p class="text-xs leading-relaxed text-slate-500">Retrieve linked papers and guidelines so the clinician can inspect real sources before moving on.</p>
+                </div>
+              </div>
+              <div class="group flex cursor-default flex-col items-center text-center">
+                <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary/20 bg-white text-2xl font-black text-primary shadow-sm transition-all group-hover:scale-110 group-hover:border-primary">03</div>
+                <div class="h-full rounded-3xl border border-outline-variant/30 bg-white p-6 shadow-sm transition-shadow group-hover:shadow-xl">
+                  <h4 class="mb-2 font-headline text-lg font-bold text-blue-950">Appraise</h4>
+                  <p class="text-xs leading-relaxed text-slate-500">Attach strengths, limitations, and applicability judgments to specific papers instead of generic summaries.</p>
+                </div>
+              </div>
+              <div class="group flex cursor-default flex-col items-center text-center">
+                <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary/20 bg-white text-2xl font-black text-primary shadow-sm transition-all group-hover:scale-110 group-hover:border-primary">04</div>
+                <div class="h-full rounded-3xl border border-outline-variant/30 bg-white p-6 shadow-sm transition-shadow group-hover:shadow-xl">
+                  <h4 class="mb-2 font-headline text-lg font-bold text-blue-950">Apply</h4>
+                  <p class="text-xs leading-relaxed text-slate-500">Turn evidence into practical OT recommendations, safety considerations, and role-appropriate next steps.</p>
+                </div>
+              </div>
+              <div class="group flex cursor-default flex-col items-center text-center">
+                <div class="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-primary/20 bg-white text-2xl font-black text-primary shadow-sm transition-all group-hover:scale-110 group-hover:border-primary">05</div>
+                <div class="h-full rounded-3xl border border-outline-variant/30 bg-white p-6 shadow-sm transition-shadow group-hover:shadow-xl">
+                  <h4 class="mb-2 font-headline text-lg font-bold text-blue-950">Assess</h4>
+                  <p class="text-xs leading-relaxed text-slate-500">Define outcome measures, export a report, and close the loop with feedback for future improvement.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-32 scroll-mt-28" id="demo" data-section="demo">
+          <div class="mb-10 flex items-center gap-4">
+            <h2 class="font-headline text-3xl font-extrabold text-blue-950 md:text-4xl">Product Demo</h2>
+            <div class="h-px flex-1 bg-slate-100"></div>
+          </div>
+          <div class="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
+            <div>
+              <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">See It In Action</p>
+              <h3 class="mt-4 font-headline text-4xl font-extrabold tracking-tight text-blue-950">A short walkthrough of the MEDGemmaEBP workflow</h3>
+              <p class="mt-5 text-lg leading-relaxed text-slate-600">
+                Watch a practical demo of how the system helps clinicians move from a clinical question to usable, source-linked evidence and actionable next steps.
+              </p>
+              <div class="mt-8 flex flex-wrap gap-3">
+                <a
+                  href="https://www.youtube.com/watch?v=xlYcvcGxI5g"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-0.5 hover:shadow-xl"
+                >
+                  <span class="material-symbols-outlined text-base">play_circle</span>
+                  Watch on YouTube
+                </a>
+                <a
+                  href="https://www.youtube.com/watch?v=xlYcvcGxI5g"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-6 py-3 text-sm font-bold text-blue-900 transition hover:border-primary hover:text-primary"
+                >
+                  <span class="material-symbols-outlined text-base">open_in_new</span>
+                  Open in new tab
+                </a>
+              </div>
+            </div>
+            <a
+              href="https://www.youtube.com/watch?v=xlYcvcGxI5g"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group relative block overflow-hidden rounded-[2rem] border border-outline-variant/20 bg-white shadow-xl shadow-blue-900/10"
+              aria-label="Open MEDGemmaEBP demo video on YouTube"
+            >
+              <div class="aspect-video w-full bg-slate-100">
+                <img
+                  src="https://i.ytimg.com/vi/xlYcvcGxI5g/hqdefault.jpg"
+                  alt="MEDGemmaEBP demo video preview"
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-blue-950/60 via-blue-950/10 to-transparent"></div>
+              <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <div class="flex h-20 w-20 items-center justify-center rounded-full bg-white/95 text-primary shadow-2xl transition duration-300 group-hover:scale-105">
+                  <span class="material-symbols-outlined text-5xl">play_arrow</span>
+                </div>
+              </div>
+              <div class="absolute inset-x-0 bottom-0 p-6 text-white">
+                <p class="text-xs font-bold uppercase tracking-[0.25em] text-blue-100">Video Demo</p>
+                <p class="mt-2 text-lg font-bold">MEDGemmaEBP walkthrough</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <section class="mb-32 scroll-mt-28" id="workflow" data-section="workflow">
+          <div class="flex flex-col items-start gap-16 md:flex-row">
+            <div class="space-y-12 md:w-1/2">
+              <h2 class="font-headline text-4xl font-extrabold tracking-tight text-blue-950">Agentic Reasoning: <br />The MedGemma Engine</h2>
+              <div class="space-y-10">
+                <div class="flex gap-6">
+                  <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/20">
+                    <span class="material-symbols-outlined">dataset</span>
+                  </div>
+                  <div>
+                    <h4 class="mb-2 font-headline text-xl font-bold text-blue-900">Context extraction and clarification</h4>
+                    <p class="text-base leading-relaxed text-slate-600">
+                      The system starts by pulling out diagnosis, stage, ADL limitations, home context, risks, and goals. If something important is missing, it asks for it instead of guessing.
+                    </p>
+                  </div>
+                </div>
+                <div class="flex gap-6">
+                  <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-tertiary text-white shadow-lg shadow-tertiary/20">
+                    <span class="material-symbols-outlined">menu_book</span>
+                  </div>
+                  <div>
+                    <h4 class="mb-2 font-headline text-xl font-bold text-blue-900">Source-linked discussion before advancing</h4>
+                    <p class="text-base leading-relaxed text-slate-600">
+                      The workflow is deliberately staged. It retrieves papers, lets the clinician inspect or discuss them, and only then moves into appraisal and application.
+                    </p>
+                  </div>
+                </div>
+                <div class="flex gap-6">
+                  <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-900 text-white shadow-lg shadow-blue-900/20">
+                    <span class="material-symbols-outlined">tune</span>
+                  </div>
+                  <div>
+                    <h4 class="mb-2 font-headline text-xl font-bold text-blue-900">Role-aware prompts and guides</h4>
+                    <p class="text-base leading-relaxed text-slate-600">
+                      Occupational therapists, physicians, nurses, and educators do not need the same framing. Prompt guidance can shift emphasis toward ADLs, diagnostics, implementation, or patient education.
+                    </p>
+                  </div>
+                </div>
+                <div class="flex gap-6">
+                  <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary text-white shadow-lg shadow-secondary/20">
+                    <span class="material-symbols-outlined">feedback</span>
+                  </div>
+                  <div>
+                    <h4 class="mb-2 font-headline text-xl font-bold text-blue-900">Feedback and report export</h4>
+                    <p class="text-base leading-relaxed text-slate-600">
+                      Every stage can produce a structured artifact. That makes it easier to export reports, review model behavior, and tune prompts or retrieval strategies over time.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="overflow-hidden rounded-3xl border border-slate-100 bg-white p-2 shadow-2xl shadow-blue-900/10 md:w-1/2">
+              <div class="rounded-2xl bg-surface-container-low p-6">
+                <div class="mb-8 flex items-center justify-between border-b border-slate-200 pb-4">
+                  <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Clinical Question Loop</span>
+                  <div class="flex gap-1">
+                    <div class="h-2 w-2 rounded-full bg-primary/20"></div>
+                    <div class="h-2 w-2 rounded-full bg-primary/20"></div>
+                    <div class="h-2 w-2 rounded-full bg-primary"></div>
+                  </div>
+                </div>
+                <div class="space-y-4">
+                  <div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                    <div class="h-8 w-1.5 rounded-full bg-blue-400"></div>
+                    <div>
+                      <p class="text-[10px] font-bold uppercase text-slate-400">Population</p>
+                      <p class="text-xs font-bold text-blue-950">67-year-old post-stroke outpatient OT case</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                    <div class="h-8 w-1.5 rounded-full bg-green-400"></div>
+                    <div>
+                      <p class="text-[10px] font-bold uppercase text-slate-400">Intervention</p>
+                      <p class="text-xs font-bold text-blue-950">Task-oriented ADL training with caregiver coaching</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                    <div class="h-8 w-1.5 rounded-full bg-orange-400"></div>
+                    <div>
+                      <p class="text-[10px] font-bold uppercase text-slate-400">Outcome</p>
+                      <p class="text-xs font-bold text-blue-950">Safer dressing, shower transfers, and breakfast prep</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                    <div class="h-8 w-1.5 rounded-full bg-violet-400"></div>
+                    <div>
+                      <p class="text-[10px] font-bold uppercase text-slate-400">Prompt guide</p>
+                      <p class="text-xs font-bold text-blue-950">Ask missing details, verify sources, cite evidence, stay role-specific</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-8 rounded-2xl bg-blue-950 p-5 text-white">
+                  <p class="text-[10px] font-bold uppercase tracking-widest text-blue-200">Prompt optimization loop</p>
+                  <ul class="mt-3 space-y-2 text-sm text-blue-100">
+                    <li>Ask: fill missing PICO fields before locking the question.</li>
+                    <li>Acquire: prioritize verified linked studies over generic summaries.</li>
+                    <li>Appraise: keep each judgment attached to a specific paper.</li>
+                    <li>Apply/Assess: output actionable guidance and trackable measures.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="relative mb-32 overflow-hidden rounded-[3rem] bg-blue-950 px-12 py-24 text-center text-white">
+          <div class="pointer-events-none absolute inset-0 opacity-10 dotted-grid"></div>
+          <div class="relative z-10 mx-auto max-w-4xl">
+            <span class="material-symbols-outlined mb-10 text-5xl text-primary-fixed-dim opacity-50">format_quote</span>
+            <blockquote class="mb-12 text-balance font-body text-3xl italic leading-tight text-blue-50 md:text-5xl">
+              “The most useful AI system in healthcare is not the one that says the most. It is the one that makes evidence easier to inspect, discuss, and apply.”
+            </blockquote>
+            <div class="flex flex-col items-center">
+              <div class="mb-6 h-px w-20 bg-primary-fixed-dim/30"></div>
+              <p class="font-headline text-lg font-bold tracking-tight">Core design principle</p>
+              <p class="mt-1 text-xs uppercase tracking-widest text-blue-400">MEDGemmaEBP</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-32 scroll-mt-28" id="example" data-section="example">
+          <div class="mb-10 flex items-center gap-4">
+            <h2 class="font-headline text-3xl font-extrabold text-blue-950">Real-World Application</h2>
+            <div class="h-px flex-1 bg-slate-100"></div>
+          </div>
+          <div class="editorial-shadow flex flex-col overflow-hidden rounded-[2.5rem] border border-outline-variant/30 bg-white md:flex-row">
+            <div class="border-outline-variant/10 p-10 md:w-1/2 md:border-r md:p-14">
+              <div class="mb-8 flex items-center gap-3">
+                <span class="rounded bg-slate-100 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-500">Input</span>
+                <h4 class="font-headline text-lg font-bold text-blue-900">Patient Presentation</h4>
+              </div>
+              <ul class="space-y-6">
+                <li class="flex items-baseline justify-between border-b border-slate-50 pb-4">
+                  <span class="text-sm text-slate-400">Diagnosis</span>
+                  <span class="text-sm font-bold text-blue-950">Left CVA with right hemiparesis</span>
+                </li>
+                <li class="flex items-baseline justify-between border-b border-slate-50 pb-4">
+                  <span class="text-sm text-slate-400">Target goals</span>
+                  <span class="text-sm font-bold text-blue-950">Independent dressing and breakfast prep</span>
+                </li>
+                <li class="flex items-baseline justify-between border-b border-slate-50 pb-4">
+                  <span class="text-sm text-slate-400">Care setting</span>
+                  <span class="text-sm font-bold text-blue-950">Outpatient OT with home carryover</span>
+                </li>
+              </ul>
+              <div class="mt-10 rounded-2xl bg-blue-50/50 p-6 font-body italic text-slate-600">
+                “I want to get through my morning routine safely without my spouse stepping in every time.”
+              </div>
+            </div>
+            <div class="bg-primary/5 p-10 md:w-1/2 md:p-14">
+              <div class="mb-8 flex items-center gap-3">
+                <span class="rounded bg-primary px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">Artifacts</span>
+                <h4 class="font-headline text-lg font-bold text-primary">Copilot Outputs</h4>
+              </div>
+              <div class="space-y-6">
+                <div class="group flex gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm transition-colors group-hover:bg-primary group-hover:text-white">
+                    <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
+                  </div>
+                  <p class="pt-2 text-sm leading-relaxed text-slate-700"><strong>Structured question:</strong> the case becomes a usable PICO with missing details clarified first.</p>
+                </div>
+                <div class="group flex gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm transition-colors group-hover:bg-primary group-hover:text-white">
+                    <span class="material-symbols-outlined text-sm">menu_book</span>
+                  </div>
+                  <p class="pt-2 text-sm leading-relaxed text-slate-700"><strong>Evidence set:</strong> linked papers and guidelines that can be discussed before the next step.</p>
+                </div>
+                <div class="group flex gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm transition-colors group-hover:bg-primary group-hover:text-white">
+                    <span class="material-symbols-outlined text-sm">table_chart</span>
+                  </div>
+                  <p class="pt-2 text-sm leading-relaxed text-slate-700"><strong>Paper-by-paper appraisal:</strong> each strength or limitation is attached to the right study.</p>
+                </div>
+                <div class="group flex gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm transition-colors group-hover:bg-primary group-hover:text-white">
+                    <span class="material-symbols-outlined text-sm">file_export</span>
+                  </div>
+                  <p class="pt-2 text-sm leading-relaxed text-slate-700"><strong>Report export:</strong> a shareable summary with rationale, recommendations, and suggested outcome measures.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-32 scroll-mt-28" id="benefits" data-section="benefits">
+          <div class="mb-10 flex items-center gap-4">
+            <h2 class="font-headline text-3xl font-extrabold text-blue-950 md:text-4xl">Potential Impact</h2>
+            <div class="h-px flex-1 bg-slate-100"></div>
+          </div>
+          <div class="rounded-[2.5rem] border border-outline-variant/20 bg-white p-8 shadow-sm md:p-12">
+            <div class="mx-auto mb-12 max-w-3xl text-center">
+              <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Benefits</p>
+              <h3 class="mt-4 font-headline text-4xl font-extrabold tracking-tight text-blue-950">Supporting better care, better decisions, and more sustainable practice</h3>
+              <p class="mt-4 text-lg leading-relaxed text-slate-600">
+                By reducing friction across the evidence-based practice workflow, MEDGemmaEBP is designed to support more consistent evidence use in routine care while helping clinicians stay focused on patient needs and clinical reasoning.
+              </p>
+            </div>
+            <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+              <div class="rounded-[2rem] border border-blue-100 bg-blue-50/60 p-6">
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-primary shadow-sm">
+                  <span class="material-symbols-outlined">favorite</span>
+                </div>
+                <h4 class="font-headline text-xl font-bold text-blue-950">Improve patient outcomes</h4>
+                <p class="mt-3 text-sm leading-relaxed text-slate-600">
+                  Better access to relevant evidence can support more targeted, timely, and patient-centered clinical decisions.
+                </p>
+              </div>
+              <div class="rounded-[2rem] border border-blue-100 bg-blue-50/60 p-6">
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-primary shadow-sm">
+                  <span class="material-symbols-outlined">self_improvement</span>
+                </div>
+                <h4 class="font-headline text-xl font-bold text-blue-950">Help reduce burnout</h4>
+                <p class="mt-3 text-sm leading-relaxed text-slate-600">
+                  Streamlining search, appraisal, and documentation burdens may reduce friction and cognitive load in everyday practice.
+                </p>
+              </div>
+              <div class="rounded-[2rem] border border-blue-100 bg-blue-50/60 p-6">
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-primary shadow-sm">
+                  <span class="material-symbols-outlined">checklist</span>
+                </div>
+                <h4 class="font-headline text-xl font-bold text-blue-950">Strengthen evidence use</h4>
+                <p class="mt-3 text-sm leading-relaxed text-slate-600">
+                  A structured workflow can support more consistent movement from clinical questions to source-linked action.
+                </p>
+              </div>
+              <div class="rounded-[2rem] border border-blue-100 bg-blue-50/60 p-6">
+                <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-primary shadow-sm">
+                  <span class="material-symbols-outlined">psychology</span>
+                </div>
+                <h4 class="font-headline text-xl font-bold text-blue-950">Support clinician confidence</h4>
+                <p class="mt-3 text-sm leading-relaxed text-slate-600">
+                  Inspectable outputs and source-linked reasoning can help clinicians feel more confident in evidence-informed decision-making.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mb-20 scroll-mt-28" id="contact" data-section="contact">
+          <div class="relative overflow-hidden rounded-[3rem] bg-gradient-to-r from-blue-600 to-primary p-12 text-white shadow-2xl shadow-primary/20 md:p-20">
+            <div class="absolute right-0 top-0 -mr-20 -mt-20 h-64 w-64 rounded-full bg-white/10 blur-[80px]"></div>
+            <div class="relative z-10 mx-auto max-w-4xl space-y-8">
+              <div class="mx-auto max-w-3xl text-center">
+                <h3 class="font-headline text-4xl font-black leading-none tracking-tight">Interested in MEDGemmaEBP?</h3>
+                <p class="mt-4 text-lg leading-relaxed text-blue-100 opacity-90">
+                  Connect with us to explore pilot use, research collaboration, partnerships, or future updates.
+                </p>
+              </div>
+              <div class="grid gap-4 md:grid-cols-3">
+                <div class="rounded-3xl border border-white/15 bg-white/10 p-6">
+                  <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-100">For clinicians</p>
+                  <p class="mt-3 text-sm leading-relaxed text-blue-50">Share your setting, workflow pain points, and the clinical decisions where evidence support would matter most.</p>
+                </div>
+                <div class="rounded-3xl border border-white/15 bg-white/10 p-6">
+                  <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-100">For partners</p>
+                  <p class="mt-3 text-sm leading-relaxed text-blue-50">Discuss pilot opportunities, implementation settings, evaluation plans, or product integration pathways.</p>
+                </div>
+                <div class="rounded-3xl border border-white/15 bg-white/10 p-6">
+                  <p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-100">For updates</p>
+                  <p class="mt-3 text-sm leading-relaxed text-blue-50">Leave your details to hear about pilots, publications, demos, and future milestones.</p>
+                </div>
+              </div>
+              <form id="interest-form" data-testid="interest-form" class="grid gap-4 rounded-[2rem] border border-white/15 bg-white/10 p-6 text-left backdrop-blur-sm md:grid-cols-[1fr_1fr_1fr_auto]">
+                <label class="block">
+                  <span class="mb-2 block text-xs font-bold uppercase tracking-widest text-blue-100">Name</span>
+                  <input id="interest-name" type="text" class="w-full rounded-2xl border-white/20 bg-white/95 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-white focus:ring-white" placeholder="Your name" />
+                </label>
+                <label class="block">
+                  <span class="mb-2 block text-xs font-bold uppercase tracking-widest text-blue-100">Email</span>
+                  <input id="interest-email" type="email" class="w-full rounded-2xl border-white/20 bg-white/95 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-white focus:ring-white" placeholder="Your email" />
+                </label>
+                <label class="block">
+                  <span class="mb-2 block text-xs font-bold uppercase tracking-widest text-blue-100">Organization</span>
+                  <input id="interest-org" type="text" class="w-full rounded-2xl border-white/20 bg-white/95 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-white focus:ring-white" placeholder="Clinic, hospital, lab, or company" />
+                </label>
+                <div class="flex items-end">
+                  <button type="submit" class="w-full rounded-2xl bg-white px-5 py-3.5 text-sm font-bold text-primary shadow-lg shadow-blue-900/10 transition hover:-translate-y-0.5 hover:shadow-xl">Register interest</button>
+                </div>
+              </form>
+              <div class="flex flex-col items-center justify-center gap-3 text-center md:flex-row">
+                <a href="#contact" id="contact-demo-link" class="rounded-full border border-white/25 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10">Request a demo</a>
+                <a href="#contact" id="contact-collab-link" class="rounded-full border border-white/25 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10">Explore collaboration</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="border-t border-white/5 bg-blue-950 py-24 text-white">
+    <div class="mx-auto max-w-[1440px] px-8">
+      <div class="grid grid-cols-1 gap-16 md:grid-cols-4">
+        <div class="space-y-8 md:col-span-2">
+          <div class="flex items-center gap-3">
+            <div class="flex h-8 w-8 items-center justify-center rounded bg-primary">
+              <span class="material-symbols-outlined text-xl text-white">clinical_notes</span>
+            </div>
+            <div class="font-headline text-2xl font-black tracking-tighter">MEDGemmaEBP for Clinical Excellence</div>
+          </div>
+          <p class="max-w-sm font-body text-xl italic text-blue-200/60">
+            Making evidence easier to inspect, discuss, and apply through grounded retrieval, structured appraisal, and clinician-centered workflow design.
+          </p>
+        </div>
+        <div class="space-y-8">
+          <h5 class="text-xs font-black uppercase tracking-[0.3em] text-primary">Page Sections</h5>
+          <nav class="flex flex-col gap-5">
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#problem">The Problem</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#solution">The Solution</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#demo">Demo</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#workflow">Workflow</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#example">Scenario</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#benefits">Benefits</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#contact">Contact</a>
+          </nav>
+        </div>
+        <div class="space-y-8">
+          <h5 class="text-xs font-black uppercase tracking-[0.3em] text-primary">Connect</h5>
+          <nav class="flex flex-col gap-5">
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#contact">Register interest</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#contact">Request a demo</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#demo">Watch demo</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#workflow">How it works</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#example">Example scenario</a>
+            <a class="text-sm text-blue-200/80 transition-colors hover:text-white" href="#benefits">Potential impact</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const CONTACT_EMAIL = "restin3@gmail.com,tal.barr@gmail.com";
+
+    function buildMailto(subject, body) {
+      return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    function makeInterestBody(name, email, org) {
+      return [
+        "Hello,",
+        "",
+        "I would like to express interest in MEDGemmaEBP.",
+        "",
+        `Name: ${name || "Not provided"}`,
+        `Email: ${email || "Not provided"}`,
+        `Organization: ${org || "Not provided"}`,
+        "",
+        "I am interested in:",
+        "- Pilot use",
+        "- Collaboration",
+        "- Product updates",
+        "",
+        "Please get back to me with next steps."
+      ].join("\n");
+    }
+
+    function setActiveNavLink(sectionId) {
+      const links = document.querySelectorAll("#top-nav .nav-link");
+      links.forEach((link) => {
+        const isActive = link.getAttribute("href") === `#${sectionId}`;
+        link.classList.toggle("nav-link-active", isActive);
+      });
+    }
+
+    const interestForm = document.getElementById("interest-form");
+    if (interestForm) {
+      interestForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const name = document.getElementById("interest-name")?.value?.trim() || "";
+        const email = document.getElementById("interest-email")?.value?.trim() || "";
+        const org = document.getElementById("interest-org")?.value?.trim() || "";
+        const body = makeInterestBody(name, email, org);
+        window.location.href = buildMailto("MEDGemmaEBP interest", body);
+      });
+    }
+
+    const demoLink = document.getElementById("contact-demo-link");
+    if (demoLink) {
+      demoLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        window.location.href = buildMailto(
+          "MEDGemmaEBP demo request",
+          ["Hello,", "", "I would like to request a demo of MEDGemmaEBP."].join("\n")
+        );
+      });
+    }
+
+    const collabLink = document.getElementById("contact-collab-link");
+    if (collabLink) {
+      collabLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        window.location.href = buildMailto(
+          "MEDGemmaEBP collaboration",
+          ["Hello,", "", "I would like to explore collaboration around MEDGemmaEBP."].join("\n")
+        );
+      });
+    }
+
+    const observedSections = document.querySelectorAll("section[data-section]");
+    if (observedSections.length > 0) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visibleEntries = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+          if (visibleEntries.length > 0) {
+            setActiveNavLink(visibleEntries[0].target.id);
+          }
+        },
+        {
+          rootMargin: "-25% 0px -55% 0px",
+          threshold: [0.2, 0.4, 0.6]
+        }
+      );
+
+      observedSections.forEach((section) => observer.observe(section));
+      setActiveNavLink("problem");
+    }
+
+    (function runSelfChecks() {
+      console.assert(typeof buildMailto === "function", "buildMailto should exist");
+      console.assert(typeof makeInterestBody === "function", "makeInterestBody should exist");
+      console.assert(typeof setActiveNavLink === "function", "setActiveNavLink should exist");
+      console.assert(
+        makeInterestBody("Tal", "tal@example.com", "BGU").includes("Name: Tal"),
+        "Interest body should include the provided name"
+      );
+      console.assert(
+        makeInterestBody("", "", "").includes("Not provided"),
+        "Interest body should include fallback values"
+      );
+      console.assert(
+        buildMailto("Test", "Line 1\nLine 2").startsWith("mailto:"),
+        "Mailto builder should generate a mailto link"
+      );
+    })();
+  </script>
+</body>
+</html>
