@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Testing: Building a Lean, Safe, and Cost-Aware Test System for AI Agents | Ori Nizan</title>
+    <meta name="description" content="How to build a lean, layered, and cost-aware testing system for AI agents. Covers regression debt, test taxonomy, evaluator economy, diff-to-risk-to-scope, and more.">
+    <meta name="keywords" content="agentic testing, AI agents, LLM testing, regression testing, evaluator, playwright, prompt injection, cost-aware testing, software engineering">
+    <script src="https://analytics.ahrefs.com/analytics.js" data-key="kW4vyQ9awU+oCz8K2l3VJw" async></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --bg-color: #fafafa;
+            --surface-color: #ffffff;
+            --text-main: #374151;
+            --text-heading: #111827;
+            --text-muted: #6b7280;
+            --accent-color: #2563eb;
+            --border-color: #e5e7eb;
+            --code-bg: #111827;
+            --code-text: #f3f4f6;
+            --inline-code-bg: #f3f4f6;
+            --inline-code-text: #db2777;
+            --toc-text: #6b7280;
+            --toc-hover: #111827;
+            --toc-active: #2563eb;
+            --toc-active-bg: #eff6ff;
+            --toc-border: #e5e7eb;
+        }
+
+        html.dark {
+            --bg-color: #111827;
+            --surface-color: #1f2937;
+            --text-main: #d1d5db;
+            --text-heading: #f9fafb;
+            --text-muted: #9ca3af;
+            --accent-color: #60a5fa;
+            --border-color: #374151;
+            --code-bg: #0f172a;
+            --code-text: #e2e8f0;
+            --inline-code-bg: #374151;
+            --inline-code-text: #f472b6;
+            --toc-text: #9ca3af;
+            --toc-hover: #f9fafb;
+            --toc-active: #60a5fa;
+            --toc-active-bg: rgba(37, 99, 235, 0.15);
+            --toc-border: #374151;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            html:not(.light) {
+                --bg-color: #111827;
+                --surface-color: #1f2937;
+                --text-main: #d1d5db;
+                --text-heading: #f9fafb;
+                --text-muted: #9ca3af;
+                --accent-color: #60a5fa;
+                --border-color: #374151;
+                --code-bg: #0f172a;
+                --code-text: #e2e8f0;
+                --inline-code-bg: #374151;
+                --inline-code-text: #f472b6;
+                --toc-text: #9ca3af;
+                --toc-hover: #f9fafb;
+                --toc-active: #60a5fa;
+                --toc-active-bg: rgba(37, 99, 235, 0.15);
+                --toc-border: #374151;
+            }
+            html:not(.light) body {
+                background-image: radial-gradient(#374151 1px, transparent 1px);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.8;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 4rem 0 0 0;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 32px 32px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        html.dark body {
+            background-image: radial-gradient(#374151 1px, transparent 1px);
+        }
+
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4rem;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 50;
+            transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .site-header.folded {
+            transform: translateY(-100%);
+        }
+
+        .site-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
+            text-decoration: none;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--bg-color);
+        }
+
+        .layout-wrapper {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            align-items: flex-start;
+            padding: 0 1rem;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 6rem;
+            width: 280px;
+            max-height: calc(100vh - 8rem);
+            overflow-y: auto;
+            padding-right: 2rem;
+            display: none;
+            margin-top: 4rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 10px;
+        }
+
+        .container {
+            max-width: 760px;
+            width: 100%;
+            margin: 4rem auto;
+            padding: 4rem 3rem;
+            background-color: var(--surface-color);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border-radius: 16px;
+            position: relative;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                display: block;
+            }
+            .container {
+                margin-left: 2rem;
+            }
+        }
+
+        /* TOC Styles */
+        .toc {
+            font-size: 0.875rem;
+        }
+
+        .toc-title {
+            font-weight: 600;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.75rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border-left: 2px solid var(--toc-border);
+        }
+
+        .toc-item {
+            margin-bottom: 0;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.4rem 1rem;
+            color: var(--toc-text);
+            text-decoration: none;
+            border: none;
+            transition: all 0.2s ease;
+            position: relative;
+            left: -2px;
+            border-left: 2px solid transparent;
+            line-height: 1.4;
+        }
+
+        .toc-link:hover {
+            color: var(--toc-hover);
+            border-left-color: var(--toc-hover);
+        }
+
+        .toc-link.active {
+            color: var(--toc-active);
+            border-left-color: var(--toc-active);
+            font-weight: 500;
+            background-color: var(--toc-active-bg);
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .toc-h3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Typography & Content */
+        header {
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+
+        .category {
+            color: var(--accent-color);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 3rem;
+            line-height: 1.15;
+            color: var(--text-heading);
+            margin: 0 0 1.5rem 0;
+            letter-spacing: -0.04em;
+            font-weight: 700;
+        }
+
+        .meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .meta .author {
+            font-weight: 500;
+            color: var(--text-heading);
+        }
+
+        .meta .date {
+            position: relative;
+        }
+
+        .meta .date::before {
+            content: '•';
+            position: absolute;
+            left: -0.7rem;
+            color: var(--border-color);
+        }
+
+        .content {
+            font-size: 1.125rem;
+        }
+
+        h2, h3, h4 {
+            color: var(--text-heading);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-top: 3.5rem;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+        
+        h4 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1.75rem;
+        }
+
+        .content a {
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s ease;
+        }
+
+        .content a:hover {
+            border-bottom-color: var(--accent-color);
+        }
+
+        ul, ol {
+            margin-top: 0;
+            margin-bottom: 1.75rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+        }
+
+        li > p {
+            margin-bottom: 0.75rem;
+        }
+
+        blockquote {
+            margin: 2.5rem 0;
+            padding: 1.5rem 2rem;
+            background-color: var(--bg-color);
+            border-left: 4px solid var(--accent-color);
+            border-radius: 0 8px 8px 0;
+            font-family: 'Merriweather', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        blockquote p:last-child {
+            margin-bottom: 0;
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.85em;
+            background-color: var(--inline-code-bg);
+            color: var(--inline-code-text);
+            padding: 0.25em 0.4em;
+            border-radius: 4px;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 2.5rem 0;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            border-radius: 0;
+            font-size: 0.875rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 2.5rem 0;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-color);
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td {
+            background-color: var(--surface-color);
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                background-image: none;
+                background-color: var(--surface-color);
+            }
+            .layout-wrapper {
+                padding: 0;
+            }
+            .container {
+                margin: 0;
+                border-radius: 0;
+                padding: 3rem 1.5rem;
+                box-shadow: none;
+                max-width: 100%;
+            }
+            
+            h1 {
+                font-size: 2.25rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            h3 {
+                font-size: 1.35rem;
+            }
+
+            blockquote {
+                font-size: 1.125rem;
+                padding: 1.25rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-header">
+        <div class="site-header-content">
+            <a href="https://onr.github.io/" class="site-logo">← Ori Nizan</a>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                🌓
+            </button>
+        </div>
+    </nav>
+
+    <div class="layout-wrapper">
+        <aside class="sidebar">
+            <nav class="toc">
+                <div class="toc-title">Table of Contents</div>
+                <ul id="toc-list" class="toc-list">
+                    <!-- TOC will be injected here -->
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="container">
+            <header>
+                <span class="category">Engineering</span>
+                <h1>Agentic Testing: Building a Lean, Safe, and Cost-Aware Test System for AI Agents</h1>
+                <div class="meta">
+                    <span class="author"><a href="https://onr.github.io/" target="_blank" rel="noopener noreferrer">onr</a></span>
+                    <span class="date">April 7, 2026</span>
+                </div>
+            </header>
+
+            <div class="content">
+                <p>AI agents make software faster to build, but they also make it easier to break things at speed. An agent can write code, wire tools together, browse a product, update a ticket, send an email, or modify a deployment configuration in minutes. That speed is real. So is the failure surface.</p>
+
+                <p>The bottleneck is not only generation. It is verification.</p>
+
+                <p>A fast agent only compounds your productivity if you can re-establish trust cheaply and often. If verification is slow, expensive, ambiguous, or heavily manual, then agent speed stops being an advantage and starts becoming a source of regression debt. The problem becomes familiar to any software engineer: things that used to work quietly stop working, bug fixes do not stay fixed, and nobody is fully sure what the system still guarantees.</p>
+
+                <p>That is why the central design goal for agentic development should be <strong>cheap trust</strong>.</p>
+
+                <p>Cheap trust does not mean shallow testing. It means building a test and evaluation system that produces repeatable evidence at a cost low enough to run continuously. It means protecting yesterday from today. It means treating tests as product memory, not as an afterthought. And it means designing the whole stack, from unit tests to release gates to human review, around one question:</p>
+
+                <p><strong>What is the cheapest reliable way to know whether this change is safe enough to ship?</strong></p>
+
+                <p>This post lays out a practical answer. It proposes a lean, layered testing system for software built, changed, or operated with AI agents, whether the thing being tested is the agent itself or the code, workflow, and product behavior the agent produced. The system is designed to be safe, auditable, and cost-aware. The core ideas are simple:</p>
+
+                <ul>
+                    <li>use layered coverage rather than one giant evaluation bucket</li>
+                    <li>separate inner-loop testing from outer-loop release gates</li>
+                    <li>prefer deterministic checks whenever possible</li>
+                    <li>calibrate weaker, cheaper evaluators against stronger ones</li>
+                    <li>keep artifacts, not giant conversational logs</li>
+                    <li>route test scope from diff to risk to scope rather than running everything all the time</li>
+                </ul>
+
+                <p>The result is not just a testing strategy. It is an operating model for agentic software development.</p>
+
+                <h2>The real enemy is regression debt</h2>
+
+                <p>Most teams talk about agent cost in terms of tokens or model pricing. That matters, but it is not the cost that eventually hurts the most. The deeper cost is regression debt.</p>
+
+                <p>Regression debt is what accumulates when a team keeps making changes without encoding what must continue to hold true. A bug is fixed once, then quietly returns two weeks later. A workflow works on one branch and breaks on another. A customer contract exists only in a support thread and not in any executable check. The code moves forward, but product memory does not.</p>
+
+                <p>In traditional software, regression debt already hurts. In agentic systems it hurts more, because changes are cheaper to make, system behavior is more variable, and failures can hide behind plausible outputs. An agent may produce a decent final answer while still using the wrong tool, leaking context into an argument, making redundant actions, or following an unsafe decision path.</p>
+
+                <p>That is why a fix that does not become a regression test is often not a real fix. It is a delay.</p>
+
+                <p>A strong agentic testing system treats tests as living memory:</p>
+
+                <ul>
+                    <li>they preserve intended behavior</li>
+                    <li>they turn important user-facing and business requirements into explicit, testable contracts</li>
+                    <li>they capture previously fixed bugs</li>
+                    <li>they make accidental change harder</li>
+                </ul>
+
+                <p>This framing matters because it changes the question from "Did we test this once?" to "Can we cheaply verify this forever?"</p>
+
+                <h2>Agent testing is different, but not alien</h2>
+
+                <p>It is tempting to speak about agent testing as if it were a completely new discipline. That is only half true.</p>
+
+                <p>What is new is the structure of the system under test. Agents are probabilistic, multi-step, and action-capable. They do not only transform inputs into outputs. They route, retrieve, call tools, decide when to stop, and sometimes take real-world actions. That means the object under test is no longer just the final response. It is also the trajectory.</p>
+
+                <p>A useful way to think about agent testing is this:</p>
+
+                <blockquote>
+                    <p>Traditional software testing often asks, "Was the output correct?" Agent testing must also ask, "Did the system get there in a safe, efficient, and policy-compliant way?"</p>
+                </blockquote>
+
+                <p>This creates several new failure classes.</p>
+
+                <h3>1. Plausible outputs can hide bad trajectories</h3>
+
+                <p>A final answer can look fine while the system behaved poorly on the way there. It may have:</p>
+
+                <ul>
+                    <li>called the wrong tool</li>
+                    <li>exposed unnecessary context to a tool</li>
+                    <li>taken redundant steps</li>
+                    <li>used a more dangerous action path than necessary</li>
+                    <li>ignored a required confirmation checkpoint</li>
+                </ul>
+
+                <p>If you only test final prose, you will miss many of the failures that matter operationally.</p>
+
+                <h3>2. Orchestration becomes part of correctness</h3>
+
+                <p>As soon as a system includes routing, handoffs, subagents, or specialized tools, orchestration becomes part of the product. The agent must not only generate good content. It must choose the right specialist, read the right files, call the right tools, and respect the boundaries between them.</p>
+
+                <p>A large share of real failures in agentic systems are not "bad language model outputs" in the narrow sense. They are coordination failures.</p>
+
+                <h3>3. Security is no longer a side concern</h3>
+
+                <p>If an agent can browse untrusted content and also act on internal systems, prompt injection is not a curiosity. It is part of the main threat model. Once an agent can send emails, write tickets, modify files, or access sensitive data, least privilege, confirmation checkpoints, policy enforcement, and auditability become testing requirements.</p>
+
+                <h3>4. Economics now shape what is testable</h3>
+
+                <p>A team can design an excellent but unusable evaluation system by making every meaningful check expensive. The verification system itself must scale. Cost and latency are not annoying secondary concerns. They determine whether the organization will actually keep using the safety system under delivery pressure.</p>
+
+                <h2>Old testing wisdom still applies</h2>
+
+                <p>Even with all those changes, the basic logic of good engineering still holds.</p>
+
+                <h3>Red, green, refactor still matters</h3>
+
+                <p>Test-driven development remains useful because its value was never tied to deterministic software alone. Its value is feedback quality. Traditionally, this cycle is used in a very practical order: first write a test for a small expected behavior and watch it fail, then implement the smallest change needed to make it pass, and only then clean up the code while keeping the tests green.</p>
+
+                <ul>
+                    <li><strong>Red</strong> means the new test fails first. This makes the desired behavior concrete before implementation.</li>
+                    <li><strong>Green</strong> means the test now passes. The goal here is only to make the requirement work with the smallest useful change.</li>
+                    <li><strong>Refactor</strong> means improving the structure after the behavior is already protected by passing tests.</li>
+                </ul>
+
+                <p>Traditionally, teams repeat this cycle in small increments while building features or fixing bugs. Its purpose is to keep feedback tight, reduce accidental overbuilding, and make change safer over time.</p>
+
+                <p>This matters even more with agents, because agents encourage teams to move quickly and over-generalize. TDD helps force precision back into the loop.</p>
+
+                <h3>The testing pyramid still matters</h3>
+
+                <p>Not all confidence costs the same.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Layer</th>
+                            <th>Purpose</th>
+                            <th>Strength</th>
+                            <th>Weakness</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Unit tests</td>
+                            <td>Pure logic and local behavior</td>
+                            <td>Very fast, deterministic</td>
+                            <td>Limited system realism</td>
+                        </tr>
+                        <tr>
+                            <td>Integration tests</td>
+                            <td>Boundaries, wiring, contracts</td>
+                            <td>Catch real interface failures</td>
+                            <td>Slower, more setup</td>
+                        </tr>
+                        <tr>
+                            <td>End-to-end tests</td>
+                            <td>Full user workflows</td>
+                            <td>Highest confidence per test</td>
+                            <td>Slowest, most brittle</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>Agentic systems do not remove the pyramid. They increase the temptation to ignore it. A team that relies only on expensive end-to-end agent demos will get slow feedback and flaky trust. A team that relies only on tiny local checks will miss orchestration and safety failures.</p>
+
+                <p>The goal is still the same: maximize signal per millisecond.</p>
+
+                <h2>The key move: turn judgment into checking</h2>
+
+                <p>The single highest-leverage design principle in agentic testing is to convert fuzzy judgment problems into explicit checking problems.</p>
+
+                <p>Whenever possible, do not ask a model to answer, "Does this seem good?" Ask a system to verify something crisp.</p>
+
+                <p>That usually means:</p>
+
+                <ul>
+                    <li>structured inputs and outputs</li>
+                    <li>JSON schemas</li>
+                    <li>deterministic invariants</li>
+                    <li>explicit pass/fail rules</li>
+                    <li>narrow rubrics instead of broad vibes</li>
+                </ul>
+
+                <p>For example, instead of asking a judge model whether a response "used the tool correctly," define the expected tool, allowed arguments, forbidden fields, and required action order. Instead of grading whether a UI interaction "looked reasonable," preserve screenshots, traces, and visual diffs that make the disagreement concrete.</p>
+
+                <p>A useful heuristic is this:</p>
+
+                <blockquote>
+                    <p>If a test requires a frontier model just to decide whether it passed, the test is often underspecified.</p>
+                </blockquote>
+
+                <p>That does not mean every meaningful property can be reduced to deterministic logic. Some qualities, such as recommendation quality, naturalness, or strategic judgment, are inherently softer. But even there, you can usually shrink the fuzzy surface and move more of the problem into explicit structure.</p>
+
+                <p>This principle is the foundation of cheap trust.</p>
+
+                <h2>A layered testing taxonomy for AI agents</h2>
+
+                <p>A good agentic test system separates <strong>what</strong> is being tested from <strong>when</strong> it is run.</p>
+
+                <h3>What to test</h3>
+
+                <h4>1. Contract tests</h4>
+
+                <p>These are the hard checks.</p>
+
+                <p>They verify:</p>
+
+                <ul>
+                    <li>schemas</li>
+                    <li>output formats</li>
+                    <li>required fields</li>
+                    <li>tool name and argument validity</li>
+                    <li>deterministic invariants</li>
+                    <li>policy constraints that can be encoded directly</li>
+                </ul>
+
+                <p>Contract tests should be the first line of defense because they are cheap, fast, and highly auditable.</p>
+
+                <h4>2. Numeric or ground-truth evaluations</h4>
+
+                <p>Use these when there is a reference answer or measurable success criterion.</p>
+
+                <p>Examples:</p>
+
+                <ul>
+                    <li>exact match or partial match</li>
+                    <li>retrieval quality</li>
+                    <li>classification accuracy</li>
+                    <li>precision and recall for tool trajectories</li>
+                    <li>task success rate on labeled scenarios</li>
+                </ul>
+
+                <p>These are useful for benchmarking and regression prevention when a task admits objective scoring.</p>
+
+                <h4>3. LLM-graded qualitative evaluations</h4>
+
+                <p>Some things matter even when they are not fully deterministic.</p>
+
+                <p>Examples:</p>
+
+                <ul>
+                    <li>clarity</li>
+                    <li>recommendation quality</li>
+                    <li>prioritization quality</li>
+                    <li>writing style adherence</li>
+                    <li>memory usage quality</li>
+                </ul>
+
+                <p>These tests are valuable, but they should be carefully scoped and calibrated. They are more vulnerable to evaluator drift and ambiguity.</p>
+
+                <h4>4. End-to-end scenario tests</h4>
+
+                <p>These test complete workflows that real users care about.</p>
+
+                <p>Examples:</p>
+
+                <ul>
+                    <li>refund flow</li>
+                    <li>onboarding flow</li>
+                    <li>support triage flow</li>
+                    <li>bug reproduction and fix validation</li>
+                    <li>safe browsing plus summarization workflow</li>
+                </ul>
+
+                <p>These are costly but essential. They show whether the system works as a product, not only as a set of components.</p>
+
+                <h4>5. Orchestration and control-plane tests</h4>
+
+                <p>These focus on routing, handoffs, subagent delegation, tool selection, instruction loading, and permission boundaries.</p>
+
+                <p>In many agentic systems, these tests are under-emphasized even though orchestration errors are common and highly consequential.</p>
+
+                <h4>6. Security and adversarial tests</h4>
+
+                <p>These should be first-class, not an appendix.</p>
+
+                <p>Examples:</p>
+
+                <ul>
+                    <li>prompt injection attempts</li>
+                    <li>data exfiltration attempts</li>
+                    <li>unauthorized tool usage</li>
+                    <li>missing confirmation flows</li>
+                    <li>destructive actions without approval</li>
+                    <li>scope leakage across contexts</li>
+                </ul>
+
+                <p>A system that scores well on helpfulness but poorly on these tests is not ready.</p>
+
+                <h4>7. Product experiments</h4>
+
+                <p>These are different from correctness tests. They measure business or UX impact under controlled release conditions.</p>
+
+                <p>Examples:</p>
+
+                <ul>
+                    <li>feature flags</li>
+                    <li>canaries</li>
+                    <li>A/B experiments</li>
+                    <li>gradual rollouts</li>
+                </ul>
+
+                <p>These are valuable, but they should not replace correctness or safety gates.</p>
+
+                <h3>When to run them</h3>
+
+                <p>The second dimension is execution stage.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stage</th>
+                            <th>Goal</th>
+                            <th>Typical scope</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Runtime or in-loop</td>
+                            <td>Catch invalid or unsafe behavior during execution</td>
+                            <td>Validators, guardrails, confirmations</td>
+                        </tr>
+                        <tr>
+                            <td>CI or offline</td>
+                            <td>Prevent regressions and compare versions</td>
+                            <td>Contracts, datasets, targeted scenarios</td>
+                        </tr>
+                        <tr>
+                            <td>Release gate</td>
+                            <td>Decide promotion to a wider audience</td>
+                            <td>High-signal subset, trace review, risk checks</td>
+                        </tr>
+                        <tr>
+                            <td>Production monitoring</td>
+                            <td>Detect drift, incidents, and new failure modes</td>
+                            <td>Sampled online evaluation, anomaly review</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>This separation matters because it prevents two common failures:</p>
+
+                <ul>
+                    <li><strong>too little testing</strong>, which produces false confidence</li>
+                    <li><strong>too much testing per edit</strong>, which makes iteration too slow and expensive</li>
+                </ul>
+
+                <h2>Two time-scales: inner loop and outer loop</h2>
+
+                <p>One of the most practical ways to make a test system usable is to explicitly separate inner-loop and outer-loop testing.</p>
+
+                <h3>Inner-loop testing</h3>
+
+                <p>This is the fix-until-green cycle while a developer or agent is actively editing.</p>
+
+                <p>It should be:</p>
+
+                <ul>
+                    <li>fast</li>
+                    <li>fail-fast</li>
+                    <li>narrowly scoped</li>
+                    <li>deterministic where possible</li>
+                    <li>repeatable many times per hour</li>
+                </ul>
+
+                <p>Typical tools include:</p>
+
+<pre><code class="language-bash">npx playwright test --last-failed -x
+npx playwright test --only-changed
+npx playwright test tests/login.spec.ts
+npx playwright test -g "checkout"
+</code></pre>
+
+                <p>The purpose is not maximal confidence. It is rapid local progress.</p>
+
+                <h3>Outer-loop testing</h3>
+
+                <p>This is the broader, more expensive gate.</p>
+
+                <p>It can include:</p>
+
+                <ul>
+                    <li>full scenario suites</li>
+                    <li>cross-browser coverage</li>
+                    <li>wider visual baselines</li>
+                    <li>stronger evaluator tiers</li>
+                    <li>security suites</li>
+                    <li>release readiness checks</li>
+                </ul>
+
+                <p>Outer-loop tests should run less frequently because they cost more. They belong before merge, before release, nightly, or on risk-triggered schedules.</p>
+
+                <p>A system that confuses these two loops usually fails one of two ways: either it runs too little and misses regressions, or it runs too much on every edit and makes shipping painfully slow.</p>
+
+                <h2>Diff to risk to scope</h2>
+
+                <p>A scalable test system should not answer every code change with "run everything."</p>
+
+                <p>The right policy interface is:</p>
+
+                <p><strong>diff -&gt; risk -&gt; scope</strong></p>
+
+                <p>Look at what changed, classify the risk, and then select the smallest sufficient test plan.</p>
+
+                <p>A useful conceptual ladder looks like this:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Risk level</th>
+                            <th>Example change</th>
+                            <th>Suggested verification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>R0</td>
+                            <td>Docs, comments, copy-only edits</td>
+                            <td>No runtime tests or minimal linting</td>
+                        </tr>
+                        <tr>
+                            <td>R1</td>
+                            <td>Local logic change</td>
+                            <td>Static checks and targeted unit tests</td>
+                        </tr>
+                        <tr>
+                            <td>R2</td>
+                            <td>Interface or integration change</td>
+                            <td>Unit plus integration and contract tests</td>
+                        </tr>
+                        <tr>
+                            <td>R3</td>
+                            <td>UI or workflow change</td>
+                            <td>Targeted E2E smoke and optional visual diffs</td>
+                        </tr>
+                        <tr>
+                            <td>R4</td>
+                            <td>High-risk change such as auth, payments, migrations, infra, permissions</td>
+                            <td>Broader scope, traces, retries, audits, stronger review</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>This is powerful because it makes trade-offs explicit. Every team is always trading latency, compute cost, token cost, and confidence. Diff-to-risk-to-scope turns those trade-offs into policy instead of habit.</p>
+
+                <h2>Evaluator economy: cheap by default, strong by exception</h2>
+
+                <p>A mature agentic test system treats evaluators as production infrastructure. They must be good enough, fast enough, and cheap enough to run continuously.</p>
+
+                <p>That leads to an important idea: <strong>evaluator economy</strong>.</p>
+
+                <p>The default verifier should be the cheapest one that has been shown reliable for that slice of work. Stronger evaluators should be reserved for ambiguity, high-risk decisions, and calibration.</p>
+
+                <p>A clean abstraction is to use four tiers:</p>
+
+                <ul>
+                    <li><code>tier_1_cheap</code></li>
+                    <li><code>tier_2_standard</code></li>
+                    <li><code>tier_3_strong</code></li>
+                    <li><code>human</code></li>
+                </ul>
+
+                <p>The names matter less than the discipline.</p>
+
+                <h3>Minimum required verifier per test</h3>
+
+                <p>One useful implementation pattern is to let each test carry an explicit minimum verifier label. For example:</p>
+
+                <ul>
+                    <li><code>min_verifier: local_small</code></li>
+                    <li><code>min_verifier: local_medium</code></li>
+                    <li><code>min_verifier: frontier_model</code></li>
+                    <li><code>min_verifier: human</code></li>
+                </ul>
+
+                <p>This turns evaluator choice from improvisation into routing. Most regression tests can then run locally or on a cheap tier after every change, while only the truly ambiguous or high-stakes checks escalate. The point is not the labels themselves. The point is to make the question explicit: what is the weakest verifier that can still judge this test reliably?</p>
+
+                <p>The answer should be learned, not guessed.</p>
+
+                <h3>A practical strong/weak pattern</h3>
+
+                <p>The simplest robust operating model is a two-tier posture.</p>
+
+                <h4>Weak verifier, used by default</h4>
+
+                <p>The weak verifier should:</p>
+
+                <ul>
+                    <li>choose the smallest sufficient test scope</li>
+                    <li>run deterministic commands when available</li>
+                    <li>produce compact structured summaries</li>
+                    <li>preserve artifacts when something fails</li>
+                    <li>do one fast rerun before escalating</li>
+                </ul>
+
+                <h4>Strong verifier, used as an auditor</h4>
+
+                <p>The strong verifier should:</p>
+
+                <ul>
+                    <li>review scope decisions when risk is high</li>
+                    <li>handle ambiguous cases</li>
+                    <li>distinguish likely flake from true regression</li>
+                    <li>broaden coverage when needed</li>
+                    <li>improve the weak verifier's future instructions and rubric</li>
+                </ul>
+
+                <p>This is important: the strong verifier should not only decide harder cases. It should also reduce future verification cost.</p>
+
+                <p>Every expensive escalation should leave behind a cheaper path for next time.</p>
+
+                <p>That usually means:</p>
+
+                <ul>
+                    <li>simplifying fuzzy assertions</li>
+                    <li>tightening rubrics</li>
+                    <li>adding missing structure or schemas</li>
+                    <li>splitting one large judgment test into several cheap checks</li>
+                    <li>shrinking irrelevant context</li>
+                </ul>
+
+                <h3>Escalation triggers</h3>
+
+                <p>Strong verification should be triggered by policy, not by mood.</p>
+
+                <p>Typical triggers include:</p>
+
+                <ul>
+                    <li>repeated failure after one fast rerun</li>
+                    <li>high-risk diffs such as auth, payments, infra, migrations, or permissions</li>
+                    <li>suspected flake such as timeouts or nondeterministic selectors</li>
+                    <li>major changes to the test harness itself</li>
+                    <li>uncertainty about mapping a change to the right test scope</li>
+                    <li>any security-relevant write action</li>
+                </ul>
+
+                <h3>Calibration before delegation</h3>
+
+                <p>Do not assume the cheap verifier is reliable. Prove it.</p>
+
+                <p>A practical calibration loop is:</p>
+
+                <ol>
+                    <li>sample representative tasks, including edge cases and adversarial cases</li>
+                    <li>run the cheap verifier and strong verifier on the same cases</li>
+                    <li>use human review for disagreements or high-stakes slices</li>
+                    <li>compare not only overall pass or fail, but also extracted fields and allowed failure reasons when the test uses structure</li>
+                    <li>lock in the minimum sufficient verifier for that slice</li>
+                    <li>re-calibrate when the system, test, code surface, or data distribution changes materially</li>
+                </ol>
+
+                <p>This is the path from calibration to delegation. The more seriously a team treats this phase, the safer it becomes to automate routing later.</p>
+
+                <h2>Prefer artifacts over tokens</h2>
+
+                <p>One of the most common mistakes in agentic testing is moving too much raw context through the model.</p>
+
+                <p>Huge logs, DOM dumps, accessibility trees, multi-page HTML, and long narrative transcripts are expensive and hard to audit. They often produce less clarity than a smaller set of better artifacts.</p>
+
+                <p>A healthier pattern is to keep <strong>evidence files</strong>:</p>
+
+                <ul>
+                    <li>Playwright HTML reports</li>
+                    <li>traces</li>
+                    <li>screenshots</li>
+                    <li>visual diffs</li>
+                    <li>short structured run logs</li>
+                    <li>minimal error excerpts</li>
+                </ul>
+
+                <p>This shifts the system from "chatty evidence" to durable evidence.</p>
+
+                <p>It also makes debugging better. A screenshot diff is often more useful than a thousand tokens describing what the UI allegedly did.</p>
+
+                <h2>Humans should set intent, but agents should prepare the review</h2>
+
+                <p>Human reviewers are still uniquely useful for a few kinds of judgment:</p>
+
+                <ul>
+                    <li>clarifying intent</li>
+                    <li>deciding what the experience should feel like</li>
+                    <li>resolving UX ambiguity</li>
+                    <li>making nuanced policy judgments</li>
+                </ul>
+
+                <p>But humans are relatively slow, expensive, and interruption-sensitive compared with machines. That makes human attention one of the most valuable resources in the loop. An agent should therefore not hand a person a pile of raw logs and ask, "Can you check this?" It should first do as much of the work as possible itself.</p>
+
+                <p>That means the agent should:</p>
+
+                <ul>
+                    <li>run all cheap deterministic checks first</li>
+                    <li>narrow the review to the smallest uncertain surface</li>
+                    <li>attach the exact artifacts needed to judge it</li>
+                    <li>summarize what changed, what passed, what failed, and what still needs a human decision</li>
+                </ul>
+
+                <p>The high-value use of human review is to establish the contract once: what correct behavior means, what must never regress, and what evidence is good enough. After that, the system should translate the decision into repeatable enforcement through artifacts such as screenshot diffs, interaction scripts, structured event logs, and narrow rubrics.</p>
+
+                <h3>Human verification should be packaged, not dumped</h3>
+
+                <p>When a human really does need to verify something, the agent should make that review as fast and clear as possible. In many cases that means creating a small review surface rather than asking the person to reconstruct the issue from raw output.</p>
+
+                <p>That review surface might include:</p>
+
+                <ul>
+                    <li>a one-click preview or repro link</li>
+                    <li>before and after screenshots or visual diffs</li>
+                    <li>a short checklist of what to confirm</li>
+                    <li>a focused place to leave comments, mark pass or fail, or flag UX concerns</li>
+                </ul>
+
+                <p>For UI and workflow checks especially, a lightweight interactive review page can be far more efficient than a long transcript. The point is simple: computers should do repetitive checking, while humans should spend their time on intent, ambiguity, and product judgment.</p>
+
+                <p>A good rule is simple: humans provide the high-signal label once, then machines enforce it forever.</p>
+
+                <h2>Why Playwright CLI should usually beat interactive browser sessions for regressions</h2>
+
+                <p>Interactive browser-driving interfaces are useful for exploration. They help when a workflow is not yet understood, when a tester wants to discover user paths, or when an agent needs to inspect a novel product flow.</p>
+
+                <p>But exploration and regression verification are different jobs.</p>
+
+                <p>For steady-state verification, CLI-based Playwright is usually the better default because it is:</p>
+
+                <ul>
+                    <li>more reproducible</li>
+                    <li>cheaper in model context</li>
+                    <li>easier to audit</li>
+                    <li>easier to schedule in CI</li>
+                    <li>better at producing standard artifacts</li>
+                </ul>
+
+                <p>A useful rule of thumb is:</p>
+
+                <ul>
+                    <li>explore rarely</li>
+                    <li>convert discoveries into tests</li>
+                    <li>run those tests often</li>
+                </ul>
+
+                <p>That is the bridge from curious exploration to durable product memory.</p>
+
+                <h3>High-leverage Playwright commands</h3>
+
+<pre><code class="language-bash">npx playwright test --last-failed -x
+npx playwright test --only-changed [ref]
+npx playwright test tests/foo.spec.ts
+npx playwright test -g "login"
+npx playwright test --ui
+npx playwright test --debug
+npx playwright show-report
+npx playwright show-trace path/to/trace.zip
+</code></pre>
+
+                <p>These commands matter because they support cheap iteration. They let teams debug without paying the cost of rerunning everything.</p>
+
+                <h2>Visual regression is often an image problem first</h2>
+
+                <p>Many UI regressions are not fundamentally text problems. They are image problems.</p>
+
+                <p>Layout shift, clipped content, missing spacing, overlapping elements, broken responsive behavior, and visual disappearance are often easier to detect through screenshot comparison than through DOM inspection or narrative reporting.</p>
+
+                <p>That suggests a practical testing pattern:</p>
+
+                <ul>
+                    <li>use screenshot-based assertions for key surfaces</li>
+                    <li>update baselines intentionally, not casually</li>
+                    <li>run a small viewport matrix, often at least desktop and mobile</li>
+                    <li>preserve expected, actual, and diff images as first-class artifacts</li>
+                </ul>
+
+                <p>A strong model or vision-capable reviewer can then inspect the diff image directly, which is usually cheaper and meet reliable than reconstructing the visual state from HTML alone.</p>
+
+                <h2>Structured output beats chatty logs</h2>
+
+                <p>A testing system should not produce long, theatrical logs. It should produce short, structured, actionable reports.</p>
+
+                <p>At minimum, each run should record:</p>
+
+                <ul>
+                    <li>exact commands executed</li>
+                    <li>PASS or FAIL status</li>
+                    <li>names of failing tests</li>
+                    <li>a short error excerpt</li>
+                    <li>artifact paths</li>
+                    <li>confidence or uncertainty indicator when relevant</li>
+                    <li>next action</li>
+                </ul>
+
+                <p>For example, a useful structured summary might answer these six questions:</p>
+
+                <ol>
+                    <li>What ran?</li>
+                    <li>What passed?</li>
+                    <li>What failed?</li>
+                    <li>Where are the artifacts?</li>
+                    <li>What is the likely classification: regression, flake, or blocked?</li>
+                    <li>What happens next: rerun, broaden, escalate, or fix?</li>
+                </ol>
+
+                <p>That format scales much better than dense prose.</p>
+
+                <h2>Security must be in the main test plan</h2>
+
+                <p>Security cannot live in a separate moral appendix once agents have tools and permissions.</p>
+
+                <p>The test plan itself must include:</p>
+
+                <ul>
+                    <li>prompt injection scenarios</li>
+                    <li>least-privilege validation</li>
+                    <li>destructive action confirmation checks</li>
+                    <li>output sanitization where relevant</li>
+                    <li>secret-handling tests</li>
+                    <li>data boundary and tenancy checks</li>
+                    <li>audit-log coverage</li>
+                </ul>
+
+                <p>This also changes ownership. Any change that expands tool access, write capability, or sensitive data reach should automatically trigger security review.</p>
+
+                <p>A system that is brilliant at helpfulness but weak on these controls is not mature.</p>
+
+                <h2>Agentic exploratory UI testing: broad but shallow insurance</h2>
+
+                <p>There is still a place for lightweight exploratory agent testing.</p>
+
+                <p>A bounded "naive user tour" can be useful when:</p>
+
+                <ul>
+                    <li>onboarding a new product surface</li>
+                    <li>checking whether core paths are obviously broken</li>
+                    <li>gathering early artifacts before formal tests exist</li>
+                </ul>
+
+                <p>But it should be deliberately constrained:</p>
+
+                <ul>
+                    <li>use safe environments and test accounts</li>
+                    <li>skip destructive actions by default</li>
+                    <li>cap clicks, pages, and time</li>
+                    <li>preserve screenshots and traces</li>
+                    <li>treat the output as reviewable evidence, not as a long narrative essay</li>
+                </ul>
+
+                <p>Exploration is insurance. It is not a substitute for stable regression tests.</p>
+
+                <h2>The test system needs an orchestrator</h2>
+
+                <p>Once multiple evaluators, tools, and review paths exist, the system needs an orchestrator. Without one, teams end up with scattered checks, missing handoffs, and humans being asked to verify things that should have been pre-filtered automatically.</p>
+
+                <p>The orchestrator's job is not to judge everything itself. Its job is to route work well. In practice, that usually means it should:</p>
+
+                <ul>
+                    <li>inspect the diff or requested change</li>
+                    <li>estimate risk and choose initial test scope</li>
+                    <li>delegate checks to specialized test agents or tools</li>
+                    <li>collect artifacts and structured results</li>
+                    <li>decide whether to rerun, broaden, escalate, or ask a human</li>
+                    <li>notify the right person when human input is actually needed</li>
+                    <li>record the outcome so the same issue becomes cheaper to verify next time</li>
+                </ul>
+
+                <p>This orchestrator can also own the human-facing step. Instead of merely saying that something failed, it can send a focused review request through the team's normal channel, such as chat, email, tickets, or another notification system, with the exact artifacts and decision needed.</p>
+
+                <h2>Ownership and coordination</h2>
+
+                <p>A testing system becomes operational when responsibility is explicit.</p>
+
+                <p>A useful minimal split is:</p>
+
+                <ul>
+                    <li><strong>authoring agent or developer</strong>: makes the change and adds tests or files a testing proposal</li>
+                    <li><strong>orchestrator</strong>: routes the change to the right checks, gathers artifacts, and decides when to escalate</li>
+                    <li><strong>review agent</strong>: checks whether coverage is adequate</li>
+                    <li><strong>security reviewer</strong>: required for tools, permissions, data access, or destructive capability changes</li>
+                    <li><strong>release owner</strong>: decides direct release versus flag, canary, or experiment</li>
+                    <li><strong>human owner</strong>: resolves high-risk or ambiguous cases</li>
+                </ul>
+
+                <p>The policy can be simple:</p>
+
+                <ol>
+                    <li>no behavior change merges without updated tests or a structured testing proposal</li>
+                    <li>no capability expansion without security review</li>
+                    <li>no uncertain release without a rollout plan</li>
+                    <li>no completion claim without verification evidence</li>
+                </ol>
+
+                <p>This may sound procedural, but it is how a fast-moving agentic system stays coherent.</p>
+
+                <h2>If you already have tests, convert them before replacing them</h2>
+
+                <p>Most teams do not start from zero. They already have some tests, but many of those tests are expensive to interpret or too broad to run often. The right upgrade path is usually conversion, not replacement.</p>
+
+                <p>A practical conversion playbook looks like this:</p>
+
+                <ol>
+                    <li>turn implicit expectations into explicit contracts</li>
+                    <li>replace free-form judgment with structure where possible</li>
+                    <li>split oversized end-to-end tests into layered checks</li>
+                    <li>preserve a small number of true smoke tests</li>
+                    <li>turn previously fixed bugs into stable regression cases</li>
+                </ol>
+
+                <p>The goal is to move as much of the suite as possible from expensive interpretation toward cheap verification without losing behavioral coverage.</p>
+
+                <h2>Practical verifier stack: local by default, flexible escalation when needed</h2>
+
+                <p>The core thesis of this post does not depend on any single tool, but in practice many teams benefit from a simple split.</p>
+
+                <p>A local runtime can serve as the always-on cheap verifier. This is where tools such as Ollama fit well: low marginal cost, easy repeated use, and good enough performance for structured pass or fail checks when the task is designed properly. A remote routing layer can then serve as the flexible strong-verifier path. This is where something like OpenRouter can be useful: one interface to stronger models for calibration runs, ambiguous cases, and test-writing or test-upgrading tasks.</p>
+
+                <p>The pattern matters more than the brand names:</p>
+
+                <ul>
+                    <li>local or cheap by default</li>
+                    <li>stronger API-based verification for escalation</li>
+                    <li>human review only where uniquely valuable</li>
+                </ul>
+
+                <h2>Repository design matters more than people expect</h2>
+
+                <p>Instruction architecture can quietly determine whether agents stay effective or drown in context.</p>
+
+                <p>The simplest reliable pattern is to separate:</p>
+
+                <ul>
+                    <li><strong>static instructions</strong></li>
+                    <li><strong>dynamic coordination queues</strong></li>
+                    <li><strong>run artifacts</strong></li>
+                    <li><strong>executable tests</strong></li>
+                </ul>
+
+                <p>A practical tree looks like this:</p>
+
+<pre><code class="language-text">AGENTS.md
+
+instructions/
+  INDEX.md
+  testing/
+    INDEX.md
+    MANIFEST.yaml
+    contract/SKILL.md
+    evals/SKILL.md
+    e2e/SKILL.md
+    security/SKILL.md
+    review/SKILL.md
+    scheduler/SKILL.md
+    reporting/SKILL.md
+
+coordination/
+  testing/
+    proposals/
+    specs/
+    schedules/
+    fix-plans/
+
+artifacts/
+  testing/
+    runs/
+    reviews/
+    security/
+    reports/
+    dashboard/
+
+tests/
+evals/
+</code></pre>
+
+                <p>The design principle is minimalism:</p>
+
+                <ul>
+                    <li>read tiny routing files first</li>
+                    <li>open only the relevant skill file</li>
+                    <li>do not scan the whole instruction tree</li>
+                    <li>store logs and dynamic state outside the instruction system</li>
+                </ul>
+
+                <p>The execution side should be equally boring. Keep one obvious place for tests, a stable location for fixtures and contracts, and one main command that both humans and agents can run. Then expose cheaper layer-specific commands for fast iteration.</p>
+
+                <p>This keeps context small, preserves agent focus, and makes repeated verification much easier to automate.</p>
+
+                <h2>Headless parity and automation discipline</h2>
+
+                <p>If a workflow matters operationally, it should not exist only as an interactive ritual.</p>
+
+                <p>A good CLI platform for agentic testing follows a headless parity rule: every interactive prompt that matters should have a CLI path. That enables:</p>
+
+                <ul>
+                    <li>deterministic automation</li>
+                    <li>scheduled runs</li>
+                    <li>CI reproducibility</li>
+                    <li>lower context overhead</li>
+                    <li>better audit logs</li>
+                </ul>
+
+                <p>The same logic applies to permissions and environment setup. Safe defaults, explicit escalation, and automatic prerequisite checks all reduce operational friction and prevent unreliable ad hoc runs.</p>
+
+                <h2>A simple decision matrix</h2>
+
+                <p>To make the whole system concrete, here is a compact decision matrix.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Situation</th>
+                            <th>Start here</th>
+                            <th>Escalate when needed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Schema, format, tool args</td>
+                            <td>Deterministic validator</td>
+                            <td>Cheap judge only for edge ambiguity</td>
+                        </tr>
+                        <tr>
+                            <td>Routine qualitative scoring on calibrated cases</td>
+                            <td>Cheap judge</td>
+                            <td>Standard judge on uncertainty</td>
+                        </tr>
+                        <tr>
+                            <td>New workflow or out-of-distribution behavior</td>
+                            <td>Standard judge</td>
+                            <td>Strong judge</td>
+                        </tr>
+                        <tr>
+                            <td>Security-sensitive decision</td>
+                            <td>Standard or strong judge</td>
+                            <td>Human review for highest-risk cases</td>
+                        </tr>
+                        <tr>
+                            <td>UI visual correctness</td>
+                            <td>Screenshots and visual diffs</td>
+                            <td>Human or vision-capable review</td>
+                        </tr>
+                        <tr>
+                            <td>Repeated disagreement or drift suspicion</td>
+                            <td>Strong judge</td>
+                            <td>Human review and rubric revision</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>The purpose is not bureaucratic precision. It is predictable escalation.</p>
+
+                <h2>The test suite itself should keep improving</h2>
+
+                <p>A mature system does not only test the product. It also improves the tests. If the suite gets slower, noisier, more expensive, or less trustworthy over time, then cheap trust eventually disappears.</p>
+
+                <p>That is why test evolution should be part of the design, not a cleanup task left for later. Someone, or something, needs to be responsible for continuously making the suite faster, cheaper, and more accurate.</p>
+
+                <p>In practice, that responsibility can sit with an evaluation owner, an orchestrator agent, or a scheduled maintenance job such as a nightly or weekly run. The mechanism matters less than the discipline. The system should regularly look for tests that are flaky, redundant, too slow, too expensive to judge, poorly specified, or no longer aligned with real risk.</p>
+
+                <p>That evolution loop can include:</p>
+
+                <ul>
+                    <li>rewriting fuzzy checks into explicit contracts</li>
+                    <li>downgrading tests to cheaper verifiers when calibration shows it is safe</li>
+                    <li>upgrading tests that are too weak or too noisy</li>
+                    <li>splitting oversized scenario tests into smaller layered checks</li>
+                    <li>removing duplicate coverage</li>
+                    <li>refreshing fixtures, baselines, and rubrics when the product changes</li>
+                    <li>tracking which tests consume the most time, money, and human attention</li>
+                </ul>
+
+                <p>The goal is not just to keep adding more tests. It is to keep improving the cost-to-signal ratio of the suite itself. In a strong system, test maintenance is not an afterthought. It is an ongoing optimization loop built into the operating model.</p>
+
+                <h2>A practical loop for making expensive verification rarer over time</h2>
+
+                <p>The best verification systems get cheaper as they mature.</p>
+
+                <p>That happens through a repeating loop:</p>
+
+                <ol>
+                    <li>use the cheapest verifier that has been proven sufficient</li>
+                    <li>escalate when risk or uncertainty demands it</li>
+                    <li>study why escalation was needed</li>
+                    <li>simplify the test, rubric, structure, or artifact set</li>
+                    <li>push as much as possible back into cheaper verification</li>
+                    <li>re-calibrate and continue</li>
+                </ol>
+
+                <p>This is how a team avoids permanently paying premium costs for routine checks. Strong verification should act as a teacher for the system, not only as a judge.</p>
+
+                <h2>What good looks like in practice</h2>
+
+                <p>A healthy agentic development loop often looks like this:</p>
+
+                <ul>
+                    <li>an agent or developer makes a targeted change</li>
+                    <li>an orchestrator maps the change from diff to risk to scope</li>
+                    <li>inner-loop checks run on the smallest sufficient scope</li>
+                    <li>failures produce compact summaries plus traces, screenshots, or diffs</li>
+                    <li>one quick rerun happens where policy allows</li>
+                    <li>repeated or high-risk failures escalate to stronger verification</li>
+                    <li>if human review is needed, the orchestrator sends a focused review package rather than raw logs</li>
+                    <li>the stronger verifier not only returns a verdict, but also suggests how to make the test cheaper next time when possible</li>
+                    <li>fixes add or update regression tests</li>
+                    <li>broader outer-loop gates run before merge or release</li>
+                    <li>production monitoring surfaces novel failures</li>
+                    <li>those failures become new proposals, specs, and regression cases</li>
+                </ul>
+
+                <p>This is not glamorous. That is exactly why it works.</p>
+
+                <h2>Conclusion</h2>
+
+                <p>The central insight in agentic testing is easy to miss because it sounds almost too simple: speed only matters if trust stays cheap. That is the real design challenge. A good system does not rely on one magic evaluator, one giant benchmark, or one heroic end-to-end suite. It earns trust through layers, scoped checks, strong artifacts, calibration, explicit escalation, and clear ownership. It protects yesterday from today, turns vague judgment into explicit checking wherever it can, and treats tests as product memory. It defaults to cheap verification and escalates to stronger verification only when needed, while working over time to make even those escalations rarer. That is what a lean, safe, and cost-aware testing system for software built with AI agents should do: not just tell you that the model can do something impressive, but tell you, repeatedly and affordably, whether the system is still worthy of trust.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme toggle logic
+            const toggle = document.getElementById('theme-toggle');
+            
+            const isDark = localStorage.getItem('theme') === 'dark' || 
+                (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.add('light');
+            }
+
+            toggle.addEventListener('click', () => {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.classList.remove('light');
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // Folding Header logic
+            let lastScrollY = window.scrollY;
+            const header = document.querySelector('.site-header');
+
+            // TOC Generation and highlighting
+            const content = document.querySelector('.content');
+            const headings = Array.from(content.querySelectorAll('h2, h3'));
+            const tocList = document.getElementById('toc-list');
+            
+            if (tocList && headings.length > 0) {
+                headings.forEach((heading) => {
+                    if (!heading.id) {
+                        heading.id = heading.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                    }
+
+                    const li = document.createElement('li');
+                    li.className = 'toc-item';
+                    
+                    const a = document.createElement('a');
+                    a.href = `#${heading.id}`;
+                    a.textContent = heading.textContent;
+                    a.className = `toc-link ${heading.tagName.toLowerCase() === 'h3' ? 'toc-h3' : ''}`;
+                    
+                    li.appendChild(a);
+                    tocList.appendChild(li);
+                });
+
+                const tocLinks = document.querySelectorAll('.toc-link');
+                
+                const updateActiveToc = () => {
+                    let currentId = '';
+                    
+                    headings.forEach(heading => {
+                        const rect = heading.getBoundingClientRect();
+                        // Threshold adjustment: heading is within the top portion of viewport
+                        if (rect.top <= window.innerHeight / 3 + 100) {
+                            currentId = heading.id;
+                        }
+                    });
+
+                    if (!currentId && headings.length > 0 && window.scrollY === 0) {
+                        currentId = headings[0].id;
+                    }
+
+                    tocLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${currentId}`) {
+                            link.classList.add('active');
+                            
+                            // Scroll TOC list so active item is visible if needed
+                            const linkRect = link.getBoundingClientRect();
+                            const sidebar = document.querySelector('.sidebar');
+                            if (sidebar) {
+                                const sidebarRect = sidebar.getBoundingClientRect();
+                                if (linkRect.bottom > sidebarRect.bottom || linkRect.top < sidebarRect.top) {
+                                    link.scrollIntoView({ block: 'nearest' });
+                                }
+                            }
+                        }
+                    });
+                };
+
+                window.addEventListener('scroll', () => {
+                    // Fold header logic
+                    const currentScrollY = window.scrollY;
+                    if (currentScrollY > lastScrollY && currentScrollY > 64) {
+                        header.classList.add('folded');
+                    } else {
+                        header.classList.remove('folded');
+                    }
+                    lastScrollY = currentScrollY;
+
+                    // Active TOC logic
+                    updateActiveToc();
+                }, { passive: true });
+                
+                updateActiveToc();
+            }
+        });
+    </script>
+</body>
+</html>
