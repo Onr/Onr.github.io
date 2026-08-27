@@ -21,9 +21,18 @@
   <nav class="site-nav" aria-label="Site navigation">
     <a href="./cheap-trust.html">← Cheap Trust</a>
     <button class="theme-toggle" type="button" aria-label="Toggle light and dark mode">◐</button>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
   </nav>
 
-  <main class="page">
+  <div class="article-layout">
+    <aside class="chapter-sidebar" aria-label="Guide chapters">
+      <div class="chapter-card">
+        <div class="chapter-label">Chapters</div>
+        <select class="chapter-select" aria-label="Jump to a chapter"></select>
+        <nav aria-label="Jump to a chapter"><ol class="chapter-list"></ol></nav>
+      </div>
+    </aside>
+    <main class="page">
     <article>
       <header class="article-header">
         <div class="category">Implementation Guide</div>
@@ -53,24 +62,6 @@ user approves it.</code></pre>
       </div>
 
       <p>This guide translates the ideas in <a href="./cheap-trust.html">Cheap Trust</a> into a repository-level implementation. The examples are conventions, not requirements. Adapt them to the language, framework, risk profile, and CI system already in use.</p>
-
-      <nav class="toc" aria-label="On this page">
-        <strong>On this page</strong>
-        <ol>
-          <li><a href="#principles">Operating principles</a></li>
-          <li><a href="#inventory">Inventory first</a></li>
-          <li><a href="#layout">Repository layout</a></li>
-          <li><a href="#risk-policy">Risk policy</a></li>
-          <li><a href="#test-metadata">Verifier metadata</a></li>
-          <li><a href="#commands">Canonical commands</a></li>
-          <li><a href="#workflow">Agent workflow</a></li>
-          <li><a href="#artifacts">Run artifacts</a></li>
-          <li><a href="#escalation">Escalation</a></li>
-          <li><a href="#security">Security and retention</a></li>
-          <li><a href="#rollout">Adoption sequence</a></li>
-          <li><a href="#done">Definition of done</a></li>
-        </ol>
-      </nav>
 
       <h2 id="principles">Operating principles</h2>
       <ol>
@@ -284,6 +275,7 @@ npm run test:report      # machine-readable summary</code></pre>
 
       <footer>This guide accompanies <a href="./cheap-trust.html">Cheap Trust: Cost-Aware Verification for Agentic Software Development</a>. Adapt it to the repository rather than copying its structure blindly.</footer>
     </article>
-  </main>
+    </main>
+  </div>
 </body>
 </html>

@@ -21,9 +21,18 @@
   <nav class="site-nav" aria-label="Site navigation">
     <a href="../index.html">← Ori Nizan</a>
     <button class="theme-toggle" type="button" aria-label="Toggle light and dark mode">◐</button>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
   </nav>
 
-  <main class="page">
+  <div class="article-layout">
+    <aside class="chapter-sidebar" aria-label="Article chapters">
+      <div class="chapter-card">
+        <div class="chapter-label">Chapters</div>
+        <select class="chapter-select" aria-label="Jump to a chapter"></select>
+        <nav aria-label="Jump to a chapter"><ol class="chapter-list"></ol></nav>
+      </div>
+    </aside>
+    <main class="page">
     <article>
       <header class="article-header">
         <div class="category">Engineering</div>
@@ -40,27 +49,6 @@
       <blockquote>What is the cheapest reliable way to know whether this change is safe enough to ship?</blockquote>
       <p>I call that target <strong>cheap trust</strong>: evidence strong enough for the risk at hand, but inexpensive enough to collect whenever software changes.</p>
       <p>This article focuses on conventional software created or modified by coding agents. Testing an application that is itself an agent adds concerns such as tool trajectories, prompt injection, and permission boundaries, but the same verification economics still apply.</p>
-
-      <nav class="toc" aria-label="On this page">
-        <strong>On this page</strong>
-        <ol>
-          <li><a href="#economics">Verification economics</a></li>
-          <li><a href="#changes">What agents change</a></li>
-          <li><a href="#layers">Layered architecture</a></li>
-          <li><a href="#risk">Diff → risk → scope</a></li>
-          <li><a href="#checking">Turn judgment into checking</a></li>
-          <li><a href="#evaluators">Evaluator routing</a></li>
-          <li><a href="#example">Worked example</a></li>
-          <li><a href="#artifacts">Structured artifacts</a></li>
-          <li><a href="#humans">Human review</a></li>
-          <li><a href="#security">Security</a></li>
-          <li><a href="#ui">UI regression</a></li>
-          <li><a href="#cheaper">Make verification cheaper</a></li>
-          <li><a href="#implementation">Implementation guide</a></li>
-          <li><a href="#related">Related work</a></li>
-          <li><a href="#conclusion">Conclusion</a></li>
-        </ol>
-      </nav>
 
       <h2 id="economics">Verification is an economic system</h2>
       <p>Teams often reduce agent cost to token spend. Verification consumes more than tokens:</p>
@@ -225,6 +213,7 @@ identify affected files, validation commands, and rollback steps.</code></pre>
 
       <footer>Written by <a href="../index.html">Ori Nizan</a>. Implementation details live in the companion <a href="./cheap-trust-implementation-guide.html">agent-readable guide</a>.</footer>
     </article>
-  </main>
+    </main>
+  </div>
 </body>
 </html>

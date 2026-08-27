@@ -15,7 +15,7 @@ choice="$(
     --cursor-prefix "→ " \
     --height 10 \
     "Preview website locally  Start a local server (default: port 8000)" \
-    "Preview Cheap Trust articles  Start the site and show the essay and guide URLs" \
+    "Preview Cheap Trust UI  Start the site and inspect the essay and guide navigation" \
     "Inspect Stitch Toggle Reminder refresh  Review the homepage, blog, assets, and Stitch MCP config"
 )"
 
@@ -23,7 +23,7 @@ case "$choice" in
   "Preview website locally  Start a local server (default: port 8000)")
     "$ROOT_DIR/scripts/preview-site.sh"
     ;;
-  "Preview Cheap Trust articles  Start the site and show the essay and guide URLs")
+  "Preview Cheap Trust UI  Start the site and inspect the essay and guide navigation")
     "$ROOT_DIR/scripts/preview-cheap-trust.sh"
     ;;
   "Inspect Stitch Toggle Reminder refresh  Review the homepage, blog, assets, and Stitch MCP config")
