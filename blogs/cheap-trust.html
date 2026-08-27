@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Ori Nizan">
+  <meta name="description" content="A practical architecture for verifying coding-agent changes through risk routing, layered evidence, calibrated evaluators, and focused human review.">
+  <meta name="keywords" content="coding agents, software testing, cheap trust, verification, regression testing, Playwright, AI agents">
+  <title>Cheap Trust: Cost-Aware Verification for Agentic Software Development | Ori Nizan</title>
+  <link rel="canonical" href="https://onr.github.io/blogs/cheap-trust.html">
+  <meta property="og:title" content="Cheap Trust: Cost-Aware Verification for Agentic Software Development">
+  <meta property="og:description" content="A practical architecture for verifying coding-agent changes through risk routing, layered evidence, calibrated evaluators, and focused human review.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://onr.github.io/blogs/cheap-trust.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="./cheap-trust.css">
+  <script src="https://analytics.ahrefs.com/analytics.js" data-key="kW4vyQ9awU+oCz8K2l3VJw" async></script>
+  <script src="./cheap-trust.js" defer></script>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Site navigation">
+    <a href="../index.html">← Ori Nizan</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle light and dark mode">◐</button>
+  </nav>
+
+  <main class="page">
+    <article>
+      <header class="article-header">
+        <div class="category">Engineering</div>
+        <h1>Cheap Trust: Cost-Aware Verification for Agentic Software Development</h1>
+        <p class="dek">AI coding agents make software cheaper to change. The harder problem is making it cheap to trust those changes.</p>
+        <div class="meta">Ori Nizan · Published April 7, 2026 · Updated August 27, 2026</div>
+      </header>
+
+      <p>As a project grows, the same pain appears again and again: things that were already fixed break again. Tests prevent <strong>regression debt</strong>, the expensive cycle in which every new feature quietly breaks an old one and the team repeatedly rediscovers the same lessons.</p>
+      <p>Agent-driven development multiplies that risk. Coding agents can inspect a repository, modify several subsystems, update tests, drive a browser, and prepare a pull request in minutes. Without strong regression protection, that speed produces compounding breakage rather than compounding productivity.</p>
+      <blockquote>Protect yesterday’s working behavior from today’s optimization.</blockquote>
+      <p>The bottleneck is increasingly verification. If every meaningful edit requires a full end-to-end suite, a frontier model to interpret its result, and a human to reconstruct what happened from raw logs, generation will outpace the system used to trust it.</p>
+      <p>The central question should therefore be:</p>
+      <blockquote>What is the cheapest reliable way to know whether this change is safe enough to ship?</blockquote>
+      <p>I call that target <strong>cheap trust</strong>: evidence strong enough for the risk at hand, but inexpensive enough to collect whenever software changes.</p>
+      <p>This article focuses on conventional software created or modified by coding agents. Testing an application that is itself an agent adds concerns such as tool trajectories, prompt injection, and permission boundaries, but the same verification economics still apply.</p>
+
+      <nav class="toc" aria-label="On this page">
+        <strong>On this page</strong>
+        <ol>
+          <li><a href="#economics">Verification economics</a></li>
+          <li><a href="#changes">What agents change</a></li>
+          <li><a href="#layers">Layered architecture</a></li>
+          <li><a href="#risk">Diff → risk → scope</a></li>
+          <li><a href="#checking">Turn judgment into checking</a></li>
+          <li><a href="#evaluators">Evaluator routing</a></li>
+          <li><a href="#example">Worked example</a></li>
+          <li><a href="#artifacts">Structured artifacts</a></li>
+          <li><a href="#humans">Human review</a></li>
+          <li><a href="#security">Security</a></li>
+          <li><a href="#ui">UI regression</a></li>
+          <li><a href="#cheaper">Make verification cheaper</a></li>
+          <li><a href="#implementation">Implementation guide</a></li>
+          <li><a href="#related">Related work</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+        </ol>
+      </nav>
+
+      <h2 id="economics">Verification is an economic system</h2>
+      <p>Teams often reduce agent cost to token spend. Verification consumes more than tokens:</p>
+      <pre><code>verification cost
+≈ CI compute + model inference + wall-clock latency
+  + human attention + expected cost of escaped defects</code></pre>
+      <p>This is a conceptual model; the terms must either be normalized into a common measure or tracked separately. The objective is not to minimize one term in isolation. A five-second check that misses a payment regression is not cheap. A highly reliable three-hour suite that runs after every edit is not cheap either.</p>
+      <p>The useful target is <strong>decision-relevant signal per unit of verification cost</strong>.</p>
+      <p>Regression debt accumulates when a team fixes or learns something but does not encode what must remain true. A material or recurring failure should trigger a decision about what to preserve: a test, contract, invariant, artifact, rubric, or routing rule. When recurrence is plausible and consequential, a fix that does not improve future verification is incomplete.</p>
+
+      <h2 id="changes">What coding agents change about testing</h2>
+      <h3>Change volume can exceed verification capacity</h3>
+      <p>Agents make implementation and revision much faster. That is valuable only when verification scales with the rate of change. Otherwise code becomes cheap to produce while confidence remains expensive to establish.</p>
+      <h3>Plausible code still fails at boundaries</h3>
+      <p>Generated code can look locally reasonable while breaking an API contract, changing database behavior, weakening an authorization rule, mishandling configuration, or disrupting a user workflow. The more subsystems an agent can change in one pass, the more important boundary evidence becomes.</p>
+      <h3>Autonomous iteration needs reproducible evidence</h3>
+      <p>When an agent can edit, test, inspect failures, and try again, “done” is not evidence. The loop should record what changed, which checks ran, why that scope was selected, what passed and failed, and why the result is sufficient for its assigned risk.</p>
+
+      <h2 id="layers">A layered architecture for cheap trust</h2>
+      <p>The easiest way to make verification unaffordable is to put every requirement into one giant end-to-end evaluation. Different evidence has radically different costs.</p>
+      <table>
+        <thead><tr><th>Layer</th><th>Evidence</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td>0: Contracts</td><td>Fast deterministic constraints</td><td>Types, schemas, linting, builds, configuration validation</td></tr>
+          <tr><td>1: Components and boundaries</td><td>Local behavior and interface correctness</td><td>Unit tests, API contracts, database and service integration tests</td></tr>
+          <tr><td>2: Scenarios</td><td>User-critical workflows</td><td>Browser flows, service workflows, focused end-to-end regressions</td></tr>
+          <tr><td>3: Qualitative evaluation</td><td>Properties that remain genuinely fuzzy</td><td>Usefulness, prioritization, tone, naturalness, UX judgment</td></tr>
+          <tr><td>Escalation</td><td>Strong judgment or intent-setting</td><td>High-capability evaluator, domain expert, security or human review</td></tr>
+        </tbody>
+      </table>
+      <p>Prefer a schema validator before a model evaluates quality. Prefer a targeted contract test before an end-to-end suite exercises the entire product. Prefer a screenshot diff that narrows a visual problem before anyone reads a long browser transcript.</p>
+      <pre><code>change → risk classification → smallest sufficient scope
+→ cheapest proven verifier → escalation when needed
+→ durable regression protection</code></pre>
+
+      <h2 id="risk">Diff → risk → scope</h2>
+      <p>“Run everything” can be a reasonable release strategy and a poor inner-loop strategy. Inspect the diff, identify affected capabilities and boundaries, assign risk, and choose the smallest sufficient initial scope.</p>
+      <table>
+        <thead><tr><th>Risk</th><th>Typical change</th><th>Default verification</th></tr></thead>
+        <tbody>
+          <tr><td>R0</td><td>Documentation, comments, copy-only edits</td><td>Formatting, links, static checks, or no runtime tests</td></tr>
+          <tr><td>R1</td><td>Local logic with no interface change</td><td>Static checks and targeted unit tests</td></tr>
+          <tr><td>R2</td><td>API, data model, dependency, or service integration</td><td>Unit, integration, and contract tests</td></tr>
+          <tr><td>R3</td><td>UI behavior or user workflow</td><td>Targeted end-to-end scenarios and visual evidence</td></tr>
+          <tr><td>R4</td><td>Authentication, payments, migrations, infrastructure, secrets, permissions, tenant boundaries</td><td>Broader suite, security checks, stronger review, and rollout controls</td></tr>
+        </tbody>
+      </table>
+      <p>Mixed changes inherit the strongest applicable policy, while lower-risk portions can still use narrower checks. Classification should consider affected capabilities, contract changes, data sensitivity, reversibility, blast radius, trust boundaries, test-harness changes, and incident history, not file paths alone.</p>
+      <p>The router itself must be verified. Periodic broader runs can measure which failures targeted selection would have missed. That turns test selection into an auditable policy rather than an article of faith.</p>
+
+      <h3>Separate the inner and outer loops</h3>
+      <p>The inner loop should be narrow, fast, fail-fast, deterministic where possible, and repeatable many times per hour. The outer loop can include full unit and integration suites, cross-browser coverage, wider visual matrices, performance and security checks, migration rehearsal, and release readiness. The first keeps iteration affordable; the second protects against blind spots.</p>
+
+      <h2 id="checking">Turn judgment into checking</h2>
+      <p>Model graders are useful, but they are tempting. It is easy to replace an unclear requirement with a prompt asking a powerful model, “Does this look correct?” That often hides the specification problem instead of solving it.</p>
+      <blockquote>If a frontier model is required merely to decide whether a test passed, the test is often underspecified.</blockquote>
+      <p>Before introducing a judge, ask whether the output can use a schema, the requirement can become an invariant, behavior can be asserted at an API or database boundary, a broad rubric can become narrow binary checks, or a prior human decision can become a regression case.</p>
+      <p>Recommendation quality, tone, prioritization, and UX judgment may remain qualitative. The goal is not to eliminate judgment. It is to shrink the fuzzy surface until expensive reasoning is used only where it adds information.</p>
+
+      <h2 id="evaluators">Evaluator routing: cheap by default, strong by exception</h2>
+      <pre><code>deterministic → calibrated low-cost model
+→ high-capability model → human or domain review</code></pre>
+      <p>Each qualitative test family should have a minimum sufficient verifier. A compact manifest can make the decision explicit:</p>
+      <pre><code>test_family: checkout-copy-quality
+min_verifier: low_cost_model
+escalate_below_confidence: 0.85  # illustrative; calibrate per test family
+reference_set: evals/checkout-copy-v2.jsonl</code></pre>
+      <p>The label is evidence about one verifier on one slice of work. It is not a permanent certificate of intelligence.</p>
+      <h3>Validate before delegation</h3>
+      <p>Use a representative reference set containing normal, edge, adversarial, and previously failed cases. Compare the cheap verifier with a stronger reference process and measure false acceptance, false rejection, escalation frequency, performance by risk class, and confidence calibration where scores are used.</p>
+      <pre><code>high-confidence pass → accept
+high-confidence fail → reject
+uncertain → defer to stronger verification</code></pre>
+      <p>Revalidate after meaningful changes to the model, prompt, rubric, tools, product behavior, reference set, or production distribution.</p>
+      <h3>Expensive verification should teach the system</h3>
+      <p>A stronger verifier should return both a verdict and, when possible, a candidate way to reduce future ambiguity: clearer assertions, narrower context, added structure, or a test split. Escalation should create a cheaper path for the next occurrence rather than becoming a recurring premium toll.</p>
+
+      <h2 id="example">Worked example: a checkout UI change</h2>
+      <p>Suppose a coding agent moves a coupon field, updates validation, and changes a payment-summary component.</p>
+      <ol>
+        <li><strong>Classify.</strong> UI work is R3; the payment boundary follows R4 policy.</li>
+        <li><strong>Run deterministic checks.</strong> Type checking, unit tests for validation, payment-summary contracts, and a total-calculation invariant.</li>
+        <li><strong>Run targeted scenarios.</strong> Successful checkout, invalid and expired coupons, payment decline, and mobile checkout.</li>
+        <li><strong>Preserve visual evidence.</strong> A mobile comparison shows the coupon error overlapping the submit button.</li>
+        <li><strong>Classify the failure.</strong> A retry reproduces the same visual difference, increasing confidence that the problem is reproducible rather than a transient rendering artifact.</li>
+        <li><strong>Escalate only the uncertain surface.</strong> A visual evaluator sees the expected, actual, and diff images plus the acceptance criterion.</li>
+        <li><strong>Package the human decision.</strong> The reviewer receives one preview link and one question: “Is this placement acceptable at 390 pixels?”</li>
+        <li><strong>Encode the decision.</strong> After rejection and repair, the agent adds a screenshot assertion for that exact state.</li>
+      </ol>
+
+      <h2 id="artifacts">Prefer structured artifacts over raw context</h2>
+      <p>Huge logs, DOM dumps, transcripts, and entire repositories are expensive and difficult to audit. Prefer machine-readable results, traces, screenshots and diffs, minimal error excerpts, exact commands, environment metadata, and compact summaries.</p>
+      <pre><code>{
+  "change_id": "checkout-coupon-layout",
+  "risk": ["R3", "R4-payment-boundary"],
+  "scope": ["checkout-unit", "payment-contract", "checkout-e2e"],
+  "status": "FAIL",
+  "failed": ["coupon-error-mobile"],
+  "classification": "likely-regression",
+  "classification_confidence": 0.82,
+  "classifier": "visual-verifier-v3",
+  "artifacts": ["trace.zip", "expected.png", "actual.png", "diff.png"],
+  "next_action": "request_visual_review"
+}</code></pre>
+      <p>Evidence should carry provenance: commit, environment, dependency lockfile, browser project, configuration, and evaluator version. A result that cannot be reproduced is weaker than it appears.</p>
+
+      <h2 id="humans">Package human review</h2>
+      <p>Human attention is often the most expensive resource in the loop because people are interruption-sensitive and uniquely valuable for questions of intent. Before requesting input, run cheap checks, narrow the uncertain surface, attach exact evidence, explain what has been ruled out, and ask one focused question.</p>
+      <p>When practical, establish acceptance criteria or reproduce the failure with a test before implementation begins. This makes it harder for the author to redefine success around whatever the change happens to produce.</p>
+      <p>Humans establish high-signal intent. Machines enforce it until product change or drift requires renewed judgment.</p>
+
+      <h2 id="security">Security belongs in risk routing</h2>
+      <p>Security review should be triggered by what changed, not by someone remembering a checklist. Changes involving authentication, authorization, secrets, data access, dependencies, input handling, infrastructure, permissions, destructive operations, or tenant boundaries should raise risk automatically.</p>
+      <p>Relevant checks can include positive and negative authorization tests, secret scanning, vulnerability checks, cross-tenant isolation, abuse cases, migration validation, infrastructure safety, and audit-log assertions. High-risk changes may justify a canary or gradual rollout even after the tests pass.</p>
+
+      <h2 id="ui">Use browsers to create regression tests, not replace them</h2>
+      <p>Interactive browser-driving agents are excellent for exploration. Stable regression paths should become ordinary executable tests.</p>
+      <blockquote>Explore rarely. Convert discoveries into tests. Run those tests often.</blockquote>
+      <p>Playwright supports targeted files and titles, fail-fast execution, rerunning previous failures, traces, reports, and changed-test selection. Its documentation notes that <code>--only-changed</code> uses Git-based dependency analysis heuristically and can miss affected tests, so it is preliminary feedback rather than a replacement for the full gate.</p>
+      <pre><code>npx playwright test --last-failed
+npx playwright test tests/checkout.spec.ts
+npx playwright test -g "checkout"
+npx playwright test -x
+npx playwright show-report
+npx playwright show-trace path/to/trace.zip</code></pre>
+      <p>For visual regression, use a small viewport matrix, controlled rendering conditions, expected/actual/diff images, and deliberate baseline updates. Do not pay a multimodal evaluator to rediscover obvious pixel differences on every run; escalate only when the meaning remains ambiguous.</p>
+
+      <h2 id="cheaper">Make verification cheaper over time</h2>
+      <p>A mature system does not just test the product. It monitors whether testing remains economical and trustworthy. Track wall-clock time and CI compute by family, model cost by tier, human-review frequency, flake rate, false acceptance and rejection where measurable, escalation reasons, targeted-suite misses, and which checks actually catch regressions.</p>
+      <pre><code>verify cheaply → escalate uncertainty → inspect why
+→ encode the decision → recalibrate → lower future cost</code></pre>
+      <p>Production monitoring closes the loop. Reduce escaped incidents to minimal reproducible cases, add them to the appropriate layer, and update routing when the original scope was insufficient. Feature flags, canaries, gradual rollouts, and rollback automation limit the cost of what pre-release verification fails to catch.</p>
+
+      <h2 id="implementation">Implementation guide</h2>
+      <p>The architecture does not require a large testing platform. It can begin with a small risk policy, stable test commands, a machine-readable run summary, and one escalation rule.</p>
+      <div class="callout">
+        <p><strong>Tell your coding agent:</strong></p>
+        <pre><code>Read https://onr.github.io/blogs/cheap-trust-implementation-guide.html
+before changing this repository's verification setup.
+
+First inventory the existing tests and commands. Then propose the smallest
+adaptation that adds risk routing, structured evidence, and explicit
+escalation without duplicating working coverage. Stop after presenting the
+proposal. Do not implement until the user approves it. The proposal must
+identify affected files, validation commands, and rollback steps.</code></pre>
+        <p><a class="button-link" href="./cheap-trust-implementation-guide.html">Open the implementation guide →</a></p>
+      </div>
+
+      <h2 id="related">Related work</h2>
+      <p>This architecture combines established engineering ideas: test pyramids, contracts, change-impact analysis, risk-based selection, visual regression, security gates, canaries, and human review.</p>
+      <ul class="source-list">
+        <li><a href="https://arxiv.org/abs/2602.17633">When to Trust the Cheap Check</a>, a 2026 preprint on accept/reject/defer weak–strong verification policies.</li>
+        <li><a href="https://airc.nist.gov/airmf-resources/airmf/5-sec-core/">NIST AI RMF Core</a>, covering repeatable evaluation, uncertainty, independent review, and production monitoring.</li>
+        <li><a href="https://playwright.dev/docs/test-cli">Playwright CLI</a>, <a href="https://playwright.dev/docs/ci">CI guidance</a>, and <a href="https://playwright.dev/docs/api/class-locatorassertions">screenshot assertions</a>.</li>
+      </ul>
+
+      <h2 id="conclusion">Conclusion</h2>
+      <p>AI agents make implementation cheaper. Sustainable productivity depends on making trust cheaper too.</p>
+      <p>That means contracts before judgment, targeted checks before broad suites, structured artifacts before raw context, calibrated cheap evaluators before expensive ones, and focused human decisions before open-ended review.</p>
+      <p>The strongest verification system is not the one that runs the most tests or uses the most capable evaluator every time. It is the one that spends attention where it changes the decision and turns expensive lessons into product memory.</p>
+      <p>That is cheap trust: repeatable evidence whose cost grows more slowly than the software it protects.</p>
+
+      <footer>Written by <a href="../index.html">Ori Nizan</a>. Implementation details live in the companion <a href="./cheap-trust-implementation-guide.html">agent-readable guide</a>.</footer>
+    </article>
+  </main>
+</body>
+</html>

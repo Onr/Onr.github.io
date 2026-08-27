@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Ori Nizan">
+  <meta name="description" content="An agent-readable implementation guide for adding risk-routed, cost-aware verification to an existing software repository.">
+  <meta name="keywords" content="coding agents, testing implementation, verification policy, AGENTS.md, CI, software testing">
+  <title>Implementing Cheap Trust: An Agent-Readable Guide | Ori Nizan</title>
+  <link rel="canonical" href="https://onr.github.io/blogs/cheap-trust-implementation-guide.html">
+  <meta property="og:title" content="Implementing Cheap Trust: An Agent-Readable Guide">
+  <meta property="og:description" content="Add risk-routed, cost-aware verification to an existing repository without replacing what already works.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://onr.github.io/blogs/cheap-trust-implementation-guide.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="./cheap-trust.css">
+  <script src="https://analytics.ahrefs.com/analytics.js" data-key="kW4vyQ9awU+oCz8K2l3VJw" async></script>
+  <script src="./cheap-trust.js" defer></script>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Site navigation">
+    <a href="./cheap-trust.html">← Cheap Trust</a>
+    <button class="theme-toggle" type="button" aria-label="Toggle light and dark mode">◐</button>
+  </nav>
+
+  <main class="page">
+    <article>
+      <header class="article-header">
+        <div class="category">Implementation Guide</div>
+        <h1>Implementing Cheap Trust</h1>
+        <p class="dek">An agent-readable guide for adding risk-routed, cost-aware verification to an existing repository without replacing what already works.</p>
+        <div class="meta">Ori Nizan · Updated August 27, 2026</div>
+      </header>
+
+      <div class="callout">
+        <p><strong>Copy this into your coding agent:</strong></p>
+        <pre><code>Read this guide completely before changing the repository:
+https://onr.github.io/blogs/cheap-trust-implementation-guide.html
+
+First inventory the existing tests, CI jobs, commands, risk-sensitive code,
+and generated artifacts. Then propose the smallest compatible adaptation.
+
+The proposal must identify:
+1. existing coverage that will be reused;
+2. missing risk and evidence policies;
+3. files that would change;
+4. validation commands;
+5. rollback steps.
+
+Do not duplicate working coverage. Do not replace the project's existing
+test runner. Stop after presenting the proposal. Do not implement until the
+user approves it.</code></pre>
+      </div>
+
+      <p>This guide translates the ideas in <a href="./cheap-trust.html">Cheap Trust</a> into a repository-level implementation. The examples are conventions, not requirements. Adapt them to the language, framework, risk profile, and CI system already in use.</p>
+
+      <nav class="toc" aria-label="On this page">
+        <strong>On this page</strong>
+        <ol>
+          <li><a href="#principles">Operating principles</a></li>
+          <li><a href="#inventory">Inventory first</a></li>
+          <li><a href="#layout">Repository layout</a></li>
+          <li><a href="#risk-policy">Risk policy</a></li>
+          <li><a href="#test-metadata">Verifier metadata</a></li>
+          <li><a href="#commands">Canonical commands</a></li>
+          <li><a href="#workflow">Agent workflow</a></li>
+          <li><a href="#artifacts">Run artifacts</a></li>
+          <li><a href="#escalation">Escalation</a></li>
+          <li><a href="#security">Security and retention</a></li>
+          <li><a href="#rollout">Adoption sequence</a></li>
+          <li><a href="#done">Definition of done</a></li>
+        </ol>
+      </nav>
+
+      <h2 id="principles">Operating principles</h2>
+      <ol>
+        <li><strong>Reuse before adding.</strong> Map existing tests and commands before creating new structure.</li>
+        <li><strong>Route by risk.</strong> Select the initial scope from the affected capability, contract, data sensitivity, and blast radius.</li>
+        <li><strong>Prefer deterministic evidence.</strong> Use types, schemas, contracts, and assertions before model judgment.</li>
+        <li><strong>Separate instructions from evidence.</strong> Stable policy does not belong beside generated logs.</li>
+        <li><strong>Escalate uncertainty.</strong> A cheap verifier may accept, reject, or defer. It must not invent confidence.</li>
+        <li><strong>Keep humans focused.</strong> Human review receives a small evidence package and a specific decision.</li>
+        <li><strong>Improve future verification.</strong> Material incidents and expensive decisions should sharpen tests, artifacts, or routing policy.</li>
+      </ol>
+
+      <h2 id="inventory">Inventory first</h2>
+      <p>Before changing the repository, produce a short inventory:</p>
+      <ul>
+        <li>test frameworks and their configuration files;</li>
+        <li>canonical local and CI commands;</li>
+        <li>unit, integration, contract, end-to-end, security, and performance coverage;</li>
+        <li>critical workflows and business invariants;</li>
+        <li>authentication, authorization, payments, migrations, infrastructure, and tenant boundaries;</li>
+        <li>current reports, traces, screenshots, logs, and their retention locations;</li>
+        <li>known flaky tests and slow test families;</li>
+        <li>release gates, canaries, feature flags, and rollback mechanisms.</li>
+      </ul>
+      <p>If the project already has a working convention, extend it. A new folder is not an improvement if it creates a second source of truth.</p>
+
+      <h2 id="layout">One practical repository layout</h2>
+      <p>The exact names are optional. The important boundary is between stable instructions, pending coordination, executable checks, evaluator assets, and generated evidence.</p>
+      <pre><code>AGENTS.md (or the repository's agent entry point)
+
+instructions/
+  testing/
+    INDEX.md
+    risk-policy.yaml
+    contract/
+    e2e/
+    security/
+    review/
+
+coordination/
+  testing/
+    proposals/
+    specs/
+    schedules/
+    review-requests/
+
+tests/
+  unit/
+  integration/
+  contract/
+  e2e/
+  regression/
+
+evals/
+  datasets/
+  rubrics/
+  calibration/
+
+artifacts/
+  testing/
+    runs/
+    traces/
+    screenshots/
+    security/
+    reports/</code></pre>
+      <ul>
+        <li><code>instructions/</code> describes how verification works.</li>
+        <li><code>coordination/</code> records pending work, proposals, and review requests.</li>
+        <li><code>tests/</code> executes deterministic requirements.</li>
+        <li><code>evals/</code> stores reference sets, rubrics, and calibration data.</li>
+        <li><code>artifacts/</code> records what happened during a run.</li>
+      </ul>
+      <p>The agent entry point should be a small router. It should direct the agent to the relevant policy instead of embedding the entire testing manual in every context window.</p>
+
+      <h2 id="risk-policy">Encode a small risk policy</h2>
+      <p>Start with a small taxonomy. Mixed changes inherit the strongest applicable policy.</p>
+      <pre><code>version: 1
+risk_classes:
+  R0:
+    examples: [docs, comments, copy]
+    required: [static]
+  R1:
+    examples: [local_logic]
+    required: [static, targeted_unit]
+  R2:
+    examples: [api, schema, dependency, integration]
+    required: [static, unit, contract, integration]
+  R3:
+    examples: [ui, user_workflow]
+    required: [targeted_e2e, visual_when_relevant]
+  R4:
+    examples: [auth, payments, migrations, infrastructure, permissions]
+    required: [broad_suite, security, strong_review, rollout_plan]
+
+mixed_change_policy: strongest_applicable
+router_audit: scheduled_full_suite_comparison</code></pre>
+      <p>File paths can be one signal, but they are not sufficient. The router should also consider capabilities, contract changes, sensitive data, reversibility, blast radius, and trust boundaries.</p>
+
+      <h2 id="test-metadata">Attach verifier metadata to qualitative tests</h2>
+      <p>Deterministic tests do not need a model tier. Qualitative test families should state the cheapest verifier that has been validated for that slice.</p>
+      <pre><code>id: checkout-copy-quality
+risk: R2
+evaluator: qualitative
+min_verifier: low_cost_model
+escalate_below_confidence: 0.85
+reference_set: evals/checkout-copy-v2.jsonl
+revalidate_on:
+  - model_change
+  - rubric_change
+  - product_change
+  - production_drift</code></pre>
+      <p>Validate the tier against representative normal, edge, adversarial, and previously failed cases. Measure false acceptance, false rejection, escalation frequency, and calibration. Overall agreement alone can hide consequential errors.</p>
+
+      <h2 id="commands">Expose canonical commands</h2>
+      <p>Humans, coding agents, and CI should use the same stable entry points. Keep one broad command plus named layer commands. Adapt these examples to the project:</p>
+      <pre><code>npm test                 # canonical broad suite
+npm run test:fast        # inner-loop static and targeted checks
+npm run test:unit
+npm run test:contract
+npm run test:integration
+npm run test:e2e
+npm run test:security
+npm run test:report      # machine-readable summary</code></pre>
+      <p>Every important interactive workflow should have a reproducible headless or command-line path. A release-critical check that only works through a person clicking a UI cannot be reliably scheduled or audited.</p>
+
+      <h2 id="workflow">The coding-agent workflow</h2>
+      <ol>
+        <li>Read the repository agent entry point and the relevant testing policy.</li>
+        <li>Inspect the requested change and the existing test inventory.</li>
+        <li>Assign risk with a short rationale.</li>
+        <li>Select the smallest sufficient inner-loop scope.</li>
+        <li>State the exact commands before running them.</li>
+        <li>Run deterministic checks first.</li>
+        <li>Run targeted integration, scenario, or qualitative checks as required.</li>
+        <li>Write a structured run summary and preserve failure artifacts.</li>
+        <li>Pass, reject, or escalate according to policy.</li>
+        <li>Run the required outer-loop gate before merge or release.</li>
+      </ol>
+      <p>The change author may run verification, but it should not redefine acceptance after seeing the output. For high-risk changes, final acceptance should come from established contracts, independent policy, or an appropriate reviewer.</p>
+
+      <h2 id="artifacts">Use a stable run artifact</h2>
+      <pre><code>{
+  "change_id": "checkout-coupon-layout",
+  "commit": "abc1234",
+  "risk": ["R3", "R4-payment-boundary"],
+  "scope": ["checkout-unit", "payment-contract", "checkout-e2e"],
+  "commands": ["npm run test:fast", "npm run test:e2e -- checkout"],
+  "status": "FAIL",
+  "failed": ["coupon-error-mobile"],
+  "classification": "likely-regression",
+  "classification_confidence": 0.82,
+  "classifier": "visual-verifier-v3",
+  "artifacts": ["trace.zip", "expected.png", "actual.png", "diff.png"],
+  "next_action": "request_visual_review"
+}</code></pre>
+      <p>Include enough provenance to reproduce the result: commit, environment, dependencies, browser project, configuration, test command, evaluator, and evaluator version.</p>
+
+      <h2 id="escalation">Make escalation productive</h2>
+      <p>A cheap verifier has three valid outcomes: accept, reject, or defer. Escalation triggers can include low confidence, conflicting evidence, high-risk changes, repeated nondeterminism, evaluator drift, or changes to the verification harness itself.</p>
+      <p>The stronger verifier should return:</p>
+      <ol>
+        <li>the verdict and evidence;</li>
+        <li>the remaining uncertainty;</li>
+        <li>the next action;</li>
+        <li>a candidate way to make this decision cheaper next time.</li>
+      </ol>
+      <p>That final item might be a clearer assertion, narrower context, new schema, split scenario, added fixture, better screenshot state, or routing-policy update.</p>
+
+      <h3>Package human review</h3>
+      <p>A human request should contain a preview or reproduction link, only the relevant artifacts, a short statement of what already passed, and one focused question. Do not ask a reviewer to reconstruct the run from raw logs.</p>
+
+      <h2 id="security">Protect generated evidence</h2>
+      <p>Traces, screenshots, logs, and model inputs can contain customer data, tokens, secrets, internal URLs, or sensitive business state.</p>
+      <ul>
+        <li>Exclude generated artifacts from Git unless they are intentionally reviewed fixtures.</li>
+        <li>Store CI artifacts in an access-controlled system.</li>
+        <li>Redact secrets and sensitive values before model or human review.</li>
+        <li>Define retention periods by artifact type and risk.</li>
+        <li>Record who or what produced each artifact.</li>
+        <li>Do not send sensitive evidence to an evaluator that lacks the required data boundary.</li>
+      </ul>
+
+      <h2 id="rollout">Adopt the system incrementally</h2>
+      <ol>
+        <li><strong>Week 1: inventory.</strong> Document commands, critical behaviors, test layers, and high-risk surfaces.</li>
+        <li><strong>Week 2: routing.</strong> Add a small R0 to R4 policy and a structured run-summary schema.</li>
+        <li><strong>Week 3: inner loop.</strong> Stabilize fast commands and affected-test selection.</li>
+        <li><strong>Week 4: escalation.</strong> Add one calibrated qualitative evaluator or one focused human-review template.</li>
+        <li><strong>Ongoing: audit.</strong> Compare targeted runs with broader gates, repair flaky tests, and convert incidents into regression memory.</li>
+      </ol>
+      <p>Do not begin by building a large orchestration platform. Begin with one useful policy, one artifact, and one repeated workflow.</p>
+
+      <h2 id="done">Definition of done</h2>
+      <p>A repository has a useful first implementation when:</p>
+      <ul>
+        <li>one documented command runs the broad verification suite;</li>
+        <li>fast layer-specific commands support the inner loop;</li>
+        <li>risk-sensitive changes select stronger scope automatically or by explicit policy;</li>
+        <li>non-trivial runs emit a machine-readable summary;</li>
+        <li>failure artifacts are reproducible and protected;</li>
+        <li>qualitative evaluators have reference sets and revalidation triggers;</li>
+        <li>uncertainty has an escalation path;</li>
+        <li>production incidents can become regression cases;</li>
+        <li>the testing system has an owner and a maintenance cadence.</li>
+      </ul>
+
+      <div class="callout">
+        <p><strong>Keep the implementation boring.</strong></p>
+        <p>Stable commands, small policies, structured evidence, and clear escalation are more valuable than an elaborate testing platform nobody can maintain.</p>
+      </div>
+
+      <footer>This guide accompanies <a href="./cheap-trust.html">Cheap Trust: Cost-Aware Verification for Agentic Software Development</a>. Adapt it to the repository rather than copying its structure blindly.</footer>
+    </article>
+  </main>
+</body>
+</html>
