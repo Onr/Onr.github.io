@@ -219,6 +219,16 @@
       scroll-margin-top: 30px;
     }
 
+    .video-player {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-top: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #0f1216;
+    }
+
     /* ── Panels ── */
     .media-card,
     .insight-card,
@@ -660,6 +670,15 @@
             </p>
           </section>
 
+          <section class="section" id="demo">
+            <h2>See Toggle Reminder in action</h2>
+            <p>A 22-second look at capturing an intention, keeping it visible on your wrist, and clearing it when the task is done.</p>
+            <video class="video-player" controls preload="metadata" playsinline width="1920" height="1080" aria-label="Toggle Reminder commercial launch video">
+              <source src="assets/toggle-reminder-commercial-launch.mp4" type="video/mp4">
+              Your browser does not support HTML video. <a href="assets/toggle-reminder-commercial-launch.mp4">Download the video</a>.
+            </video>
+          </section>
+
           <section class="section" id="solution">
             <div class="cta-block">
               <div>
@@ -690,6 +709,7 @@
               <li><a href="#wrist-glance">The Wrist Glance</a></li>
               <li><a href="#use-cases">Use Cases</a></li>
               <li><a href="#trial-reminder">Trial Reminder</a></li>
+              <li><a href="#demo">Video Demo</a></li>
               <li><a href="#solution">The Integrated Solution</a></li>
             </ul>
           </nav>
